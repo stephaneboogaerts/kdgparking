@@ -15,7 +15,7 @@ namespace kdgparking.DAL.EF
             Database.SetInitializer<OurDbContext>(new DropCreateDatabaseAlways<OurDbContext>());
         }
 
-        public DbSet<Person> Personen { get; set; }
+        public DbSet<Holder> Holders { get; set; }
         public DbSet<Vehicle> Voertuigen { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace kdgparking.DAL
 {
     public interface IRepository
     {
-        Person CreatePersoon(Person persoon);
-        Person ReadPersoon(int persoonNumber);
+        Holder CreateHolder(Holder persoon);
+        Holder ReadHolder(int persoonNumber);
     }
 }

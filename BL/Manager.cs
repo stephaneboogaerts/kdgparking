@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using kdgparking.DAL;
 using kdgparking.BL.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace kdgparking.BL
 {
@@ -15,18 +16,40 @@ namespace kdgparking.BL
 
         public Manager()
         {
-            // testdata in Seed()
             repo = new kdgparking.DAL.Repository();
         }
 
-        public Person AddPersoon()
+        public Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, EmailAddressAttribute email)
+        {
+            Holder h = new Holder
+            {
+                HolderNumber = id,
+                Name = name,
+                FirstName = firstName, // <-- te verplaatsen naar overload functie
+                Phone = phone,
+                Email = email
+            };
+            return this.AddHolder(h);
+        }
+
+        public Holder GetPersonen()
         {
             throw new NotImplementedException();
         }
 
-        public Person GetPersonen()
+        private Holder AddHolder(Holder holder)
         {
-            throw new NotImplementedException();
+            this.Validate(holder);
+            return repo.CreateHolder(holder);
+        }
+
+        private void Validate(Holder holder)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(holder, new ValidationContext(holder), errors, validateAllProperties: true);
+
+            if (!valid)
+                throw new ValidationException("Holder not valid!");
         }
     }
 }

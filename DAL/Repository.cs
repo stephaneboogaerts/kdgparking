@@ -19,14 +19,18 @@ namespace kdgparking.DAL
         }
         
 
-    public Person CreatePersoon(Person persoon)
+    public Holder CreateHolder(Holder holder)
         {
-            throw new NotImplementedException();
+            ctx.Holders.Add(holder);
+            ctx.SaveChanges();
+
+            return holder;
         }
 
-        public Person ReadPersoon(int persoonNumber)
+        public Holder ReadHolder(int persoonNumber)
         {
-            throw new NotImplementedException();
+            Holder holder = ctx.Holders.Find(persoonNumber);
+            return holder;
         }
     }
 }
