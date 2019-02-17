@@ -1,0 +1,28 @@
+/** {
+    border: 1px solid red;
+}*/
+
+.persoonForm {
+    display: grid;
+    grid-template-columns: 50% 100%;
+    grid-template-rows: 30% 100%;
+    border: 1px solid red;
+}
+
+.persoonForm h3
+{
+    grid-area: 1 / 1 / 2 / -1;
+    height: 100%;
+    width: 100%;
+    padding: 0 0 20px 0;
+    margin: 0;
+}
+
+.persoonForm.col1 {
+    grid-area: 2 / 1 / -1 / 2;
+}
+
+.persoonForm.col2 {
+     grid-area: 2 / 2 / -1 / -1;
+
+}

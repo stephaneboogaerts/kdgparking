@@ -1,0 +1,37 @@
+@{
+    ViewBag.Title = "Persoon Toevoegen";
+}
+@section Styles {
+    <link href="@Url.Content("~/Styles/Toevoegen.css")" rel="stylesheet" type="text/css" />
+}
+<h2>Persoon Toevoegen</h2>
+<div id="persoonForm">
+    <form method="post" action="postPersoon">
+        <div class="persoonForm">
+            <h3 id="verplichtTitel">Verplicht</h3>
+            <div class="col1">
+                <label for="naamField">Naam</label>
+                <input type="text" name="naam" placeholder="Naam" id="naamField" />
+                <label for="voornaamField">Voornaam</label>
+                <input type="text" name="voornaam" placeholder="Voornaam" id="voornaamField" />
+                <label for="emailField">Email</label>
+                <input type="email" name="email" placeholder="Email" id="emailField" />
+            </div>
+            <div class="col2">
+                <label for="campanyField">Company</label>
+                <input type="text" name="company" placeholder="Company" id="companyField" />
+                <label for="startdatumField">Startdatum</label>
+                <input type="date" name="start" placeholder="Startdatum" id="startdatumField" />
+                <label for="einddatumField">Einddatum</label>
+                <input type="date" name="end" placeholder="Einddatum" id="einddatumField" />
+            </div>
+        </div>
+        <div class="persoonForm">
+            <h3 id="optioneelTitel">Optioneel</h3>
+            <label for="nummerplaatField">Nummerplaat</label>
+            <input type="text" name="nummerplaat" placeholder="Nummerplaat" id="nummerplaatField"/>
+        </div>
+        <input type="submit" />
+    </form>
+</div>
+
