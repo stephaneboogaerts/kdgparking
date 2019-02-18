@@ -19,7 +19,7 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
-        public Person AddPersoon()
+        public Person AddPersoon(Person person)
         {
             throw new NotImplementedException();
         }

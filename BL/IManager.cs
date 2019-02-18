@@ -12,6 +12,6 @@ namespace kdgparking.BL
     {
         // test fucnties
         Person GetPersonen();
-        Person AddPersoon();
+        Person AddPersoon(Person person);
     }
 }
