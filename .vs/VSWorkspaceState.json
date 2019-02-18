@@ -3,8 +3,8 @@
     "",
     "\\kdgparking",
     "\\kdgparking\\App_Start",
-    "\\kdgparking\\Views\\Home",
-    "\\kdgparking\\Views\\Shared"
+    "\\kdgparking\\Styles"
   ],
+  "SelectedNode": "\\kdgparking\\Styles\\Toevoegen.css",
   "PreviewInSolutionExplorer": false
 }
