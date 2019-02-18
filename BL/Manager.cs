@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using kdgparking.DAL;
 using kdgparking.BL.Domain;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
 
 namespace kdgparking.BL
 {
@@ -19,7 +20,7 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
-        public Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, EmailAddressAttribute email)
+        public Holder AddHolder(string id, string name, string firstName, int phone, string email)
         {
             Holder h = new Holder
             {
@@ -32,7 +33,7 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
-        public Holder GetPersonen()
+        public Holder GetHolders()
         {
             throw new NotImplementedException();
         }
