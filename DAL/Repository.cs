@@ -26,9 +26,9 @@ namespace kdgparking.DAL
             return holder;
         }
 
-        public Holder ReadHolder(int persoonNumber)
+        public Holder ReadHolder(string holderId)
         {
-            Holder holder = ctx.Holders.Find(persoonNumber);
+            Holder holder = ctx.Holders.Find(holderId);
             return holder;
         }
 
@@ -68,9 +68,9 @@ namespace kdgparking.DAL
             return vehicle;
         }
 
-        public Vehicle ReadVehicle(int vehicleNr)
+        public Vehicle ReadVehicle(string numberplate)
         {
-            Vehicle vehicle = ctx.Vehicles.Find(vehicleNr);
+            Vehicle vehicle = ctx.Vehicles.Find(numberplate);
             return vehicle;
         }
     }
