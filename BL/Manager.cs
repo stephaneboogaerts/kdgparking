@@ -20,6 +20,11 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
+        public Contract AddContract(string holderId, DateTime begin, DateTime einde, decimal tarif, decimal warranty, decimal warrantyBadge)
+        {
+            throw new NotImplementedException();
+        }
+
         public Holder AddHolder(string id, string name, string firstName, int phone, string email)
         {
             Holder h = new Holder

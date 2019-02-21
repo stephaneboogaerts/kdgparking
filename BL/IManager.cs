@@ -12,9 +12,11 @@ namespace kdgparking.BL
 {
     public interface IManager
     {
-        // test fucnties
+        // test functies
         Holder GetHolders();
         Holder AddHolder(string id, string name, string firstName, int phone, string email);
+        Contract AddContract(string holderId, DateTime begin, DateTime einde, decimal tarif, decimal warranty, decimal warrantyBadge);
+
         //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
     }
 }
