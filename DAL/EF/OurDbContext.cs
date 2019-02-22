@@ -16,9 +16,10 @@ namespace kdgparking.DAL.EF
         }
 
         public DbSet<Holder> Holders { get; set; }
-        public DbSet<Vehicle> Voertuigen { get; set; }
-        public DbSet<Contract> Contracten { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Organisation> Organisations { get; set; }
     }
 }

@@ -11,6 +11,14 @@ namespace kdgparking.DAL
     public interface IRepository
     {
         Holder CreateHolder(Holder persoon);
-        Holder ReadHolder(int persoonNumber);
+        Holder ReadHolder(string holderId);
+        IEnumerable<Holder> ReadHolders();
+        IEnumerable<Holder> ReadHoldersWithContractsAndVehicles();
+
+        Contract CreateContract(Contract contract);
+        Contract ReadContract(int contractNr);
+
+        Vehicle CreateVehicle(Vehicle vehicle);
+        Vehicle ReadVehicle(string numberplate);
     }
 }
