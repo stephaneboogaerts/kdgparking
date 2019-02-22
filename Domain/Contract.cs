@@ -18,5 +18,7 @@ namespace kdgparking.BL.Domain
         public decimal WarrantyBadge { get; set; }
 
         public Holder Holder { get; set; }
+        //1 voertuig per contract?
+        public Vehicle Vehicle { get; set; }
     }
 }

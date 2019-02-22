@@ -22,14 +22,15 @@ namespace kdgparking.BL.Domain
         [StringLength(40, ErrorMessage = "Name must be less than 40 characters")]
         public string FirstName { get; set; }
         public int Phone { get; set; }
+        public int GSM { get; set; }
         public string Email { get; set; }
 
         // Badge geschiedenis, of is badge uniek per holder?
         public Badge Badge { get; set; }
-        public Vehicle Vehicle { get; set; }
         public Address Address { get; set; }
         public List<Contract> Contracts { get; set; }
-        
+        //public Vehicle Vehicle { get; set; } <-- verhuist naar Contract
+
         /**
         [Key]
         public int PId { get; set; }
