@@ -8,6 +8,9 @@ using kdgparking.DAL;
 using kdgparking.BL.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
+using System.Web;
+using OfficeOpenXml;
+using System.IO;
 
 namespace kdgparking.BL
 {
@@ -80,6 +83,64 @@ namespace kdgparking.BL
 
             if (!valid)
                 throw new ValidationException("Holder not valid!");
+        }
+        
+        public void ProcessFile(HttpPostedFileBase file)
+        {
+            try
+            {
+                // file.InputStream reads HttpPostedFileBase as excel 
+                using (ExcelPackage package = new ExcelPackage(file.InputStream))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
+                    int rowCount = worksheet.Dimension.Rows;
+                    int ColCount = worksheet.Dimension.Columns;
+                    for (int row = 5; row <= rowCount; row++)
+                    {
+                        for (int col = 1; col <= ColCount; col++)
+                        {
+                            // Kijkt of column een waarde bevat alvorens het toe te voegen
+                            if((worksheet.Cells[row, col].Value) != null)
+                            {
+                                sb.Append(worksheet.Cells[row, col].Value.ToString() + "\t");
+                            }
+                        }
+                        sb.Append(Environment.NewLine);
+                    }
+                    //System.Diagnostics.Debug.WriteLine(sb.ToString());
+                    ProcessFileData(sb.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(("Some error occured while importing." + ex.Message));
+                //return ("Some error occured while importing." + ex.Message).ToString();
+            }
+        }
+
+        private void ProcessFileData(string fileData)
+        {
+            using (StringReader reader = new StringReader(fileData))
+            {
+                string line;
+                // Elke row uitlezen
+                while ((line = reader.ReadLine()) != null)
+                {
+                    // Elke column uit een row opsplitsen (\t = tab)
+                    string[] para = line.Split('\t');
+                    // Lege rows negeren
+                    if (para.Length > 3)
+                    {
+                        for(int i = 0; i < para.Length; i++)
+                        {
+                            // Hier komt logica : data naar object
+                            System.Diagnostics.Debug.WriteLine(para[i]);
+                        }
+                        System.Diagnostics.Debug.WriteLine(" ");
+                    }
+                }
+            }
         }
     }
 }
