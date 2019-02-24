@@ -57,6 +57,7 @@
     <Compile Include="Badge.cs" />
     <Compile Include="Contract.cs" />
     <Compile Include="Holder.cs" />
+    <Compile Include="InputHolder.cs" />
     <Compile Include="Organisation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vehicle.cs" />

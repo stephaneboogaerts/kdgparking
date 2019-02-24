@@ -108,33 +108,66 @@ namespace kdgparking.BL
                         }
                         sb.Append(Environment.NewLine);
                     }
-                    //System.Diagnostics.Debug.WriteLine(sb.ToString());
+                    // Data in text formaat doorsturen naar functie om text om te zetten naar object
                     ProcessFileData(sb.ToString());
                 }
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(("Some error occured while importing." + ex.Message));
-                //return ("Some error occured while importing." + ex.Message).ToString();
             }
         }
 
+        // We schrijven data naar een tijdelijk model klasse om eerst in de controller de input te valideren
+        // Daarna zal de data naar hun respectievelijke klasse worden omgezet en naar de db worden weggeschreven
         private void ProcessFileData(string fileData)
         {
             using (StringReader reader = new StringReader(fileData))
             {
+                InputHolder inputHolder;
+                List<InputHolder> ihList = new List<InputHolder>();
                 string line;
                 // Elke row uitlezen
                 while ((line = reader.ReadLine()) != null)
                 {
                     // Elke column uit een row opsplitsen (\t = tab)
                     string[] para = line.Split('\t');
-                    // Lege rows negeren
+                    // Lege rows negeren (voorbeeld excel bevat lege rows)
                     if (para.Length > 3)
                     {
-                        for(int i = 0; i < para.Length; i++)
+                        // Voor- en achternaam uit fullname halen
+                        string[] fullname = para[5].Split(' ');
+                        string fName = "";
+                        string lName = "";
+                        for(int i = 0; i > fullname.Length; i++)
                         {
-                            // Hier komt logica : data naar object
+                            if(i == 0)
+                            {
+                                fName = fullname[i];
+                            }
+                            else
+                            {
+                                lName += fullname[i];
+                            }
+                        }
+                        // Hier komt logica : data naar object
+                        inputHolder = new InputHolder()
+                        {
+                            Badge = Int32.Parse(para[2]),
+                            PNumber = para[3],
+                            ContractId = para[4],
+                            voornaam = fName,
+                            naam = lName,
+                            VoertuigNaam = para[6],
+                            nummerplaat = para[7],
+                            Tarief = decimal.Parse(para[8]),
+                            BeginDatum = Int32.Parse(para[9]) // <-- geen datetime, later omzetten
+                            //EindDatum = para[10], // <-- veld kan leeg zijn?
+                            //Waarborg = para[11],
+                            
+                        };
+                        for (int i = 0; i < para.Length; i++)
+                        {
                             System.Diagnostics.Debug.WriteLine(para[i]);
                         }
                         System.Diagnostics.Debug.WriteLine(" ");
