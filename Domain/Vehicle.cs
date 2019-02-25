@@ -13,6 +13,6 @@ namespace kdgparking.BL.Domain
         [Key]
         public int VoertuidId { get; set; }
         public string VehicleName { get; set; }
-        public int Numberplate { get; set; }
+        public string Numberplate { get; set; }
     }
 }

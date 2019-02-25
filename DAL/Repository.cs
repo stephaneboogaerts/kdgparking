@@ -26,7 +26,7 @@ namespace kdgparking.DAL
             return holder;
         }
 
-        public Holder ReadHolder(string holderId)
+        public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Find(holderId);
             return holder;
@@ -70,7 +70,7 @@ namespace kdgparking.DAL
 
         public Vehicle ReadVehicle(string numberplate)
         {
-            Vehicle vehicle = ctx.Vehicles.Find(numberplate);
+            Vehicle vehicle = ctx.Vehicles.FirstOrDefault(v => v.Numberplate == numberplate);
             return vehicle;
         }
     }
