@@ -1,4 +1,5 @@
-﻿
+﻿@model IList<kdgparking.BL.Domain.InputHolder>
+
 @{
     ViewBag.Title = "File Uploaden";
 }
@@ -23,5 +24,63 @@
         <br><br>
         @ViewBag.Message
     }
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().PNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Badge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().BeginDatum)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().naam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ContractId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().VoertuigNaam)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().nummerplaat)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Badge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginDatum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.naam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoertuigNaam)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nummerplaat)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.PNumber })
+                @* TODO: checkbox voor commit *@
+            </td>
+        </tr>
+        }
+    </table>
 </body>
 </html>

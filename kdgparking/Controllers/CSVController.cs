@@ -21,18 +21,22 @@ namespace kdgparking.Controllers
         // GET: CSV
         public ActionResult Index()
         {
-            return View();
+            //Holder holder = mgr.AddHolder("H0001", "someperson");
+            List<InputHolder> inputHolderList = new List<InputHolder>();
+            return View(inputHolderList);
         }
 
         [HttpPost]
         public ActionResult Index(HttpPostedFileBase file)
         {
+            List<InputHolder> inputHolderList = new List<InputHolder>();
             // TODO : Add security restrictions
             if (file != null && file.ContentLength > 0)
                 try
                 {
                     // Send file to BL for processing
-                    mgr.ProcessFile(file);
+                    // Deze List doorsturen naar view voor overzicht, bij 'ok' commit naar DB
+                    inputHolderList = mgr.ProcessFile(file);
                 }
                 catch (Exception ex)
                 {
@@ -42,7 +46,7 @@ namespace kdgparking.Controllers
             {
                 ViewBag.Message = "You have not specified a file.";
             }
-            return View();
+            return View(inputHolderList);
         }
     }
 }
