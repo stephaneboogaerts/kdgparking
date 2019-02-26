@@ -39,6 +39,7 @@ C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.BL.dll
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.BL.pdb
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EntityFramework.dll
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EPPlus.Core.dll
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.BL.Domain.dll
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.DAL.dll
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.DAL.pdb
@@ -47,6 +48,7 @@ C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.BL.Domain.pdb
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\kdgparking.BL.Domain.dll.config
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EntityFramework.xml
 C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Nathan\Desktop\kdgparking\BL\bin\Debug\EPPlus.Core.xml
 C:\Users\Nathan\Desktop\kdgparking\BL\obj\Debug\BL.csprojAssemblyReference.cache
 C:\Users\Nathan\Desktop\kdgparking\BL\obj\Debug\BL.csproj.CoreCompileInputs.cache
 C:\Users\Nathan\Desktop\kdgparking\BL\obj\Debug\BL.csproj.CopyComplete

@@ -35,6 +35,16 @@ namespace kdgparking.BL.Domain
         [DisplayName("Nummerplaat")]
         public string nummerplaat { get; set; }
 
+        // Toegevoegd op 24 feb 2019
+        public int Badge { get; set; }
+        public string PNumber { get; set; } // <-- string voor excel
+        public string ContractId { get; set; }
+        public string VoertuigNaam { get; set; }
+        public decimal Tarief { get; set; }
+        public int BeginDatum { get; set; } // <-- excel geeft geen datetime mee 
+        public int EindDatum { get; set; }
+        public decimal Waarborg { get; set; }
+
         public InputHolder()
         {
 

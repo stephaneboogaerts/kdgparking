@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 using kdgparking.BL.Domain;
 
 namespace kdgparking.BL
@@ -22,6 +22,10 @@ namespace kdgparking.BL
         //Vehicle
         Vehicle GetVehicle(string numberplate);
 
+        //File
+        void ProcessFile(HttpPostedFileBase file); // <-- zal later nog iets teruggeven aan controller
+        //void ProcessFileData(string fileData);
+        
         //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
     }
 }
