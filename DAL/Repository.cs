@@ -17,16 +17,15 @@ namespace kdgparking.DAL
             ctx = new OurDbContext();
             ctx.Database.Initialize(true);
         }
-        
+
         public Holder CreateHolder(Holder holder)
         {
             ctx.Holders.Add(holder);
             ctx.SaveChanges();
-
             return holder;
         }
 
-        public Holder ReadHolder(string holderId)
+        public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Find(holderId);
             return holder;
@@ -70,7 +69,7 @@ namespace kdgparking.DAL
 
         public Vehicle ReadVehicle(string numberplate)
         {
-            Vehicle vehicle = ctx.Vehicles.Find(numberplate);
+            Vehicle vehicle = ctx.Vehicles.FirstOrDefault(v => v.Numberplate == numberplate);
             return vehicle;
         }
     }

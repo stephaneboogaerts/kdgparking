@@ -14,10 +14,11 @@ namespace kdgparking.BL
     {
         // Holder
         IEnumerable<Holder> GetHolders();
-        Holder GetHolder(string id);
-        Holder AddHolder(string id, string name, string firstName, int phone, string email);
+        Holder GetHolder(int id);
+        Holder AddHolder(string name, string firstName, string phone, string email);
+        void AddNewHolder(InputHolder inputHolder); //Omzetting Input naar Domein objecten
         //Contract
-        Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
+        Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
         //Vehicle
         Vehicle GetVehicle(string numberplate);
 
