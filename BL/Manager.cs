@@ -23,7 +23,7 @@ namespace kdgparking.BL
 
         public Holder AddHolder(string name, string firstName, string phone, string email)
         {
-            Holder h = new Holder
+            Holder h = new Holder()
             {
                 Name = name,
                 FirstName = firstName, // <-- te verplaatsen naar overload functie (als organisatie geen aparte klasse wordt)

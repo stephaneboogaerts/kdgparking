@@ -17,19 +17,21 @@ namespace testParkingWeb.Controllers
         [HttpPost]
         public ActionResult HolderToevoegen(InputHolder nieuweHolder)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View();
+                mng.AddNewHolder(nieuweHolder);
             }
-            else
-            {
-                mng.createNewHolder(nieuweHolder);
-                return new HttpStatusCodeResult(200);
-            }
+            return View();
         }
 
         public ActionResult HolderToevoegen()
         {
+            return View();
+        }
+
+        public ActionResult HolderLijst()
+        {
+            ViewData.Model = mng.GetHolders();
             return View();
         }
     }

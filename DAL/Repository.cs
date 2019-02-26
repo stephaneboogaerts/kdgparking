@@ -17,12 +17,11 @@ namespace kdgparking.DAL
             ctx = new OurDbContext();
             ctx.Database.Initialize(true);
         }
-        
+
         public Holder CreateHolder(Holder holder)
         {
             ctx.Holders.Add(holder);
             ctx.SaveChanges();
-
             return holder;
         }
 
