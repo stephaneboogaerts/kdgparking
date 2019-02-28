@@ -21,8 +21,8 @@ namespace kdgparking.BL.Domain
         [RegularExpression(@"^\w+$")] // <-- nog te testen
         [StringLength(40, ErrorMessage = "Name must be less than 40 characters")]
         public string FirstName { get; set; }
-        public int Phone { get; set; }
-        public int GSM { get; set; }
+        public string Phone { get; set; } // <-- voorlopig string : '/' tekens in excel
+        public string GSM { get; set; } // <-- voorlopig string : '/' tekens in excel
         public string Email { get; set; }
 
         // Badge geschiedenis, of is badge uniek per holder?

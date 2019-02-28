@@ -37,6 +37,12 @@ namespace kdgparking.BL.Domain
         public int BeginDatum { get; set; } // <-- excel geeft geen datetime mee 
         public int EindDatum { get; set; }
         public decimal Waarborg { get; set; }
+        public decimal WaarborgBadge { get; set; }
+        public string Straat { get; set; }
+        public int Post { get; set; }
+        public string Stad { get; set; }
+        public string Tel { get; set; }
+        public string GSM { get; set; }
 
         public InputHolder()
         {

@@ -33,7 +33,7 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
-        public Holder AddHolder(string id, string name, string firstName, int phone, string email)
+        public Holder AddHolder(string id, string name, string firstName, string phone, string email)
         {
             Holder h = new Holder()
             {
@@ -94,7 +94,7 @@ namespace kdgparking.BL
             if (!valid)
                 throw new ValidationException("Holder not valid!");
         }
-        
+
         public List<InputHolder> ProcessFile(HttpPostedFileBase file)
         {
             try
@@ -105,15 +105,34 @@ namespace kdgparking.BL
                     StringBuilder sb = new StringBuilder();
                     ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
                     int rowCount = worksheet.Dimension.Rows;
-                    int ColCount = worksheet.Dimension.Columns;
+                    int ColCount = worksheet.Dimension.Columns; //21;
                     for (int row = 5; row <= rowCount; row++)
                     {
                         for (int col = 1; col <= ColCount; col++)
                         {
                             // Kijkt of column een waarde bevat alvorens het toe te voegen
-                            if((worksheet.Cells[row, col].Value) != null)
+                            if ((worksheet.Cells[row, col].Value) != null)
                             {
-                                sb.Append(worksheet.Cells[row, col].Value.ToString() + "\t");
+                                var val = worksheet.Cells[row, col].Value.ToString() + "\t";
+                                sb.Append(val);
+                                //sb.Append(worksheet.Cells[row, col].Value.ToString() + "\t");
+                            }
+                            else if (col == 11) // Wanneer nummerplaat null zou zijn
+                            {
+                                sb.Append("null\t");
+                            }
+                            // Moet hier onderscheid in gemaakt worden?
+                            //else if (col == 8 || col == 9 || col == 10) // Tarieven = 0 wanneer null
+                            //{
+                            //    sb.Append("0" + "\t");
+                            //}
+                            else if (col == 16) // Einddatum = 0 wanneer null
+                            {
+                                sb.Append("0\t");
+                            }
+                            else if (col == 22 || col == 23) // Tel/GSM = "" wanneer null
+                            {
+                                sb.Append("null\t");
                             }
                         }
                         sb.Append(Environment.NewLine);
@@ -125,7 +144,7 @@ namespace kdgparking.BL
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(("Some error occured while importing." + ex.Message));
+                System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
             }
             return new List<InputHolder>();
         }
@@ -147,13 +166,13 @@ namespace kdgparking.BL
                         // Elke column uit een row opsplitsen (\t = tab)
                         string[] para = line.Split('\t');
                         // Lege rows negeren (voorbeeld excel bevat lege rows)
-                        if (para.Length > 3)
+                        if (para.Length >= 18)
                         {
                             // Voor- en achternaam uit fullname halen
                             string[] fullname = para[5].Split(' ');
                             string fName = "";
                             string lName = "";
-                            for (int i = 0; i > fullname.Length; i++)
+                            for (int i = 0; i < fullname.Length; i++)
                             {
                                 if (i == 0)
                                 {
@@ -175,10 +194,17 @@ namespace kdgparking.BL
                                 VoertuigNaam = para[6],
                                 nummerplaat = para[7],
                                 Tarief = decimal.Parse(para[8]),
-                                BeginDatum = Int32.Parse(para[9]) // <-- geen datetime (epoch), later omzetten
-                                //EindDatum = para[10], // <-- veld kan leeg zijn?
-                                //Waarborg = para[11],
-
+                                BeginDatum = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
+                                EindDatum = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
+                                Waarborg = decimal.Parse(para[11]),
+                                WaarborgBadge = decimal.Parse(para[12]),
+                                Straat = para[13],
+                                Post = Int32.Parse(para[14]),
+                                Stad = para[15],
+                                Tel = para[16],
+                                GSM = para[17],
+                                email = para[18],
+                                company = "BuurtParking"
                             };
                             ihList.Add(inputHolder);
 
@@ -195,7 +221,7 @@ namespace kdgparking.BL
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(("Some error occured while importing." + ex.Message));
+                System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
             }
             return new List<InputHolder>();
         }

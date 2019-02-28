@@ -16,7 +16,7 @@ namespace kdgparking.BL
         IEnumerable<Holder> GetHolders();
         Holder GetHolder(string id);
         Holder AddHolder(string id, string name);
-        Holder AddHolder(string id, string name, string firstName, int phone, string email);
+        Holder AddHolder(string id, string name, string firstName, string phone, string email); // <-- int phone veranderd naar string
         //Contract
         Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
         //Vehicle

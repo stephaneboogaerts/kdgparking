@@ -12,7 +12,7 @@ namespace testParkingWeb.Controllers
     public class PersoonController : Controller
     {
         private IManager mng = new Manager();
-        public int tmpPhone = 031112233;
+        public string tmpPhone = "03/1112233";
 
         public ActionResult voegPersoonToe(string naam, string voornaam, DateTime start, DateTime end, string email, string company, string nummerplaat)
         {
