@@ -291,11 +291,12 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\CSV\Index.cshtml" />
-    <Content Include="Views\Persoon\Toevoegen.cshtml" />
     <Content Include="Views\Persoon\Lijst.cshtml" />
     <Content Include="Views\Persoon\Edit.cshtml" />
     <Content Include="Views\Persoon\Details.cshtml" />
     <Content Include="Views\Persoon\Delete.cshtml" />
+    <Content Include="Views\Persoon\Toevoegen.cshtml" />
+    <Content Include="Views\Persoon\ContractEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

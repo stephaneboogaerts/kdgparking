@@ -34,10 +34,10 @@
                 @Html.DisplayNameFor(model => model.First().Badge)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().BeginDatum)
+                @Html.DisplayNameFor(model => model.First().BeginDatumSerial)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().naam)
+                @Html.DisplayNameFor(model => model.First().Name)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.First().ContractId)
@@ -46,7 +46,7 @@
                 @Html.DisplayNameFor(model => model.First().VoertuigNaam)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().nummerplaat)
+                @Html.DisplayNameFor(model => model.First().NumberPlate)
             </th>
             <th></th>
         </tr>
@@ -61,10 +61,10 @@
                 @Html.DisplayFor(modelItem => item.Badge)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.BeginDatum)
+                @Html.DisplayFor(modelItem => item.BeginDatumSerial)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.naam)
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ContractId)
@@ -73,7 +73,7 @@
                 @Html.DisplayFor(modelItem => item.VoertuigNaam)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.nummerplaat)
+                @Html.DisplayFor(modelItem => item.NumberPlate)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.PNumber })

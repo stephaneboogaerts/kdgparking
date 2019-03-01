@@ -1,3 +1,9 @@
 .vs/
 *.[Cc]ache
 */storage.ide-shm
+.vs/
+BL/bin/
+BL/obj/
+Domain/obj/
+kdgparking/bin/
+kdgparking/obj/

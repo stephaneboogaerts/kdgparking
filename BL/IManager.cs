@@ -25,9 +25,7 @@ namespace kdgparking.BL
         Vehicle GetVehicle(string numberplate);
 
         //File
-        List<InputHolder> ProcessFile(HttpPostedFileBase file);
-        void ProcessFileData(string fileData);
-        
+        List<InputHolder> ProcessFile(HttpPostedFileBase file);        
         //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
     }
 }

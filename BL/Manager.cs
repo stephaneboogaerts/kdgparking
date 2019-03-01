@@ -69,8 +69,8 @@ namespace kdgparking.BL
         {
             Holder h = new Holder()
             {
-                Name = newHolder.naam,
-                FirstName = newHolder.voornaam
+                Name = newHolder.Name,
+                FirstName = newHolder.FirstName
             };
             return this.AddHolder(h);
         }
@@ -228,9 +228,9 @@ namespace kdgparking.BL
                                 Waarborg = decimal.Parse(para[11]),
                                 WaarborgBadge = decimal.Parse(para[12]),
                                 Straat = para[13],
-                                Post = Int32.Parse(para[14]),
+                                Post = para[14],
                                 Stad = para[15],
-                                Tel = para[16],
+                                Telefoon = para[16],
                                 GSM = para[17],
                                 Email = para[18],
                                 Company = "BuurtParking"
