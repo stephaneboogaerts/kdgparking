@@ -12,10 +12,6 @@ namespace testParkingWeb.Controllers
     public class PersoonController : Controller
     {
         private IManager mng = new Manager();
-<<<<<<< HEAD
-        public string tmpPhone = "03/1112233";
-=======
->>>>>>> ETC_IdFix
 
         //Meer feedback
         [HttpPost]
@@ -23,17 +19,7 @@ namespace testParkingWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-<<<<<<< HEAD
-                //nieuwePersoon = new Persoon(naam, voornaam, start, end, company, new MailAddress(email), nummerplaat);
-                nieuweHolder = mng.AddHolder(naam, voornaam, tmpPhone, email);
-                Console.WriteLine("Created new Person");
-            } catch
-            {
-                Console.WriteLine("Failed to create new Person");
-                return new HttpStatusCodeResult(500);
-=======
                 mng.AddNewHolder(nieuweHolder);
->>>>>>> ETC_IdFix
             }
             return View();
         }

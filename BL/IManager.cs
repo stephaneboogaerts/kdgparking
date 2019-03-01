@@ -25,7 +25,6 @@ namespace kdgparking.BL
 
         //File
         List<InputHolder> ProcessFile(HttpPostedFileBase file);
-        List<InputHolder> ProcessFile(HttpPostedFileBase file); // <-- zal later nog iets teruggeven aan controller
         //void ProcessFileData(string fileData);
         
         //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);

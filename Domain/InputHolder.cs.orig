@@ -13,12 +13,6 @@ namespace kdgparking.BL.Domain
     {
         [Required(ErrorMessage = "Naam is vereist")]
         [DisplayName("Naam")]
-<<<<<<< HEAD
-        public string Name { get; set; }
-        [Required(ErrorMessage = "Voornaam is vereist")]
-        [DisplayName("Voornaam")]
-        public string FirstName { get; set; }
-=======
         [RegularExpression(@"^\w+$", ErrorMessage ="Naam faalt de Regex")] // <-- nog te testen, ErrorMessage aan te passen
         [StringLength(40, ErrorMessage = "Naam mag niet langer dan 40 karakters zijn")]
         public string naam { get; set; }
@@ -27,15 +21,16 @@ namespace kdgparking.BL.Domain
         [RegularExpression(@"^\w+$", ErrorMessage ="Voornaam faalt de Regex")] // <-- nog te testen
         [StringLength(40, ErrorMessage = "Voornaam mag niet langer dan 40 karakters zijn")]
         public string voornaam { get; set; }
->>>>>>> ETC_IdFix
         [DisplayName("Start Datum")]
         public DateTime StartDate { get; set; }
         [DisplayName("Eind Datum")]
-        public DateTime EndDate { get; set; }
+        public DateTime endDate { get; set; }
         [Required(ErrorMessage = "Company is vereist")]
         [DisplayName("Company")]
-        public string Company { get; set; }
-        public string Email { get; set; }
+        public string company { get; set; }
+        public string email { get; set; }
+        public string nummerplaat { get; set; }
+        public int PersoonNumber { get; set; }
 
         // Toegevoegd op 24 feb 2019: Splitsen naar CSVHolder?
         public int Badge { get; set; }
