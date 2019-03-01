@@ -9,6 +9,7 @@ namespace kdgparking.BL.Domain
 {
     public class Address
     {
+        // Veel op veel relatie met Holder
         [Key]
         public int AddressId { get; set; }
         public string Street { get; set; }

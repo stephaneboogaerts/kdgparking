@@ -13,9 +13,13 @@ namespace kdgparking.BL.Domain
     {
         [Required(ErrorMessage = "Naam is vereist")]
         [DisplayName("Naam")]
+        [RegularExpression(@"^\w+$", ErrorMessage ="Naam faalt de Regex")] // <-- nog te testen, ErrorMessage aan te passen
+        [StringLength(40, ErrorMessage = "Naam mag niet langer dan 40 karakters zijn")]
         public string naam { get; set; }
         [Required(ErrorMessage = "Voornaam is vereist")]
         [DisplayName("Voornaam")]
+        [RegularExpression(@"^\w+$", ErrorMessage ="Voornaam faalt de Regex")] // <-- nog te testen
+        [StringLength(40, ErrorMessage = "Voornaam mag niet langer dan 40 karakters zijn")]
         public string voornaam { get; set; }
         [DisplayName("Start Datum")]
         public DateTime startDate { get; set; }
@@ -28,7 +32,7 @@ namespace kdgparking.BL.Domain
         public string nummerplaat { get; set; }
         public int PersoonNumber { get; set; }
 
-        // Toegevoegd op 24 feb 2019
+        // Toegevoegd op 24 feb 2019: Splitsen naar CSVHolder?
         public int Badge { get; set; }
         public string PNumber { get; set; } // <-- string voor excel
         public string ContractId { get; set; }

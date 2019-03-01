@@ -23,21 +23,20 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
-        public Holder AddHolder(string id, string name)
+        //REFACTORING & DOCUMENTATIE NODIG
+        public Holder AddHolder(string name)
         {
             Holder h = new Holder()
             {
-                HolderNumber = id,
                 Name = name
             };
             return this.AddHolder(h);
         }
 
-        public Holder AddHolder(string id, string name, string firstName, int phone, string email)
+        public Holder AddHolder(string name, string firstName, int phone, string email)
         {
             Holder h = new Holder()
             {
-                HolderNumber = id,
                 Name = name,
                 FirstName = firstName, // <-- te verplaatsen naar overload functie (als organisatie geen aparte klasse wordt)
                 Phone = phone,
@@ -46,7 +45,17 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
-        public Holder GetHolder(string id)
+        public Holder AddNewHolder(InputHolder newHolder)
+        {
+            Holder h = new Holder()
+            {
+                Name = newHolder.naam,
+                FirstName = newHolder.voornaam
+            };
+            return this.AddHolder(h);
+        }
+
+        public Holder GetHolder(int id)
         {
             return repo.ReadHolder(id);
         }
@@ -62,7 +71,7 @@ namespace kdgparking.BL
             return repo.CreateHolder(holder);
         }
 
-        public Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
+        public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
         {
             Holder holder = this.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
