@@ -33,4 +33,3 @@ C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csproj.CoreCompileInp
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csproj.CopyComplete
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\kdgparking.BL.Domain.dll
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\kdgparking.BL.Domain.pdb
-C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csprojAssemblyReference.cache

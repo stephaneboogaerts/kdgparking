@@ -26,7 +26,7 @@ namespace kdgparking.DAL
             return holder;
         }
 
-        public Holder ReadHolder(string holderId)
+        public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Find(holderId);
             return holder;

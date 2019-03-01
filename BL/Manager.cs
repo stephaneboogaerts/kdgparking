@@ -23,21 +23,19 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
-        public Holder AddHolder(string id, string name)
+        public Holder AddHolder(string name)
         {
             Holder h = new Holder()
             {
-                HolderNumber = id,
                 Name = name
             };
             return this.AddHolder(h);
         }
 
-        public Holder AddHolder(string id, string name, string firstName, string phone, string email)
+        public Holder AddHolder(string name, string firstName, string phone, string email)
         {
             Holder h = new Holder()
             {
-                HolderNumber = id,
                 Name = name,
                 FirstName = firstName, // <-- te verplaatsen naar overload functie (als organisatie geen aparte klasse wordt)
                 Phone = phone,
@@ -46,7 +44,7 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
-        public Holder GetHolder(string id)
+        public Holder GetHolder(int id)
         {
             return repo.ReadHolder(id);
         }
@@ -62,7 +60,7 @@ namespace kdgparking.BL
             return repo.CreateHolder(holder);
         }
 
-        public Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
+        public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
         {
             Holder holder = this.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
@@ -189,13 +187,13 @@ namespace kdgparking.BL
                                 Badge = Int32.Parse(para[2]), // <-- nood aan dynamisch uitlezen?
                                 PNumber = para[3], // <-- zit persoon altijd alreeds in het systeem?
                                 ContractId = para[4],
-                                voornaam = fName,
-                                naam = lName,
+                                FirstName = fName,
+                                Name = lName,
                                 VoertuigNaam = para[6],
-                                nummerplaat = para[7],
+                                NumberPlate = para[7],
                                 Tarief = decimal.Parse(para[8]),
-                                BeginDatum = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
-                                EindDatum = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
+                                BeginDatumSerial = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
+                                EindDatumSerial = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
                                 Waarborg = decimal.Parse(para[11]),
                                 WaarborgBadge = decimal.Parse(para[12]),
                                 Straat = para[13],
@@ -203,8 +201,8 @@ namespace kdgparking.BL
                                 Stad = para[15],
                                 Tel = para[16],
                                 GSM = para[17],
-                                email = para[18],
-                                company = "BuurtParking"
+                                Email = para[18],
+                                Company = "BuurtParking"
                             };
                             ihList.Add(inputHolder);
 

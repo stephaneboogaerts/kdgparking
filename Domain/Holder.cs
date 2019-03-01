@@ -7,12 +7,15 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Net.Mail;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace kdgparking.BL.Domain
 {
     public class Holder
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int HolderId { get; set; }
         public string HolderNumber { get; set; }
         [Required]
         [RegularExpression(@"^\w+$")] // <-- nog te testen

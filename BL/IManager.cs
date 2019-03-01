@@ -14,18 +14,15 @@ namespace kdgparking.BL
     {
         // Holder
         IEnumerable<Holder> GetHolders();
-        Holder GetHolder(string id);
-        Holder AddHolder(string id, string name);
-        Holder AddHolder(string id, string name, string firstName, string phone, string email); // <-- int phone veranderd naar string
+        Holder GetHolder(int id);
+        Holder AddHolder(string name);
+        Holder AddHolder(string name, string firstName, string phone, string email);
         //Contract
-        Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
+        Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
         //Vehicle
         Vehicle GetVehicle(string numberplate);
 
         //File
-        List<InputHolder> ProcessFile(HttpPostedFileBase file); // <-- zal later nog iets teruggeven aan controller
-        //void ProcessFileData(string fileData);
-        
-        //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
+        List<InputHolder> ProcessFile(HttpPostedFileBase file);
     }
 }

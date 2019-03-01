@@ -37,7 +37,7 @@ namespace kdgparking.Controllers
                     // Send file to BL for processing
                     // Deze List doorsturen naar view voor overzicht, bij 'ok' commit naar DB
                     inputHolderList = mgr.ProcessFile(file);
-                    int serialdate = inputHolderList[0].BeginDatum;
+                    int serialdate = inputHolderList[0].BeginDatumSerial;
                     //DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(epoch);
                     DateTime date = DateTime.FromOADate(serialdate);
                 }

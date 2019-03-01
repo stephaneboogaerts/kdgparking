@@ -184,6 +184,8 @@ C:\Users\Jay\Source\Repos\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.Core
 C:\Users\Jay\Source\Repos\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CopyComplete
 C:\Users\Jay\Source\Repos\kdgparking\kdgparking\obj\Debug\kdgparking.dll
 C:\Users\Jay\Source\Repos\kdgparking\kdgparking\obj\Debug\kdgparking.pdb
+C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csprojAssemblyReference.cache
+C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CoreCompileInputs.cache
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\kdgparking.dll.config
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\kdgparking.dll
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\kdgparking.pdb
@@ -435,8 +437,6 @@ C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\Microsoft.AspNet.TelemetryCorr
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\kdgparking.DAL.pdb
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\kdgparking.DAL.dll.config
-C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csprojAssemblyReference.cache
-C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CoreCompileInputs.cache
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CopyComplete
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.dll
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.pdb

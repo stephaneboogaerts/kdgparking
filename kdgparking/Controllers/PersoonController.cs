@@ -20,7 +20,7 @@ namespace testParkingWeb.Controllers
             try
             {
                 //nieuwePersoon = new Persoon(naam, voornaam, start, end, company, new MailAddress(email), nummerplaat);
-                nieuweHolder = mng.AddHolder("UniekeString001", naam, voornaam, tmpPhone, email);
+                nieuweHolder = mng.AddHolder(naam, voornaam, tmpPhone, email);
                 Console.WriteLine("Created new Person");
             } catch
             {

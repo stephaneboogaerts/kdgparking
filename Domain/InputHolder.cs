@@ -13,20 +13,18 @@ namespace kdgparking.BL.Domain
     {
         [Required(ErrorMessage = "Naam is vereist")]
         [DisplayName("Naam")]
-        public string naam { get; set; }
+        public string Name { get; set; }
         [Required(ErrorMessage = "Voornaam is vereist")]
         [DisplayName("Voornaam")]
-        public string voornaam { get; set; }
+        public string FirstName { get; set; }
         [DisplayName("Start Datum")]
-        public DateTime startDate { get; set; }
+        public DateTime StartDate { get; set; }
         [DisplayName("Eind Datum")]
-        public DateTime endDate { get; set; }
+        public DateTime EndDate { get; set; }
         [Required(ErrorMessage = "Company is vereist")]
         [DisplayName("Company")]
-        public string company { get; set; }
-        public string email { get; set; }
-        public string nummerplaat { get; set; }
-        public int PersoonNumber { get; set; }
+        public string Company { get; set; }
+        public string Email { get; set; }
 
         // Toegevoegd op 24 feb 2019
         public int Badge { get; set; }
@@ -34,8 +32,8 @@ namespace kdgparking.BL.Domain
         public string ContractId { get; set; }
         public string VoertuigNaam { get; set; }
         public decimal Tarief { get; set; }
-        public int BeginDatum { get; set; } // <-- excel geeft geen datetime mee 
-        public int EindDatum { get; set; }
+        public int BeginDatumSerial { get; set; } // <-- excel geeft geen datetime mee 
+        public int EindDatumSerial { get; set; }
         public decimal Waarborg { get; set; }
         public decimal WaarborgBadge { get; set; }
         public string Straat { get; set; }
@@ -43,6 +41,7 @@ namespace kdgparking.BL.Domain
         public string Stad { get; set; }
         public string Tel { get; set; }
         public string GSM { get; set; }
+        public string NumberPlate { get; set; }
 
         public InputHolder()
         {
