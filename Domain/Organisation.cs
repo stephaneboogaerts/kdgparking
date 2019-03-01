@@ -9,6 +9,7 @@ namespace kdgparking.BL.Domain
 {
     public class Organisation
     {
+        //Company?
         [Key]
         public int OrganisationId { get; set; }
         public string OrganisationName { get; set; }

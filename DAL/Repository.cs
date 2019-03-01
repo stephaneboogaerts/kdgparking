@@ -22,7 +22,6 @@ namespace kdgparking.DAL
         {
             ctx.Holders.Add(holder);
             ctx.SaveChanges();
-
             return holder;
         }
 

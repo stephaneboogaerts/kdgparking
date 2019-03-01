@@ -21,8 +21,8 @@ namespace kdgparking.BL.Domain
         [Required]
         public string Name { get; set; }
         public string FirstName { get; set; }
-        public int Phone { get; set; }
-        public int GSM { get; set; }
+        public string Phone { get; set; } // <-- voorlopig string : '/' tekens in excel
+        public string GSM { get; set; } // <-- voorlopig string : '/' tekens in excel
         public string Email { get; set; }
 
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant

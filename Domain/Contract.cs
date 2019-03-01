@@ -16,9 +16,10 @@ namespace kdgparking.BL.Domain
         public DateTime EndDate { get; set; }
         public decimal Warranty { get; set; }
         public decimal WarrantyBadge { get; set; }
+        public bool Actief { get; set; } //Computed: 1 indien StartDate < CurrentDate < EndDate, anders 0
 
         public Holder Holder { get; set; }
-        //1 voertuig per contract?
+        //1 voertuig per contract? -> Onwaarschijnlijk, badge kan doorgegeven worden. LPR herkent enkel de nummerplaat, geen invloed op de toegang
         public Vehicle Vehicle { get; set; }
     }
 }

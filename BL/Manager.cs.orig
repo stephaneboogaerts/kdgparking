@@ -23,7 +23,10 @@ namespace kdgparking.BL
             repo = new kdgparking.DAL.Repository();
         }
 
+<<<<<<< HEAD
+=======
         //REFACTORING & DOCUMENTATIE NODIG
+>>>>>>> ETC_IdFix
         public Holder AddHolder(string name)
         {
             Holder h = new Holder()
@@ -33,7 +36,11 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
+<<<<<<< HEAD
         public Holder AddHolder(string name, string firstName, string phone, string email)
+=======
+        public Holder AddHolder(string name, string firstName, int phone, string email)
+>>>>>>> ETC_IdFix
         {
             Holder h = new Holder()
             {
@@ -45,6 +52,8 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
+<<<<<<< HEAD
+=======
         public Holder AddNewHolder(InputHolder newHolder)
         {
             Holder h = new Holder()
@@ -55,6 +64,7 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
+>>>>>>> ETC_IdFix
         public Holder GetHolder(int id)
         {
             return repo.ReadHolder(id);
