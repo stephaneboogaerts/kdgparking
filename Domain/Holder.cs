@@ -17,10 +17,14 @@ namespace kdgparking.BL.Domain
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        [DisplayName("Persoon Nummer")]
         public string HolderNumber { get; set; }
         [Required]
+        [DisplayName("Achternaam")]
         public string Name { get; set; }
+        [DisplayName("Voornaam")]
         public string FirstName { get; set; }
+        [DisplayName("Telefoon")]
         public string Phone { get; set; }
         public string GSM { get; set; }
         public string Email { get; set; }

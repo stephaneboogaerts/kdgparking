@@ -21,9 +21,29 @@ namespace kdgparking.BL
         public Manager()
         {
             repo = new kdgparking.DAL.Repository();
+            this.SeedTestData();
+        }
+
+        private void SeedTestData()
+        {
+            Holder testDummy = new Holder()
+            {
+                Name = "McTesterson",
+                FirstName = "Test",
+                Phone = "0123456789",
+                GSM = "9874563210",
+                Email = "mctesterson@testers.tst",
+                HolderNumber = "P0110"
+            };
+            this.AddHolder(testDummy);
         }
 
         //REFACTORING & DOCUMENTATIE NODIG
+        public Holder UpdateHolder(int id, InputHolder updatedHolder)
+        {
+            throw new NotImplementedException();
+        }
+
         public Holder AddHolder(string name)
         {
             Holder h = new Holder()
@@ -148,7 +168,7 @@ namespace kdgparking.BL
                     }
                     // Data in text formaat doorsturen naar functie om text om te zetten naar list van objecten
                     List<InputHolder> inputHolderList = new List<InputHolder>();
-                    //return inputHolderList = ProcessFileData(sb.ToString());
+                    return inputHolderList = ProcessFileData(sb.ToString());
                 }
             }
             catch (Exception ex)
@@ -160,79 +180,79 @@ namespace kdgparking.BL
 
         // We schrijven data naar een tijdelijk model klasse om eerst in de controller de input te valideren
         // Daarna zal de data naar hun respectievelijke klasse worden omgezet en naar de db worden weggeschreven
-        //private List<InputHolder> ProcessFileData(string fileData)
-        //{
-        //    try
-        //    {
-        //        using (StringReader reader = new StringReader(fileData))
-        //        {
-        //            InputHolder inputHolder;
-        //            List<InputHolder> ihList = new List<InputHolder>();
-        //            string line;
-        //            // Elke row uitlezen
-        //            while ((line = reader.ReadLine()) != null)
-        //            {
-        //                // Elke column uit een row opsplitsen (\t = tab)
-        //                string[] para = line.Split('\t');
-        //                // Lege rows negeren (voorbeeld excel bevat lege rows)
-        //                if (para.Length >= 18)
-        //                {
-        //                    // Voor- en achternaam uit fullname halen
-        //                    string[] fullname = para[5].Split(' ');
-        //                    string fName = "";
-        //                    string lName = "";
-        //                    for (int i = 0; i < fullname.Length; i++)
-        //                    {
-        //                        if (i == 0)
-        //                        {
-        //                            fName = fullname[i];
-        //                        }
-        //                        else
-        //                        {
-        //                            lName += fullname[i];
-        //                        }
-        //                    }
-        //                    // Hier komt logica : data naar object
-        //                    inputHolder = new InputHolder()
-        //                    {
-        //                        Badge = Int32.Parse(para[2]), // <-- nood aan dynamisch uitlezen?
-        //                        PNumber = para[3], // <-- zit persoon altijd alreeds in het systeem?
-        //                        ContractId = para[4],
-        //                        FirstName = fName,
-        //                        Name = lName,
-        //                        VoertuigNaam = para[6],
-        //                        NumberPlate = para[7],
-        //                        Tarief = decimal.Parse(para[8]),
-        //                        BeginDatumSerial = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
-        //                        EindDatumSerial = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
-        //                        Waarborg = decimal.Parse(para[11]),
-        //                        WaarborgBadge = decimal.Parse(para[12]),
-        //                        Straat = para[13],
-        //                        Post = Int32.Parse(para[14]),
-        //                        Stad = para[15],
-        //                        Tel = para[16],
-        //                        GSM = para[17],
-        //                        Email = para[18],
-        //                        Company = "BuurtParking"
-        //                    };
-        //                    ihList.Add(inputHolder);
+        private List<InputHolder> ProcessFileData(string fileData)
+        {
+            try
+            {
+                using (StringReader reader = new StringReader(fileData))
+                {
+                    InputHolder inputHolder;
+                    List<InputHolder> ihList = new List<InputHolder>();
+                    string line;
+                    // Elke row uitlezen
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        // Elke column uit een row opsplitsen (\t = tab)
+                        string[] para = line.Split('\t');
+                        // Lege rows negeren (voorbeeld excel bevat lege rows)
+                        if (para.Length >= 18)
+                        {
+                            // Voor- en achternaam uit fullname halen
+                            string[] fullname = para[5].Split(' ');
+                            string fName = "";
+                            string lName = "";
+                            for (int i = 0; i < fullname.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    fName = fullname[i];
+                                }
+                                else
+                                {
+                                    lName += fullname[i];
+                                }
+                            }
+                            // Hier komt logica : data naar object
+                            inputHolder = new InputHolder()
+                            {
+                                Badge = Int32.Parse(para[2]), // <-- nood aan dynamisch uitlezen?
+                                PNumber = para[3], // <-- zit persoon altijd alreeds in het systeem?
+                                ContractId = para[4],
+                                FirstName = fName,
+                                Name = lName,
+                                VoertuigNaam = para[6],
+                                NumberPlate = para[7],
+                                Tarief = decimal.Parse(para[8]),
+                                BeginDatumSerial = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
+                                EindDatumSerial = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
+                                Waarborg = decimal.Parse(para[11]),
+                                WaarborgBadge = decimal.Parse(para[12]),
+                                Straat = para[13],
+                                Post = Int32.Parse(para[14]),
+                                Stad = para[15],
+                                Tel = para[16],
+                                GSM = para[17],
+                                Email = para[18],
+                                Company = "BuurtParking"
+                            };
+                            ihList.Add(inputHolder);
 
-        //                    // ** Output voor excel **
-        //                    //for (int i = 0; i < para.Length; i++)
-        //                    //{
-        //                    //    System.Diagnostics.Debug.WriteLine(para[i]);
-        //                    //}
-        //                    //System.Diagnostics.Debug.WriteLine(" ");
-        //                }
-        //            }
-        //            return ihList;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
-        //    }
-        //    return new List<InputHolder>();
-        //}
+                            // ** Output voor excel **
+                            //for (int i = 0; i < para.Length; i++)
+                            //{
+                            //    System.Diagnostics.Debug.WriteLine(para[i]);
+                            //}
+                            //System.Diagnostics.Debug.WriteLine(" ");
+                        }
+                    }
+                    return ihList;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
+            }
+            return new List<InputHolder>();
+        }
     }
 }

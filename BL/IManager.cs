@@ -13,6 +13,7 @@ namespace kdgparking.BL
     public interface IManager
     {
         // Holder
+        Holder UpdateHolder(int id, InputHolder updatedHolder);
         IEnumerable<Holder> GetHolders();
         Holder GetHolder(int id);
         Holder AddHolder(string name);
@@ -25,7 +26,7 @@ namespace kdgparking.BL
 
         //File
         List<InputHolder> ProcessFile(HttpPostedFileBase file);
-        //void ProcessFileData(string fileData);
+        void ProcessFileData(string fileData);
         
         //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
     }
