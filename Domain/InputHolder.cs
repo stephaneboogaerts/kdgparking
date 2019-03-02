@@ -39,8 +39,8 @@ namespace kdgparking.BL.Domain
         public string ContractId { get; set; }
         public string VoertuigNaam { get; set; }
         public decimal Tarief { get; set; }
-        public int BeginDatumSerial { get; set; } // <-- excel geeft geen datetime mee 
-        public int EindDatumSerial { get; set; }
+        //public int BeginDatumSerial { get; set; } // <-- excel geeft geen datetime mee 
+        //public int EindDatumSerial { get; set; }
         public decimal Waarborg { get; set; }
         public decimal WaarborgBadge { get; set; }
         public string Straat { get; set; }

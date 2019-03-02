@@ -29,6 +29,12 @@ namespace kdgparking.BL.Domain
         public string GSM { get; set; }
         public string Email { get; set; }
 
+        // Unieke identifiers
+        [StringLength(50, ErrorMessage = "The SamAccountName value cannot exceed 50 characters. ")]
+        public string SamAccountName { get; set; }
+        [StringLength(20, ErrorMessage = "The MifareSerial value cannot exceed 20 characters. ")]
+        public string MifareSerial { get; set; }
+
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
         public Badge Badge { get; set; }
         public Address Address { get; set; }

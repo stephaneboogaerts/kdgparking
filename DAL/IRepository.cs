@@ -12,6 +12,7 @@ namespace kdgparking.DAL
     {
         Holder CreateHolder(Holder persoon);
         Holder ReadHolder(int holderId);
+        Holder ReadHolder(string pNumber);
         IEnumerable<Holder> ReadHolders();
         IEnumerable<Holder> ReadHoldersWithContractsAndVehicles();
 

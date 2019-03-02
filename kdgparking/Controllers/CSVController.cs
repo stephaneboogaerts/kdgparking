@@ -21,7 +21,7 @@ namespace kdgparking.Controllers
         // GET: CSV
         public ActionResult Index()
         {
-            //Holder holder = mgr.AddHolder("H0001", "someperson");
+            //Holder holder = mgr.AddHolder("someperson");
             List<InputHolder> inputHolderList = new List<InputHolder>();
             return View(inputHolderList);
         }
@@ -34,22 +34,31 @@ namespace kdgparking.Controllers
             if (file != null && file.ContentLength > 0)
                 try
                 {
-                    // Send file to BL for processing
+                    // Send file to BL for processing and validation
                     // Deze List doorsturen naar view voor overzicht, bij 'ok' commit naar DB
                     inputHolderList = mgr.ProcessFile(file);
-                    int serialdate = inputHolderList[0].BeginDatumSerial;
-                    //DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(epoch);
-                    DateTime date = DateTime.FromOADate(serialdate);
+                    TempData["myModel"] = inputHolderList;
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                    ViewBag.Message = "ERROR: " + ex.Message.ToString();
                 }
             else
             {
                 ViewBag.Message = "You have not specified a file.";
             }
             return View(inputHolderList);
+        }
+
+        //[HttpPost]
+        public ActionResult Commit()
+        {
+            // InputHolder data van excel
+            List<InputHolder> model = TempData["myModel"] as List<InputHolder>;
+            // Elke InputHolder van excel omzetten naar respectievelijke klasse
+            mgr.ProcessInputholderList(model);
+            
+            return View();
         }
     }
 }

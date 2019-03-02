@@ -80,6 +80,11 @@ namespace kdgparking.BL
             return repo.ReadHolder(id);
         }
 
+        public Holder GetHolder(string pNumber)
+        {
+            return repo.ReadHolder(pNumber);
+        }
+
         public IEnumerable<Holder> GetHolders()
         {
             return repo.ReadHolders();
@@ -91,10 +96,41 @@ namespace kdgparking.BL
             return repo.CreateHolder(holder);
         }
 
+        public List<Holder> ProcessInputholderList(List<InputHolder> inputHolderList)
+        {
+            List<Holder> holderList = new List<Holder>();
+            foreach (InputHolder inputHolder in inputHolderList)
+            {
+                // Kijken of een Holder alreeds bestaat in de DB
+                Holder holder = GetHolder(inputHolder.PNumber);
+                // Wanneer Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
+                if (holder == null)
+                {
+                    holder = new Holder()
+                    {
+                        Name = inputHolder.Name,
+                        FirstName = inputHolder.FirstName,
+                        HolderNumber = inputHolder.PNumber,
+                        Email = inputHolder.Email,
+                        Phone = inputHolder.Telefoon,
+                        GSM = inputHolder.GSM
+                    };
+                    holder = this.AddHolder(holder);
+                }
+                holderList.Add(holder);
+
+                // TODO : create contract, address, etc..
+            }
+
+            return holderList;
+        }
+
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
         {
             Holder holder = this.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
+            List<Vehicle> vehicles = new List<Vehicle>();
+            vehicles.Add(vehicle);
 
             Contract contract = new Contract
             {
@@ -104,7 +140,7 @@ namespace kdgparking.BL
                 Tarif = tarif,
                 Warranty = warranty,
                 WarrantyBadge = warranty,
-                Vehicle = vehicle
+                Vehicles = vehicles
             };
 
             return contract;
@@ -122,6 +158,15 @@ namespace kdgparking.BL
 
             if (!valid)
                 throw new ValidationException("Holder not valid!");
+        }
+
+        private void Validate(InputHolder inputHolder)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(inputHolder, new ValidationContext(inputHolder), errors, validateAllProperties: true);
+
+            if (!valid)
+                throw new ValidationException("InputHolder " + inputHolder.PNumber + " not valid!");
         }
 
         public List<InputHolder> ProcessFile(HttpPostedFileBase file)
@@ -215,16 +260,16 @@ namespace kdgparking.BL
                             // Hier komt logica : data naar object
                             inputHolder = new InputHolder()
                             {
-                                Badge = Int32.Parse(para[2]), // <-- nood aan dynamisch uitlezen?
-                                PNumber = para[3], // <-- zit persoon altijd alreeds in het systeem?
+                                Badge = Int32.Parse(para[2]),
+                                PNumber = para[3],
                                 ContractId = para[4],
                                 FirstName = fName,
                                 Name = lName,
                                 VoertuigNaam = para[6],
                                 NumberPlate = para[7],
                                 Tarief = decimal.Parse(para[8]),
-                                BeginDatumSerial = Int32.Parse(para[9]), // <-- geen datetime (epoch), later omzetten
-                                EindDatumSerial = Int32.Parse(para[10]), // <-- veld kan leeg zijn?
+                                StartDate = DateTime.FromOADate(Int32.Parse(para[9])), // <-- Serialdate(Excel) wordt omgezet naar DateTime.
+                                EndDate = DateTime.FromOADate(Int32.Parse(para[10])), // <-- veld kan leeg zijn?
                                 Waarborg = decimal.Parse(para[11]),
                                 WaarborgBadge = decimal.Parse(para[12]),
                                 Straat = para[13],
@@ -235,14 +280,10 @@ namespace kdgparking.BL
                                 Email = para[18],
                                 Company = "BuurtParking"
                             };
+                            // Validatie excel input voor toe te voegen aan list
+                            //  TODO : Laten weten aan user wanneer een object invalid is
+                            this.Validate(inputHolder);
                             ihList.Add(inputHolder);
-
-                            // ** Output voor excel **
-                            //for (int i = 0; i < para.Length; i++)
-                            //{
-                            //    System.Diagnostics.Debug.WriteLine(para[i]);
-                            //}
-                            //System.Diagnostics.Debug.WriteLine(" ");
                         }
                     }
                     return ihList;

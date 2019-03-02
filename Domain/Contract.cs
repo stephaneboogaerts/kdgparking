@@ -20,6 +20,7 @@ namespace kdgparking.BL.Domain
 
         public Holder Holder { get; set; }
         //1 voertuig per contract? -> Onwaarschijnlijk, badge kan doorgegeven worden. LPR herkent enkel de nummerplaat, geen invloed op de toegang
-        public Vehicle Vehicle { get; set; }
+        // update: gewijzigd naar List
+        public List<Vehicle> Vehicles { get; set; }
     }
 }

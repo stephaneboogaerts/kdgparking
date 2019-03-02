@@ -22,12 +22,25 @@ namespace kdgparking.DAL
         {
             ctx.Holders.Add(holder);
             ctx.SaveChanges();
+
+            // SamAccountName en MifareSerial unieke id toewijzen adhv Id, toegewezen door DB, en prefix.
+            holder.SamAccountName = "SAM" + holder.Id;
+            holder.MifareSerial = "MiS" + holder.Id;
+            ctx.SaveChanges();            
+
             return holder;
         }
 
         public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Find(holderId);
+            return holder;
+        }
+
+        // Zoekt in db op PNumber (enkel Holders toegevoegd adhv excel hebben deze value)
+        public Holder ReadHolder(string pNumber)
+        {
+            Holder holder = ctx.Holders.FirstOrDefault(x => x.HolderNumber == pNumber);
             return holder;
         }
 
