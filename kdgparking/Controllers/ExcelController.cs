@@ -14,7 +14,7 @@ using OfficeOpenXml;
 
 namespace kdgparking.Controllers
 {
-    public class CSVController : Controller
+    public class ExcelController : Controller
     {
         private IManager mgr = new Manager();
 
@@ -56,9 +56,9 @@ namespace kdgparking.Controllers
             // InputHolder data van excel
             List<InputHolder> model = TempData["myModel"] as List<InputHolder>;
             // Elke InputHolder van excel omzetten naar respectievelijke klasse
-            mgr.ProcessInputholderList(model);
+            List<InputHolder> holderList = mgr.ProcessInputholderList(model);
             
-            return View();
+            return View(holderList);
         }
     }
 }

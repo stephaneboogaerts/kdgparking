@@ -13,17 +13,22 @@ namespace kdgparking.BL
     public interface IManager
     {
         // Holder
-        Holder UpdateHolder(int id, InputHolder updatedHolder);
+        Holder ChangeHolder(int id, InputHolder updatedHolder);
         IEnumerable<Holder> GetHolders();
         Holder GetHolder(int id);
         Holder GetHolder(string pNumber);
         Holder AddHolder(string name);
+        Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post);
         Holder AddHolder(string name, string firstName, string phone, string email);
         Holder AddNewHolder(InputHolder holder);
-        List<Holder> ProcessInputholderList(List<InputHolder> inputHolderList);
+        List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList);
         //Contract
         Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
+        Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicle, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
+        Contract GetContract(string ContractId);
+        void ChangeContract(Contract contract);
         //Vehicle
+        Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);
 
         //File

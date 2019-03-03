@@ -8,11 +8,11 @@ using kdgparking.BL.Domain;
 namespace kdgparking.DAL.EF
 {
     [DbConfigurationType(typeof(OurDbConfiguration))]
-    internal class OurDbContext : DbContext /* 'public' for testing with project 'DAL-Testing'! */
+    internal class OurDbContext : DbContext
     {
         public OurDbContext() : base("kdgparking")
         {
-            Database.SetInitializer<OurDbContext>(new DropCreateDatabaseAlways<OurDbContext>());
+            Database.SetInitializer<OurDbContext>(new DropCreateDatabaseIfModelChanges<OurDbContext>());
         }
 
         public DbSet<Holder> Holders { get; set; }
@@ -20,6 +20,6 @@ namespace kdgparking.DAL.EF
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Address> Addresses { get; set; }
-        public DbSet<Organisation> Organisations { get; set; }
+        public DbSet<Company> Companies { get; set; }
     }
 }

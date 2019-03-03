@@ -14,8 +14,8 @@ namespace kdgparking.BL.Domain
         [Key]
         public int AddressId { get; set; }
         public string Street { get; set; }
-        public int PostalCode { get; set; }
-        public int City { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
 
     }
 }

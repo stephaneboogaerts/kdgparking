@@ -15,7 +15,7 @@ namespace kdgparking.DAL
         public Repository()
         {
             ctx = new OurDbContext();
-            ctx.Database.Initialize(true);
+            ctx.Database.Initialize(false);
         }
         
         public Holder CreateHolder(Holder holder)
@@ -66,10 +66,16 @@ namespace kdgparking.DAL
             return contract;
         }
 
-        public Contract ReadContract(int contractNr)
+        public Contract ReadContract(string contractId)
         {
-            Contract contract = ctx.Contracts.Find(contractNr);
+            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.ContractId == contractId);
             return contract;
+        }
+
+        public void UpdateContract(Contract contract)
+        {
+            ctx.Entry(contract).State = System.Data.Entity.EntityState.Modified;
+            ctx.SaveChanges();
         }
 
         public Vehicle CreateVehicle(Vehicle vehicle)

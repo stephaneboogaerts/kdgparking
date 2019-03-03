@@ -17,7 +17,8 @@ namespace kdgparking.DAL
         IEnumerable<Holder> ReadHoldersWithContractsAndVehicles();
 
         Contract CreateContract(Contract contract);
-        Contract ReadContract(int contractNr);
+        Contract ReadContract(string contractId);
+        void UpdateContract(Contract contract);
 
         Vehicle CreateVehicle(Vehicle vehicle);
         Vehicle ReadVehicle(string numberplate);

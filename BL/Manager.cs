@@ -21,7 +21,7 @@ namespace kdgparking.BL
         public Manager()
         {
             repo = new kdgparking.DAL.Repository();
-            this.SeedTestData();
+            //this.SeedTestData(); // <-- telkens wanneer Manager wordt geïnitialisseerd
         }
 
         private void SeedTestData()
@@ -39,7 +39,7 @@ namespace kdgparking.BL
         }
 
         //REFACTORING & DOCUMENTATIE NODIG
-        public Holder UpdateHolder(int id, InputHolder updatedHolder)
+        public Holder ChangeHolder(int id, InputHolder updatedHolder)
         {
             throw new NotImplementedException();
         }
@@ -96,33 +96,21 @@ namespace kdgparking.BL
             return repo.CreateHolder(holder);
         }
 
-        public List<Holder> ProcessInputholderList(List<InputHolder> inputHolderList)
+        public Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post)
         {
-            List<Holder> holderList = new List<Holder>();
-            foreach (InputHolder inputHolder in inputHolderList)
+            Holder holder = new Holder()
             {
-                // Kijken of een Holder alreeds bestaat in de DB
-                Holder holder = GetHolder(inputHolder.PNumber);
-                // Wanneer Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
-                if (holder == null)
-                {
-                    holder = new Holder()
-                    {
-                        Name = inputHolder.Name,
-                        FirstName = inputHolder.FirstName,
-                        HolderNumber = inputHolder.PNumber,
-                        Email = inputHolder.Email,
-                        Phone = inputHolder.Telefoon,
-                        GSM = inputHolder.GSM
-                    };
-                    holder = this.AddHolder(holder);
-                }
-                holderList.Add(holder);
-
-                // TODO : create contract, address, etc..
-            }
-
-            return holderList;
+                Name = name,
+                FirstName = firstName,
+                HolderNumber = holderNr,
+                Email = email,
+                Phone = phone,
+                GSM = gsm,
+                City = city,
+                Street = street,
+                PostalCode = post
+            };
+            return this.AddHolder(holder);
         }
 
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
@@ -144,6 +132,52 @@ namespace kdgparking.BL
             };
 
             return contract;
+        }
+
+        public Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end, decimal tarif, 
+            decimal warranty, decimal warrantyBadge)
+        {
+            Contract contract = new Contract()
+            {
+                ContractId = contractId,
+                Holder = holder,
+                Vehicles = vehicles,
+                StartDate = begin,
+                EndDate = end,
+                Tarif = tarif,
+                Warranty = warranty,
+                WarrantyBadge = warrantyBadge
+            };
+            return this.AddContract(contract);
+        }
+
+        private Contract AddContract(Contract contract)
+        {
+            this.Validate(contract);
+            return repo.CreateContract(contract);
+        }
+
+
+        public Contract GetContract(string ContractId)
+        {
+            return repo.ReadContract(ContractId);
+        }
+
+        public void ChangeContract(Contract contract)
+        {
+            this.Validate(contract);
+            repo.UpdateContract(contract);
+        }
+
+        public Vehicle AddVehicle(string vehicleName, string numberPlate)
+        {
+            Vehicle vehicle = new Vehicle()
+            {
+                VehicleName = vehicleName,
+                Numberplate = numberPlate
+            };
+
+            return repo.CreateVehicle(vehicle);
         }
 
         public Vehicle GetVehicle(string numberplate)
@@ -169,6 +203,81 @@ namespace kdgparking.BL
                 throw new ValidationException("InputHolder " + inputHolder.PNumber + " not valid!");
         }
 
+        private void Validate(Contract contract)
+        {
+            List<ValidationResult> errors = new List<ValidationResult>();
+            bool valid = Validator.TryValidateObject(contract, new ValidationContext(contract), errors, validateAllProperties: true);
+
+            if (!valid)
+                throw new ValidationException("Contract not valid!");
+        }
+
+        // Lijst van InputHolders omzetten naar respectievelijke klasse en wegschrijven naar DB
+        //  Methode geeft een Lijst terug van InputHolders voor overzicht gecommitte records
+        public List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList)
+        {
+            List<InputHolder> iHolderList = new List<InputHolder>();
+            Vehicle vehicle;
+            Contract contract;
+            List<Vehicle> vehicles;
+            InputHolder iHolder;
+            foreach (InputHolder inputHolder in inputHolderList)
+            {
+                iHolder = new InputHolder();
+
+                //TODO : Badge extractie
+
+                // Holder extractie
+                // Kijken of een Holder alreeds bestaat in de DB
+                // Wanneer de Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
+                Holder holder = GetHolder(inputHolder.PNumber);
+                if (holder == null)
+                {
+                    holder = AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
+                        inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post);
+                }
+
+                // Vehicle extractie
+                vehicle = this.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
+
+                // Contract extractie
+                contract = this.GetContract(inputHolder.ContractId);
+
+                // Als contract alreeds bestaat wordt vehicle aan Vehicles list toegevoegd
+                if (contract != null)
+                {
+                    vehicles = contract.Vehicles;
+                    vehicles.Add(vehicle);
+                    contract.Vehicles = vehicles;
+                    this.ChangeContract(contract);
+                }
+                // Als contract nog niet bestaat wordt er een nieuwe aangemaakt
+                else
+                {
+                    vehicles = new List<Vehicle>();
+                    vehicles.Add(vehicle);
+                    contract = AddContract(inputHolder.ContractId, holder, vehicles, inputHolder.StartDate, inputHolder.EndDate,
+                        inputHolder.Tarief, inputHolder.Waarborg, inputHolder.WaarborgBadge);
+                }
+
+
+                // Deze values worden teruggegeven aan de Controller voor laatste overzicht van commit
+                iHolder.ContractId = contract.ContractId;
+                iHolder.Name = holder.Name;
+                iHolder.FirstName = holder.FirstName;
+                iHolder.NumberPlate = vehicle.Numberplate;
+                iHolder.StartDate = contract.StartDate;
+                iHolder.EndDate = contract.EndDate;
+                iHolder.Tarief = contract.Tarif;
+                // TODO : iHolder.Company = 
+                
+                iHolderList.Add(iHolder);
+            }
+            return iHolderList;
+        }
+
+        // Er komt een excel file binnen vanuit een view
+        //  Note : Headers worden niet dynamisch uitgelezen
         public List<InputHolder> ProcessFile(HttpPostedFileBase file)
         {
             try
@@ -185,26 +294,27 @@ namespace kdgparking.BL
                         for (int col = 1; col <= ColCount; col++)
                         {
                             // Kijkt of column een waarde bevat alvorens het toe te voegen
+                            // Wanneer value null is wordt er een default value toegewezen
                             if ((worksheet.Cells[row, col].Value) != null)
                             {
                                 var val = worksheet.Cells[row, col].Value.ToString() + "\t";
                                 sb.Append(val);
-                                //sb.Append(worksheet.Cells[row, col].Value.ToString() + "\t");
                             }
-                            else if (col == 11) // Wanneer nummerplaat null zou zijn
+                            else if (col == 11) // Wanneer nummerplaat (col 11) null zou zijn
                             {
                                 sb.Append("null\t");
                             }
-                            // Moet hier onderscheid in gemaakt worden?
-                            //else if (col == 8 || col == 9 || col == 10) // Tarieven = 0 wanneer null
+                            // Note : Exact 1 Tarif decimal moet meegegeven worden 
+                            //  >>> Opvangen of vermelden in documentatie
+                            //else if (col == 8 || col == 9 || col == 10) // Tarieven (col 8, 9 &10)
                             //{
                             //    sb.Append("0" + "\t");
                             //}
-                            else if (col == 16) // Einddatum = 0 wanneer null
+                            else if (col == 16) // Einddatum (col 16) = 0 wanneer null
                             {
                                 sb.Append("0\t");
                             }
-                            else if (col == 22 || col == 23) // Tel/GSM = "" wanneer null
+                            else if (col == 22 || col == 23) // Tel/ GSM (col 22 &23) = "null" wanneer null
                             {
                                 sb.Append("null\t");
                             }
@@ -223,8 +333,8 @@ namespace kdgparking.BL
             return new List<InputHolder>();
         }
 
-        // We schrijven data naar een tijdelijk model klasse om eerst in de controller de input te valideren
-        // Daarna zal de data naar hun respectievelijke klasse worden omgezet en naar de db worden weggeschreven
+        // We schrijven data naar een tijdelijk model klasse (InputHolder) om eerst in de controller de input te valideren
+        // Daarna zal de data naar hun respectievelijke klasse worden omgezet en naar de DB worden weggeschreven
         private List<InputHolder> ProcessFileData(string fileData)
         {
             try
@@ -239,7 +349,7 @@ namespace kdgparking.BL
                     {
                         // Elke column uit een row opsplitsen (\t = tab)
                         string[] para = line.Split('\t');
-                        // Lege rows negeren (voorbeeld excel bevat lege rows)
+                        // Lege rows negeren >= 18 (voorbeeld excel bevat lege rows)
                         if (para.Length >= 18)
                         {
                             // Voor- en achternaam uit fullname halen
@@ -281,7 +391,7 @@ namespace kdgparking.BL
                                 Company = "BuurtParking"
                             };
                             // Validatie excel input voor toe te voegen aan list
-                            //  TODO : Laten weten aan user wanneer een object invalid is
+                            //  TODO : Laten weten aan user wanneer een object invalid is (view)
                             this.Validate(inputHolder);
                             ihList.Add(inputHolder);
                         }

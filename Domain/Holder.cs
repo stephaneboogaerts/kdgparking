@@ -29,6 +29,11 @@ namespace kdgparking.BL.Domain
         public string GSM { get; set; }
         public string Email { get; set; }
 
+        // Address naar hier verhuist : 1 op 1 relatie
+        public string Street { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+
         // Unieke identifiers
         [StringLength(50, ErrorMessage = "The SamAccountName value cannot exceed 50 characters. ")]
         public string SamAccountName { get; set; }
@@ -37,7 +42,7 @@ namespace kdgparking.BL.Domain
 
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
         public Badge Badge { get; set; }
-        public Address Address { get; set; }
         public List<Contract> Contracts { get; set; }
+        //public Address Address { get; set; }
     }
 }

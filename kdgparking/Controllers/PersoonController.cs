@@ -69,7 +69,7 @@ namespace testParkingWeb.Controllers
             {
                 return new HttpStatusCodeResult(404);
             }
-            mng.UpdateHolder(newId, updateHolder);
+            mng.ChangeHolder(newId, updateHolder);
             return new HttpStatusCodeResult(200);
         }
 

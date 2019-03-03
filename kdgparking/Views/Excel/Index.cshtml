@@ -15,7 +15,7 @@
 <body>
     <h2>Basic File Upload</h2>
     @using (Html.BeginForm("Index",
-                            "CSV",
+                            "Excel",
                             FormMethod.Post,
                             new { enctype = "multipart/form-data" }))
     {
@@ -25,11 +25,6 @@
         <br><br>
         @ViewBag.Message
     }
-
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
         <table class="table">
             <tr>
                 <th>
@@ -90,12 +85,11 @@
             }
             <tr>
                 <td>
-                    @* Passes model to be processed en commited to DB *@
+                    @* Passes model to be processed and commited to DB *@
                     @Html.ActionLink("Commit", "Commit")
-                    @Html.ActionLink("Cancel", "Index")
+                    @Html.ActionLink("Cancel", "Index", "Home")
                 </td>
             </tr>
         </table>
-    }
     </body>
 </html>

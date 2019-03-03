@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace kdgparking.BL.Domain
 {
-    public class Organisation
+    public class Company
     {
         //Company?
         [Key]
-        public int OrganisationId { get; set; }
-        public string OrganisationName { get; set; }
+        public int CompanynId { get; set; }
+        public string CompanyName { get; set; }
     }
 }
