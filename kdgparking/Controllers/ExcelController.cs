@@ -18,10 +18,9 @@ namespace kdgparking.Controllers
     {
         private IManager mgr = new Manager();
 
-        // GET: CSV
+        // GET: Excel
         public ActionResult Index()
         {
-            //Holder holder = mgr.AddHolder("someperson");
             List<InputHolder> inputHolderList = new List<InputHolder>();
             return View(inputHolderList);
         }
@@ -41,7 +40,7 @@ namespace kdgparking.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = "ERROR: " + ex.Message.ToString();
+                    ViewBag.Message = "ERROR: " + ex.Message.ToString() + " Upoad wordt onderbroken.";
                 }
             else
             {

@@ -36,13 +36,13 @@ namespace kdgparking.BL.Domain
 
         // Unieke identifiers
         [StringLength(50, ErrorMessage = "The SamAccountName value cannot exceed 50 characters. ")]
-        public string SamAccountName { get; set; }
+        public string SamAccountName { get; set; } // <-- wordt toegewezen in repo bij het aanmaken
         [StringLength(20, ErrorMessage = "The MifareSerial value cannot exceed 20 characters. ")]
-        public string MifareSerial { get; set; }
+        public string MifareSerial { get; set; } // <-- wordt toegewezen in repo bij het aanmaken
 
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
         public Badge Badge { get; set; }
+        public Company Company { get; set; }
         public List<Contract> Contracts { get; set; }
-        //public Address Address { get; set; }
     }
 }

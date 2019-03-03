@@ -9,8 +9,7 @@ namespace kdgparking.BL.Domain
 {
     public class Address
     {
-        // Veel op veel relatie met Holder
-        //  note : Bij wijziging zou address voor meerdere personen wijzigen -> 1 op 1 relatie
+        // Verhuist naar Holder klasse
         [Key]
         public int AddressId { get; set; }
         public string Street { get; set; }

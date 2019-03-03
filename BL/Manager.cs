@@ -92,11 +92,12 @@ namespace kdgparking.BL
 
         private Holder AddHolder(Holder holder)
         {
-            this.Validate(holder);
+            // Validatie gebeurt in InputHolder
             return repo.CreateHolder(holder);
         }
 
-        public Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post)
+        public Holder AddHolder(string name, string firstName, string holderNr, string email,
+            string phone, string gsm, string city, string street, string post, Company company)
         {
             Holder holder = new Holder()
             {
@@ -108,7 +109,8 @@ namespace kdgparking.BL
                 GSM = gsm,
                 City = city,
                 Street = street,
-                PostalCode = post
+                PostalCode = post,
+                Company = company
             };
             return this.AddHolder(holder);
         }
@@ -153,7 +155,7 @@ namespace kdgparking.BL
 
         private Contract AddContract(Contract contract)
         {
-            this.Validate(contract);
+            // Validatie gebeurt in InputHolder
             return repo.CreateContract(contract);
         }
 
@@ -165,7 +167,7 @@ namespace kdgparking.BL
 
         public void ChangeContract(Contract contract)
         {
-            this.Validate(contract);
+            // Validatie gebeurt in InputHolder
             repo.UpdateContract(contract);
         }
 
@@ -185,13 +187,29 @@ namespace kdgparking.BL
             return repo.ReadVehicle(numberplate);
         }
 
-        private void Validate(Holder holder)
+        public Company AddCompany(string companyName)
         {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(holder, new ValidationContext(holder), errors, validateAllProperties: true);
+            Company company = new Company()
+            {
+                CompanyName = companyName
+            };
+            return this.AddCompany(company);
+        }
 
-            if (!valid)
-                throw new ValidationException("Holder not valid!");
+        public Company GetCompany(string companyName)
+        {
+            return repo.ReadCompany(companyName);
+        }
+
+        public List<Company> GetCompanies()
+        {
+            return repo.ReadCompanies();
+        }
+
+        private Company AddCompany(Company company)
+        {
+            // Validatie gebeurt in InputHolder
+            return repo.CreateCompany(company);
         }
 
         private void Validate(InputHolder inputHolder)
@@ -200,16 +218,7 @@ namespace kdgparking.BL
             bool valid = Validator.TryValidateObject(inputHolder, new ValidationContext(inputHolder), errors, validateAllProperties: true);
 
             if (!valid)
-                throw new ValidationException("InputHolder " + inputHolder.PNumber + " not valid!");
-        }
-
-        private void Validate(Contract contract)
-        {
-            List<ValidationResult> errors = new List<ValidationResult>();
-            bool valid = Validator.TryValidateObject(contract, new ValidationContext(contract), errors, validateAllProperties: true);
-
-            if (!valid)
-                throw new ValidationException("Contract not valid!");
+                throw new ValidationException("InputHolder " + inputHolder.Name + " not valid!");
         }
 
         // Lijst van InputHolders omzetten naar respectievelijke klasse en wegschrijven naar DB
@@ -219,13 +228,15 @@ namespace kdgparking.BL
             List<InputHolder> iHolderList = new List<InputHolder>();
             Vehicle vehicle;
             Contract contract;
+            Company company;
             List<Vehicle> vehicles;
             InputHolder iHolder;
             foreach (InputHolder inputHolder in inputHolderList)
             {
                 iHolder = new InputHolder();
 
-                //TODO : Badge extractie
+                // TODO : Badge extractie
+                // --> Badge uniek per holder?
 
                 // Holder extractie
                 // Kijken of een Holder alreeds bestaat in de DB
@@ -233,8 +244,17 @@ namespace kdgparking.BL
                 Holder holder = GetHolder(inputHolder.PNumber);
                 if (holder == null)
                 {
+                    // Holder extractie
+                    // Kijken of een Holder alreeds bestaat in de DB
+                    // Wanneer de Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
+                    company = GetCompany(inputHolder.Company);
+                    if(company == null)
+                    {
+                        company = AddCompany(inputHolder.Company);
+                    }
+
                     holder = AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
-                        inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post);
+                        inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post, company);
                 }
 
                 // Vehicle extractie
@@ -269,7 +289,7 @@ namespace kdgparking.BL
                 iHolder.StartDate = contract.StartDate;
                 iHolder.EndDate = contract.EndDate;
                 iHolder.Tarief = contract.Tarif;
-                // TODO : iHolder.Company = 
+                // TODO : iHolder.Company =
                 
                 iHolderList.Add(iHolder);
             }
@@ -282,13 +302,15 @@ namespace kdgparking.BL
         {
             try
             {
-                // file.InputStream reads HttpPostedFileBase as excel 
+                // HttpPostedFileBase file uit view als excel lezen 
                 using (ExcelPackage package = new ExcelPackage(file.InputStream))
                 {
+                    // Excel file wordt omgezet naar een array van strings
+                    // Elke row wordt een string, values worden opgeslitst adhv een tab (\t)
                     StringBuilder sb = new StringBuilder();
                     ExcelWorksheet worksheet = package.Workbook.Worksheets[1];
                     int rowCount = worksheet.Dimension.Rows;
-                    int ColCount = worksheet.Dimension.Columns; //21;
+                    int ColCount = worksheet.Dimension.Columns;
                     for (int row = 5; row <= rowCount; row++)
                     {
                         for (int col = 1; col <= ColCount; col++)
@@ -321,16 +343,15 @@ namespace kdgparking.BL
                         }
                         sb.Append(Environment.NewLine);
                     }
-                    // Data in text formaat doorsturen naar functie om text om te zetten naar list van objecten
+                    // Data in text formaat doorsturen naar ProcessFileData() om text om te zetten naar list van objecten
                     List<InputHolder> inputHolderList = new List<InputHolder>();
                     return inputHolderList = ProcessFileData(sb.ToString());
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
+                throw new ArgumentException("Some error occured while importing. " + ex.Message);
             }
-            return new List<InputHolder>();
         }
 
         // We schrijven data naar een tijdelijk model klasse (InputHolder) om eerst in de controller de input te valideren
@@ -352,48 +373,56 @@ namespace kdgparking.BL
                         // Lege rows negeren >= 18 (voorbeeld excel bevat lege rows)
                         if (para.Length >= 18)
                         {
-                            // Voor- en achternaam uit fullname halen
-                            string[] fullname = para[5].Split(' ');
-                            string fName = "";
-                            string lName = "";
-                            for (int i = 0; i < fullname.Length; i++)
+                            try
                             {
-                                if (i == 0)
+                                // Voor- en achternaam uit fullname halen
+                                string[] fullname = para[5].Split(' ');
+                                string fName = "";
+                                string lName = "";
+                                for (int i = 0; i < fullname.Length; i++)
                                 {
-                                    fName = fullname[i];
+                                    if (i == 0)
+                                    {
+                                        fName = fullname[i];
+                                    }
+                                    else
+                                    {
+                                        lName += fullname[i];
+                                    }
                                 }
-                                else
+                                // Hier komt logica : data naar object
+                                inputHolder = new InputHolder()
                                 {
-                                    lName += fullname[i];
-                                }
+                                    Badge = Int32.Parse(para[2]),
+                                    PNumber = para[3],
+                                    ContractId = para[4],
+                                    FirstName = fName,
+                                    Name = lName,
+                                    VoertuigNaam = para[6],
+                                    NumberPlate = para[7],
+                                    Tarief = decimal.Parse(para[8]),
+                                    StartDate = DateTime.FromOADate(Int32.Parse(para[9])), // <-- Serialdate(Excel) wordt omgezet naar DateTime.
+                                    EndDate = DateTime.FromOADate(Int32.Parse(para[10])), // <-- veld kan leeg zijn?
+                                    Waarborg = decimal.Parse(para[11]),
+                                    WaarborgBadge = decimal.Parse(para[12]),
+                                    Straat = para[13],
+                                    Post = para[14],
+                                    Stad = para[15],
+                                    Telefoon = para[16],
+                                    GSM = para[17],
+                                    Email = para[18],
+                                    Company = "BuurtParking"
+                                };
+                                // Validatie excel input voor toe te voegen aan list
+                                this.Validate(inputHolder);
+                                ihList.Add(inputHolder);
                             }
-                            // Hier komt logica : data naar object
-                            inputHolder = new InputHolder()
+                            catch (Exception ex)
                             {
-                                Badge = Int32.Parse(para[2]),
-                                PNumber = para[3],
-                                ContractId = para[4],
-                                FirstName = fName,
-                                Name = lName,
-                                VoertuigNaam = para[6],
-                                NumberPlate = para[7],
-                                Tarief = decimal.Parse(para[8]),
-                                StartDate = DateTime.FromOADate(Int32.Parse(para[9])), // <-- Serialdate(Excel) wordt omgezet naar DateTime.
-                                EndDate = DateTime.FromOADate(Int32.Parse(para[10])), // <-- veld kan leeg zijn?
-                                Waarborg = decimal.Parse(para[11]),
-                                WaarborgBadge = decimal.Parse(para[12]),
-                                Straat = para[13],
-                                Post = para[14],
-                                Stad = para[15],
-                                Telefoon = para[16],
-                                GSM = para[17],
-                                Email = para[18],
-                                Company = "BuurtParking"
-                            };
-                            // Validatie excel input voor toe te voegen aan list
-                            //  TODO : Laten weten aan user wanneer een object invalid is (view)
-                            this.Validate(inputHolder);
-                            ihList.Add(inputHolder);
+                                throw new ArgumentException("Some error occured while converting excel data to object. "
+                                    + ex.Message + " Line with invalid data = " + line);
+
+                            }
                         }
                     }
                     return ihList;
@@ -401,9 +430,8 @@ namespace kdgparking.BL
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(("Some error occured while importing. " + ex.Message));
+                throw new ArgumentException("Some error occured while converting excel data to object. " + ex.Message);
             }
-            return new List<InputHolder>();
         }
     }
 }

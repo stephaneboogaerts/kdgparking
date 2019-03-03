@@ -91,5 +91,25 @@ namespace kdgparking.DAL
             Vehicle vehicle = ctx.Vehicles.Find(numberplate);
             return vehicle;
         }
+
+        public Company CreateCompany(Company company)
+        {
+            ctx.Companies.Add(company);
+            ctx.SaveChanges();
+
+            return company;
+        }
+
+        public Company ReadCompany(string companyName)
+        {
+            Company company = ctx.Companies.FirstOrDefault(c => c.CompanyName == companyName);
+            return company;
+        }
+
+        public List<Company> ReadCompanies()
+        {
+            List<Company> companies = ctx.Companies.ToList<Company>();
+            return companies;
+        }
     }
 }

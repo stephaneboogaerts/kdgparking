@@ -18,7 +18,7 @@ namespace kdgparking.BL
         Holder GetHolder(int id);
         Holder GetHolder(string pNumber);
         Holder AddHolder(string name);
-        Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post);
+        Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post, Company company);
         Holder AddHolder(string name, string firstName, string phone, string email);
         Holder AddNewHolder(InputHolder holder);
         List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList);
@@ -30,9 +30,12 @@ namespace kdgparking.BL
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);
+        //Company
+        Company AddCompany(string companyName);
+        Company GetCompany(string companyName);
+        List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box
 
         //File
-        List<InputHolder> ProcessFile(HttpPostedFileBase file);        
-        //Holder AddHolder(string id, string name, string firstName, PhoneAttribute phone, MailAddress email);
+        List<InputHolder> ProcessFile(HttpPostedFileBase file);
     }
 }

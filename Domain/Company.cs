@@ -9,9 +9,8 @@ namespace kdgparking.BL.Domain
 {
     public class Company
     {
-        //Company?
         [Key]
-        public int CompanynId { get; set; }
+        public int CompanyId { get; set; }
         public string CompanyName { get; set; }
     }
 }
