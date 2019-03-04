@@ -1,4 +1,4 @@
-﻿@model kdgparking.BL.Domain.Holder
+﻿@model kdgparking.BL.Domain.InputHolder
 
 @{
     ViewBag.Title = "Details";
@@ -8,17 +8,9 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Holder</h4>
+    <h4>InputHolder</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.HolderNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HolderNumber)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -36,19 +28,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.DisplayNameFor(model => model.StartDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Phone)
+            @Html.DisplayFor(model => model.StartDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.GSM)
+            @Html.DisplayNameFor(model => model.EndDate)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.GSM)
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company)
         </dd>
 
         <dt>
@@ -59,9 +59,10 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Bewerk", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Return", "Index")
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
 </p>

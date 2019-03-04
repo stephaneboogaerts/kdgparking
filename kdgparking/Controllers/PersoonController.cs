@@ -14,6 +14,29 @@ namespace testParkingWeb.Controllers
         private IManager mng = new Manager();
 
         //Meer feedback
+
+        public ActionResult Index()
+        {
+            return RedirectToAction("Lijst");
+        }
+
+        public ActionResult Lijst()
+        {
+            IEnumerable<Holder> holders = mng.GetHolders();
+            List<InputHolder> iHolders = new List<InputHolder>();
+            foreach (Holder h in holders)
+            {
+                iHolders.Add(this.ComposeInputHolder(h));
+            }
+            ViewData.Model = iHolders;
+            return View();
+        }
+
+        public ActionResult Toevoegen()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult Toevoegen(InputHolder nieuweHolder)
         {
@@ -24,92 +47,93 @@ namespace testParkingWeb.Controllers
             return View();
         }
 
-        public ActionResult Index()
-        {
-            return RedirectToAction("Lijst");
-        }
-
-        public ActionResult Toevoegen()
-        {
-            return View();
-        }
-
-        public ActionResult Lijst()
-        {
-            ViewData.Model = mng.GetHolders();
-            return View();
-        }
-
         public ActionResult Edit(int? id)
         {
-            if (id == null)
+            if (this.VerifyId(id))
             {
-                return new HttpStatusCodeResult(404);
-            }
-            int newId = (int) id;
-            ViewData.Model = mng.GetHolder(newId);
-            if (ViewData.Model == null)
-            {
-                return new HttpStatusCodeResult(404);
-            } else
-            {
+                int newId = (int)id;
+                ViewData.Model = this.ComposeInputHolder(mng.GetHolder(newId));
                 return View();
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404);
             }
         }
 
         [HttpPut]
         public ActionResult Edit(int? id, InputHolder updateHolder)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(404);
-            }
-            int newId = (int)id;
-            if (mng.GetHolder(newId) == null)
+            if (!this.VerifyId(id))
             {
                 return new HttpStatusCodeResult(404);
             } else if (!ModelState.IsValid)
             {
                 return new HttpStatusCodeResult(500);
             }
+            int newId = (int)id;
             mng.ChangeHolder(newId, updateHolder);
-            return new HttpStatusCodeResult(200);
+            return View();
         }
 
         public ActionResult Details(int? id)
         {
-            if (id == null)
+            if (this.VerifyId(id))
             {
-                return new HttpStatusCodeResult(404);
-            }
-            int newId = (int)id;
-            ViewData.Model = mng.GetHolder(newId);
-            if (ViewData.Model == null)
-            {
-                return new HttpStatusCodeResult(404);
+                int newId = (int)id;
+                ViewData.Model = this.ComposeInputHolder(mng.GetHolder(newId));
+                return View();
             }
             else
             {
-                return View();
+                return new HttpStatusCodeResult(404);
             }
         }
 
         public ActionResult Delete(int? id)
         {
-            if (id == null)
+            if (this.VerifyId(id))
             {
-                return new HttpStatusCodeResult(404);
-            }
-            int newId = (int)id;
-            ViewData.Model = mng.GetHolder(newId);
-            if (ViewData.Model == null)
-            {
-                return new HttpStatusCodeResult(404);
+                int newId = (int)id;
+                ViewData.Model = this.ComposeInputHolder(mng.GetHolder(newId));
+                return View();
             }
             else
             {
-                return View();
+                return new HttpStatusCodeResult(404);
             }
+        }
+
+        private InputHolder ComposeInputHolder(Holder holder)
+        {
+            Contract holderContract = mng.GetHolderContract(holder.Id);
+            return new InputHolder()
+            {
+                HolderId = holder.Id,
+                Name = holder.Name,
+                FirstName = holder.FirstName,
+                Company = holder.Company.CompanyName,
+                Email = holder.Email,
+                StartDate = holderContract.StartDate,
+                EndDate = holderContract.EndDate,
+                Department = holder.Company.CompanyName.Split('_')[0],
+            };
+        }
+
+        private bool VerifyId(int? id)
+        {
+            if (id == null)
+            {
+                return false;
+            } else
+            {
+                int newId = (int)id;
+                if (mng.GetHolder(newId) == null)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

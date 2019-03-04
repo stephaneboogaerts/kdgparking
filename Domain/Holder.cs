@@ -42,6 +42,8 @@ namespace kdgparking.BL.Domain
 
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
         public Badge Badge { get; set; }
+        [ForeignKey("Company")]
+        public int CompanyId { get; set; }
         public Company Company { get; set; }
         public List<Contract> Contracts { get; set; }
     }

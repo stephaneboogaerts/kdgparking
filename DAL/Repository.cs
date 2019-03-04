@@ -33,21 +33,33 @@ namespace kdgparking.DAL
 
         public Holder ReadHolder(int holderId)
         {
-            Holder holder = ctx.Holders.Find(holderId);
+            Holder holder = ctx.Holders.Include("Company").FirstOrDefault(x => x.Id == holderId);
             return holder;
         }
 
         // Zoekt in db op PNumber (enkel Holders toegevoegd adhv excel hebben deze value)
         public Holder ReadHolder(string pNumber)
         {
-            Holder holder = ctx.Holders.FirstOrDefault(x => x.HolderNumber == pNumber);
+            Holder holder = ctx.Holders.Include("Company").FirstOrDefault(x => x.HolderNumber == pNumber);
             return holder;
+        }
+
+        public void UpdateHolder(Holder holder)
+        {
+            ctx.Entry(holder).State = System.Data.Entity.EntityState.Modified;
+            ctx.SaveChanges();
+        }
+
+        public void DeleteHolder(Holder holder)
+        {
+            ctx.Holders.Remove(holder);
+            ctx.SaveChanges();
         }
 
         public IEnumerable<Holder> ReadHolders()
         {
             // Eager-loading
-            IEnumerable<Holder> holders = ctx.Holders.ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Company").ToList<Holder>();
             return holders;
         }
 
@@ -70,6 +82,24 @@ namespace kdgparking.DAL
         {
             Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.ContractId == contractId);
             return contract;
+        }
+
+        public Contract ReadContract(int Id)
+        {
+            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.Id == Id);
+            return contract;
+        }
+
+        public Contract ReadHolderContract(int holderId)
+        {
+            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.HolderId == holderId);
+            return contract;
+        }
+
+        public void DeleteContract(Contract contract)
+        {
+            ctx.Contracts.Remove(contract);
+            ctx.SaveChanges();
         }
 
         public void UpdateContract(Contract contract)

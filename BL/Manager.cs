@@ -65,22 +65,37 @@ namespace kdgparking.BL
             return this.AddHolder(h);
         }
 
-        public Holder AddNewHolder(InputHolder newHolder)
+        public Holder AddNewHolder(InputHolder inputHolder)
         {
-            Holder h = new Holder()
+            string FullCompanyName = inputHolder.Department + '_' + inputHolder.EmpType.ToString();
+            Company HolderCompany = this.GetCompany(FullCompanyName);
+            if (HolderCompany == null)
             {
-                Name = newHolder.Name,
-                FirstName = newHolder.FirstName,
-
+                HolderCompany = this.AddCompany(new Company() { CompanyName = FullCompanyName });
+            }
+            Holder CreatedHolder = new Holder()
+            {
+                Name = inputHolder.Name,
+                FirstName = inputHolder.FirstName,
+                Email = inputHolder.Email,
+                Contracts = new List<Contract>(),
+                Company = HolderCompany,
+                CompanyId = HolderCompany.CompanyId
             };
 
-            Contract c = new Contract()
+            Contract NewContract = new Contract()
             {
-                StartDate = newHolder.StartDate,
-                EndDate = newHolder.EndDate,
-
+                StartDate = inputHolder.StartDate,
+                EndDate = inputHolder.EndDate,
+                Holder = CreatedHolder
             };
-            return this.AddHolder(h);
+
+            CreatedHolder = this.AddHolder(CreatedHolder);
+            CreatedHolder.Contracts.Add(NewContract);
+            NewContract.HolderId = CreatedHolder.Id;
+            this.AddContract(NewContract);
+            repo.UpdateHolder(CreatedHolder);
+            return CreatedHolder;
         }
 
         public Holder GetHolder(int id)
@@ -123,6 +138,14 @@ namespace kdgparking.BL
             return this.AddHolder(holder);
         }
 
+        public void RemoveHolder(int id)
+        {
+            int ContractId = this.GetHolderContract(id).Id;
+            repo.DeleteHolder(this.GetHolder(id));
+            repo.DeleteContract(this.GetContract(ContractId));
+            return;
+        }
+
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
         {
             Holder holder = this.GetHolder(holderId);
@@ -144,7 +167,7 @@ namespace kdgparking.BL
             return contract;
         }
 
-        public Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end, decimal tarif, 
+        public Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end, decimal tarif,
             decimal warranty, decimal warrantyBadge)
         {
             Contract contract = new Contract()
@@ -167,10 +190,19 @@ namespace kdgparking.BL
             return repo.CreateContract(contract);
         }
 
+        public Contract GetContract(int Id)
+        {
+            return repo.ReadContract(Id);
+        }
 
         public Contract GetContract(string ContractId)
         {
             return repo.ReadContract(ContractId);
+        }
+
+        public Contract GetHolderContract(int HolderId)
+        {
+            return repo.ReadHolderContract(HolderId);
         }
 
         public void ChangeContract(Contract contract)
@@ -256,7 +288,7 @@ namespace kdgparking.BL
                     // Kijken of een Holder alreeds bestaat in de DB
                     // Wanneer de Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
                     company = GetCompany(inputHolder.Company);
-                    if(company == null)
+                    if (company == null)
                     {
                         company = AddCompany(inputHolder.Company);
                     }
@@ -297,8 +329,8 @@ namespace kdgparking.BL
                 iHolder.StartDate = contract.StartDate;
                 iHolder.EndDate = contract.EndDate;
                 iHolder.Tarief = contract.Tarif;
-                // TODO : iHolder.Company =
-                
+                // TODO : iHolder.Department =
+
                 iHolderList.Add(iHolder);
             }
             return iHolderList;
