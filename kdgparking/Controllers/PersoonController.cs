@@ -68,6 +68,9 @@ namespace testParkingWeb.Controllers
             if (mng.GetHolder(newId) == null)
             {
                 return new HttpStatusCodeResult(404);
+            } else if (!ModelState.IsValid)
+            {
+                return new HttpStatusCodeResult(500);
             }
             mng.ChangeHolder(newId, updateHolder);
             return new HttpStatusCodeResult(200);

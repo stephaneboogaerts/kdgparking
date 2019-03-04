@@ -70,7 +70,15 @@ namespace kdgparking.BL
             Holder h = new Holder()
             {
                 Name = newHolder.Name,
-                FirstName = newHolder.FirstName
+                FirstName = newHolder.FirstName,
+
+            };
+
+            Contract c = new Contract()
+            {
+                StartDate = newHolder.StartDate,
+                EndDate = newHolder.EndDate,
+
             };
             return this.AddHolder(h);
         }
