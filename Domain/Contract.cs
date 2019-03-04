@@ -11,6 +11,7 @@ namespace kdgparking.BL.Domain
     {
         [Key]
         [Required]
+        public int id { get; set; }
         public string ContractId { get; set; }
         public decimal Tarif { get; set; }
         public DateTime StartDate { get; set; }

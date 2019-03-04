@@ -14,5 +14,7 @@ namespace kdgparking.BL.Domain
         public int VoertuidId { get; set; }
         public string VehicleName { get; set; }
         public string Numberplate { get; set; }
+
+        public Contract Contract { get; set; }
     }
 }

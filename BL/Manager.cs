@@ -98,6 +98,21 @@ namespace kdgparking.BL
             return repo.ReadHolders();
         }
 
+        public IEnumerable<Holder> GetHolders(string searchString)
+        {
+            return repo.ReadHolders(searchString);
+        }
+
+        public IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles()
+        {
+            return repo.ReadHoldersWithContractsAndVehicles();
+        }
+
+        public IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles(string company)
+        {
+            return repo.ReadHoldersWithContractsAndVehicles(company);
+        }
+
         private Holder AddHolder(Holder holder)
         {
             // Validatie gebeurt in InputHolder
@@ -193,6 +208,11 @@ namespace kdgparking.BL
         public Vehicle GetVehicle(string numberplate)
         {
             return repo.ReadVehicle(numberplate);
+        }
+
+        public IEnumerable<Vehicle> GetVehicles(string numberplate)
+        {
+            return repo.ReadVehicles(numberplate);
         }
 
         public Company AddCompany(string companyName)
