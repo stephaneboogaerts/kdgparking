@@ -15,10 +15,15 @@ namespace kdgparking.DAL
         Holder ReadHolder(string pNumber);
         IEnumerable<Holder> ReadHolders();
         IEnumerable<Holder> ReadHoldersWithContractsAndVehicles();
+        void UpdateHolder(Holder holder);
+        void DeleteHolder(Holder holder);
 
         Contract CreateContract(Contract contract);
         Contract ReadContract(string contractId);
+        Contract ReadContract(int Id);
+        Contract ReadHolderContract(int holderId);
         void UpdateContract(Contract contract);
+        void DeleteContract(Contract contract);
 
         Vehicle CreateVehicle(Vehicle vehicle);
         Vehicle ReadVehicle(string numberplate);

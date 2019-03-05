@@ -22,15 +22,18 @@ namespace kdgparking.BL
         Holder AddHolder(string name, string firstName, string phone, string email);
         Holder AddNewHolder(InputHolder holder);
         List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList);
+        void RemoveHolder(int id);
         //Contract
         Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
         Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicle, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
         Contract GetContract(string ContractId);
+        Contract GetContract(int Id);
+        Contract GetHolderContract(int HolderId);
         void ChangeContract(Contract contract);
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);
-        //Company
+        //Department
         Company AddCompany(string companyName);
         Company GetCompany(string companyName);
         List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box
