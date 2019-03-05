@@ -13,7 +13,7 @@ namespace kdgparking.BL
     public interface IManager
     {
         // Holder
-        Holder ChangeHolder(int id, InputHolder updatedHolder);
+        Holder UpdateHolder(int id, InputHolder updatedHolder);
         IEnumerable<Holder> GetHolders();
         Holder GetHolder(int id);
         Holder GetHolder(string pNumber);

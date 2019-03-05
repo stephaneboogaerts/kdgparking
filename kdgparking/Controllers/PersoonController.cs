@@ -61,8 +61,7 @@ namespace testParkingWeb.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult Edit(int? id, InputHolder updateHolder)
+        public ActionResult EditHolder(int? id, InputHolder updateHolder)
         {
             if (!this.VerifyId(id))
             {
@@ -72,8 +71,8 @@ namespace testParkingWeb.Controllers
                 return new HttpStatusCodeResult(500);
             }
             int newId = (int)id;
-            mng.ChangeHolder(newId, updateHolder);
-            return View();
+            mng.UpdateHolder(newId, updateHolder);
+            return RedirectToAction("Lijst");
         }
 
         public ActionResult Details(int? id)
@@ -116,7 +115,6 @@ namespace testParkingWeb.Controllers
                 Email = holder.Email,
                 StartDate = holderContract.StartDate,
                 EndDate = holderContract.EndDate,
-                Department = holder.Company.CompanyName.Split('_')[0],
             };
         }
 
