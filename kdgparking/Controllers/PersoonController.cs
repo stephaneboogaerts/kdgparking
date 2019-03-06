@@ -75,11 +75,15 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstActive(string searchString)
         {
-            ContractModel contractModel;
+            // Initialisatie ContractViewModel : Bevat List van ContracModels 
+            //  &List van SelectListItems voor bestaande Companies in DB om op te filteren adhv dropdown
             ContractViewModel contractViewModel = new ContractViewModel();
             contractViewModel.contractmodels = new List<ContractModel>();
             contractViewModel.Companies = new List<SelectListItem>();
+            // ContractModel: Holder, Contract, Company & 'Active' veld
+            ContractModel contractModel;
 
+            // Ophalen bestaande companies in DB om op te filteren adhv dropdown
             List<Company> companies = mng.GetCompanies();
             foreach(Company c in companies)
             {
@@ -90,54 +94,33 @@ namespace testParkingWeb.Controllers
             
             if (!String.IsNullOrEmpty(searchString))
             {
+                // filteren op Company
                 holderContracts = mng.GetHoldersWithCompanyContractsAndVehicles(searchString);
-
-                foreach (Holder h in holderContracts)
-                {
-                    // TODO : Check order to see if latest contract
-                    h.Contracts.OrderBy(c => c.ContractId);
-
-                    if (h.Contracts[0].StartDate < DateTime.Now && DateTime.Now < h.Contracts[0].EndDate)
-                    {
-                        contractModel = new ContractModel()
-                        {
-                            ContractId = h.Contracts[0].ContractId,
-                            FirstName = h.FirstName,
-                            Name = h.Name,
-                            Email = h.Email,
-                            Active = 1,
-                            StartDate = h.Contracts[0].StartDate,
-                            EndDate = h.Contracts[0].EndDate,
-                            Company = h.Company.CompanyName
-                        };
-                        contractViewModel.contractmodels.Add(contractModel);
-                    }
-                }
             }
             else
             {
                 holderContracts = mng.GetHoldersWithCompanyContractsAndVehicles();
+            }
 
-                foreach (Holder h in holderContracts)
+            foreach (Holder h in holderContracts)
+            {
+                // TODO : Check order to see if latest contract
+                h.Contracts.OrderBy(c => c.ContractId);
+                // Check if latest contract is active
+                int active = (h.Contracts[0].StartDate < DateTime.Now && DateTime.Now < h.Contracts[0].EndDate) ? 1 : 0;
+
+                contractModel = new ContractModel()
                 {
-                    // TODO : Check order to see if latest contract
-                    h.Contracts.OrderBy(c => c.ContractId);
-                    // Check if latest contract is active
-                    int active = (h.Contracts[0].StartDate < DateTime.Now && DateTime.Now < h.Contracts[0].EndDate) ?  1 : 0;
-
-                    contractModel = new ContractModel()
-                    {
-                        ContractId = h.Contracts[0].ContractId,
-                        FirstName = h.FirstName,
-                        Name = h.Name,
-                        Email = h.Email,
-                        Active = active,
-                        StartDate = h.Contracts[0].StartDate,
-                        EndDate = h.Contracts[0].EndDate,
-                        Company = h.Company.CompanyName
-                    };
-                    contractViewModel.contractmodels.Add(contractModel);
-                }
+                    ContractId = h.Contracts[0].ContractId,
+                    FirstName = h.FirstName,
+                    Name = h.Name,
+                    Email = h.Email,
+                    Active = active,
+                    StartDate = h.Contracts[0].StartDate,
+                    EndDate = h.Contracts[0].EndDate,
+                    Company = h.Company.CompanyName
+                };
+                contractViewModel.contractmodels.Add(contractModel);
             }
             return View(contractViewModel);
         }

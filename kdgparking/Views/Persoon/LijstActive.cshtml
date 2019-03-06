@@ -17,6 +17,7 @@
     <form>
         <p>
             <select name="SearchString">
+                <option value="">Alle companies</option>
                 @foreach (var item in Model.Companies)
                 {
                     <option value="@item.Value">@item.Text</option>
