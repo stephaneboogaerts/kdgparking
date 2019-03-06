@@ -22,9 +22,17 @@ namespace testParkingWeb.Controllers
             return RedirectToAction("Lijst");
         }
 
-        public ActionResult Lijst()
+        public ActionResult Lijst(string searchString)
         {
-            IEnumerable<Holder> holders = mng.GetHolders();
+            IEnumerable<Holder> holders;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                holders = mng.GetHolders(searchString);
+            }
+            else
+            {
+                holders = mng.GetHolders();
+            }
             List<InputHolder> iHolders = new List<InputHolder>();
             foreach (Holder h in holders)
             {
@@ -45,18 +53,6 @@ namespace testParkingWeb.Controllers
             if (ModelState.IsValid)
             {
                 mng.AddNewHolder(nieuweHolder);
-            }
-            return View();
-        }
-
-        public ActionResult Lijst(string searchString)
-        {
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                ViewData.Model = mng.GetHolders(searchString);
-            }else
-            {
-                ViewData.Model = mng.GetHolders();
             }
             return View();
         }

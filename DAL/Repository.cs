@@ -66,7 +66,7 @@ namespace kdgparking.DAL
         public IEnumerable<Holder> ReadHolders(string searchString)
         {
             // Zoekt op volledige naam
-            IEnumerable<Holder> holders = ctx.Holders.Where(h => ((h.FirstName + " " + h.Name).ToLower()).Contains(searchString.ToLower())).ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Company").Where(h => ((h.FirstName + " " + h.Name).ToLower()).Contains(searchString.ToLower())).ToList<Holder>();
             return holders;
         }
 
