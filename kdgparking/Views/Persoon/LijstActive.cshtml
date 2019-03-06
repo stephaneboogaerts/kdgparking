@@ -1,0 +1,97 @@
+﻿@model kdgparking.Models.ContractViewModel
+
+@{
+    ViewBag.Title = "Lijst Actieve Contracten";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListActive</title>
+</head>
+<body>
+    <h2>Actieve Contracten</h2>
+    <form>
+        <p>
+            <select name="SearchString">
+                <option value="">Alle companies</option>
+                @foreach (var item in Model.Companies)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
+            <input type="submit" value="Filter" />
+        </p>
+        
+    </form>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].ContractId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].Company)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.contractmodels)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContractId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

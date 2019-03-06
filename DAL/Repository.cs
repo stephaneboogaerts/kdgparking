@@ -63,10 +63,22 @@ namespace kdgparking.DAL
             return holders;
         }
 
+        public IEnumerable<Holder> ReadHolders(string searchString)
+        {
+            // Zoekt op volledige naam
+            IEnumerable<Holder> holders = ctx.Holders.Where(h => ((h.FirstName + " " + h.Name).ToLower()).Contains(searchString.ToLower())).ToList<Holder>();
+            return holders;
+        }
+
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles()
         {
-            // Eager-loading
-            IEnumerable<Holder> holders = ctx.Holders.Include(h => h.Contracts).Include("Contracts.Vehicle").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Contracts").Include("Contracts.Vehicles").Include("Company").ToList<Holder>();
+            return holders;
+        }
+
+        public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company)
+        {
+            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contracts").Include("Contracts.Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
 
@@ -118,8 +130,15 @@ namespace kdgparking.DAL
 
         public Vehicle ReadVehicle(string numberplate)
         {
-            Vehicle vehicle = ctx.Vehicles.Find(numberplate);
+            Vehicle vehicle = ctx.Vehicles.FirstOrDefault(v => v.Numberplate == numberplate);
             return vehicle;
+        }
+
+        public IEnumerable<Vehicle> ReadVehicles(string numberplate)
+        {
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Contract.Holder").
+                Where(v => (v.Numberplate.ToLower()).Contains(numberplate.ToLower())).ToList<Vehicle>();
+            return vehicles;
         }
 
         public Company CreateCompany(Company company)

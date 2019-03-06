@@ -243,6 +243,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ContractModel.cs" />
+    <Compile Include="Models\ContractViewModel.cs" />
+    <Compile Include="Models\HolderVehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -290,12 +293,15 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Excel\Index.cshtml" />
-    <Content Include="Views\Persoon\Toevoegen.cshtml" />
-    <Content Include="Views\Excel\Commit.cshtml" />
     <Content Include="Views\Persoon\Lijst.cshtml" />
     <Content Include="Views\Persoon\Details.cshtml" />
     <Content Include="Views\Persoon\Delete.cshtml" />
     <Content Include="Views\Persoon\Edit.cshtml" />
+    <Content Include="Views\Persoon\Toevoegen.cshtml" />
+    <Content Include="Views\Persoon\ContractEdit.cshtml" />
+    <Content Include="Views\Excel\Commit.cshtml" />
+    <Content Include="Views\Persoon\LijstVoertuigen.cshtml" />
+    <Content Include="Views\Persoon\LijstActive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

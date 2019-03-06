@@ -14,9 +14,11 @@ namespace kdgparking.DAL
         Holder ReadHolder(int holderId);
         Holder ReadHolder(string pNumber);
         IEnumerable<Holder> ReadHolders();
+        IEnumerable<Holder> ReadHolders(string searchString);
         IEnumerable<Holder> ReadHoldersWithContractsAndVehicles();
         void UpdateHolder(Holder holder);
         void DeleteHolder(Holder holder);
+        IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company);
 
         Contract CreateContract(Contract contract);
         Contract ReadContract(string contractId);
@@ -27,6 +29,7 @@ namespace kdgparking.DAL
 
         Vehicle CreateVehicle(Vehicle vehicle);
         Vehicle ReadVehicle(string numberplate);
+        IEnumerable<Vehicle> ReadVehicles(string numberplate);
 
         Company CreateCompany(Company company);
         Company ReadCompany(string companyName);

@@ -14,13 +14,16 @@ namespace kdgparking.BL
     {
         // Holder
         Holder ChangeHolder(int id, InputHolder updatedHolder);
-        IEnumerable<Holder> GetHolders();
         Holder GetHolder(int id);
         Holder GetHolder(string pNumber);
         Holder AddHolder(string name);
         Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post, Company company);
         Holder AddHolder(string name, string firstName, string phone, string email);
         Holder AddNewHolder(InputHolder holder);
+        IEnumerable<Holder> GetHolders();
+        IEnumerable<Holder> GetHolders(string searchString);
+        IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles();
+        IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles(string company);
         List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList);
         void RemoveHolder(int id);
         //Contract
@@ -33,7 +36,8 @@ namespace kdgparking.BL
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);
-        //Department
+        IEnumerable<Vehicle> GetVehicles(string numberplate);
+        //Company
         Company AddCompany(string companyName);
         Company GetCompany(string companyName);
         List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box

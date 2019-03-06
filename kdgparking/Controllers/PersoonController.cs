@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using kdgparking.BL;
 using kdgparking.BL.Domain;
 using System.Net.Mail;
+using System.Threading.Tasks;
+using kdgparking.Models;
 
 namespace testParkingWeb.Controllers
 {
@@ -47,7 +49,96 @@ namespace testParkingWeb.Controllers
             return View();
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Lijst(string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                ViewData.Model = mng.GetHolders(searchString);
+            }else
+            {
+                ViewData.Model = mng.GetHolders();
+            }
+            return View();
+        }
+
+        public ActionResult LijstVoertuigen(string searchString)
+        {
+            List<HolderVehicle> modelList = new List<HolderVehicle>();
+            HolderVehicle model = new HolderVehicle();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                IEnumerable<Vehicle> vehicles = mng.GetVehicles(searchString);
+                foreach(Vehicle v in vehicles)
+                {
+                    model = new HolderVehicle()
+                    {
+                        FirstName = v.Contract.Holder.FirstName,
+                        Name = v.Contract.Holder.Name,
+                        GSM = v.Contract.Holder.GSM,
+                        Phone = v.Contract.Holder.Phone,
+                        Email = v.Contract.Holder.Email,
+                        VehicleName = v.VehicleName,
+                        Numberplate = v.Numberplate
+                    };
+                    modelList.Add(model);
+                }
+            }
+            return View(modelList);
+        }
+
+        public ActionResult LijstActive(string searchString)
+        {
+            // Initialisatie ContractViewModel : Bevat List van ContracModels 
+            //  &List van SelectListItems voor bestaande Companies in DB om op te filteren adhv dropdown
+            ContractViewModel contractViewModel = new ContractViewModel();
+            contractViewModel.contractmodels = new List<ContractModel>();
+            contractViewModel.Companies = new List<SelectListItem>();
+            // ContractModel: Holder, Contract, Company & 'Active' veld
+            ContractModel contractModel;
+
+            // Ophalen bestaande companies in DB om op te filteren adhv dropdown
+            List<Company> companies = mng.GetCompanies();
+            foreach(Company c in companies)
+            {
+                contractViewModel.Companies.Add(new SelectListItem() { Text = c.CompanyName, Value = c.CompanyName });
+            }
+
+            IEnumerable<Holder> holderContracts;
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                // filteren op Company
+                holderContracts = mng.GetHoldersWithCompanyContractsAndVehicles(searchString);
+            }
+            else
+            {
+                holderContracts = mng.GetHoldersWithCompanyContractsAndVehicles();
+            }
+
+            foreach (Holder h in holderContracts)
+            {
+                // TODO : Check order to see if latest contract
+                h.Contracts.OrderBy(c => c.ContractId);
+                // Check if latest contract is active
+                int active = (h.Contracts[0].StartDate < DateTime.Now && DateTime.Now < h.Contracts[0].EndDate) ? 1 : 0;
+
+                contractModel = new ContractModel()
+                {
+                    ContractId = h.Contracts[0].ContractId,
+                    FirstName = h.FirstName,
+                    Name = h.Name,
+                    Email = h.Email,
+                    Active = active,
+                    StartDate = h.Contracts[0].StartDate,
+                    EndDate = h.Contracts[0].EndDate,
+                    Company = h.Company.CompanyName
+                };
+                contractViewModel.contractmodels.Add(contractModel);
+            }
+            return View(contractViewModel);
+        }
+
+            public ActionResult Edit(int? id)
         {
             if (this.VerifyId(id))
             {
