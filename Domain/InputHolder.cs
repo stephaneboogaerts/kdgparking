@@ -29,10 +29,7 @@ namespace kdgparking.BL.Domain
         [DisplayName("Eind Datum")]
         public DateTime EndDate { get; set; }
 
-        [Required(ErrorMessage = "Type is vereist"), DisplayName("Employee Type")]
-        [EnumDataType(typeof(EmployeeType))]
-        public EmployeeType EmpType { get; set; }
-        public string Department { get; set; }
+        [Required(ErrorMessage = "Company is vereist")]
         public string Company { get; set; }
 
         public string NumberPlate { get; set; }

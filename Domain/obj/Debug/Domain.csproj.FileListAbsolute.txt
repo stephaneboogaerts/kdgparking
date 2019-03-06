@@ -5,7 +5,6 @@ C:\Users\Nathan\Desktop\kdgparking\Domain\bin\Debug\EntityFramework.dll
 C:\Users\Nathan\Desktop\kdgparking\Domain\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Nathan\Desktop\kdgparking\Domain\bin\Debug\EntityFramework.xml
 C:\Users\Nathan\Desktop\kdgparking\Domain\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csprojAssemblyReference.cache
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csproj.CoreCompileInputs.cache
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\Domain.csproj.CopyComplete
 C:\Users\Nathan\Desktop\kdgparking\Domain\obj\Debug\kdgparking.BL.Domain.dll

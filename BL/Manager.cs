@@ -41,7 +41,25 @@ namespace kdgparking.BL
         //REFACTORING & DOCUMENTATIE NODIG
         public Holder ChangeHolder(int id, InputHolder updatedHolder)
         {
-            throw new NotImplementedException();
+            Holder ChangedHolder = this.GetHolder(id);
+            ChangedHolder.Name = updatedHolder.Name;
+            ChangedHolder.FirstName = updatedHolder.FirstName;
+            ChangedHolder.Email = updatedHolder.Email;
+            ChangedHolder.Contracts[0].StartDate = updatedHolder.StartDate;
+            ChangedHolder.Contracts[0].EndDate = updatedHolder.EndDate;
+            //Add new Company indien nodig
+            if (!updatedHolder.Company.Equals(ChangedHolder.Company.CompanyName))
+            {
+                Company HolderCompany = this.GetCompany(updatedHolder.Company);
+                if (HolderCompany == null)
+                {
+                    HolderCompany = this.AddCompany(new Company() { CompanyName = updatedHolder.Company });
+                }
+                ChangedHolder.Company = HolderCompany;
+            }
+            repo.UpdateHolder(ChangedHolder);
+            repo.UpdateContract(ChangedHolder.Contracts[0]);
+            return ChangedHolder;
         }
 
         public Holder AddHolder(string name)
@@ -67,11 +85,10 @@ namespace kdgparking.BL
 
         public Holder AddNewHolder(InputHolder inputHolder)
         {
-            string FullCompanyName = inputHolder.Department + '_' + inputHolder.EmpType.ToString();
-            Company HolderCompany = this.GetCompany(FullCompanyName);
+            Company HolderCompany = this.GetCompany(inputHolder.Company);
             if (HolderCompany == null)
             {
-                HolderCompany = this.AddCompany(new Company() { CompanyName = FullCompanyName });
+                HolderCompany = this.AddCompany(new Company() { CompanyName = inputHolder.Company });
             }
             Holder CreatedHolder = new Holder()
             {

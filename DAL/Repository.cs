@@ -33,14 +33,14 @@ namespace kdgparking.DAL
 
         public Holder ReadHolder(int holderId)
         {
-            Holder holder = ctx.Holders.Include("Company").FirstOrDefault(x => x.Id == holderId);
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
             return holder;
         }
 
         // Zoekt in db op PNumber (enkel Holders toegevoegd adhv excel hebben deze value)
         public Holder ReadHolder(string pNumber)
         {
-            Holder holder = ctx.Holders.Include("Company").FirstOrDefault(x => x.HolderNumber == pNumber);
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.HolderNumber == pNumber);
             return holder;
         }
 
