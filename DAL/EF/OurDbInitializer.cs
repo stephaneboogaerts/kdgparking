@@ -7,7 +7,7 @@ using kdgparking.BL.Domain;
 namespace kdgparking.DAL.EF
 {
     internal class OurDbInitializer
-        : DropCreateDatabaseIfModelChanges<OurDbContext>
+        : CreateDatabaseIfNotExists<OurDbContext>
     {
         protected override void Seed(OurDbContext context)
         {

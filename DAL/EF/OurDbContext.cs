@@ -12,7 +12,7 @@ namespace kdgparking.DAL.EF
     {
         public OurDbContext() : base("kdgparking")
         {
-            Database.SetInitializer<OurDbContext>(new DropCreateDatabaseIfModelChanges<OurDbContext>());
+            Database.SetInitializer<OurDbContext>(new CreateDatabaseIfNotExists<OurDbContext>());
         }
 
         public DbSet<Holder> Holders { get; set; }
