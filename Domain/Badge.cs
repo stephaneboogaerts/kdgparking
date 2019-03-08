@@ -13,7 +13,10 @@ namespace kdgparking.BL.Domain
     public class Badge
     {
         [Key]
-        public int BadgeId { get; set; }
+        public int Id { get; set; }
+        public string BadgeId { get; set; }
         public BadgeStatus BadgeStatus { get; set; }
+        
+        List<BadgeHistory> BadgeHistory { get; set; }
     }
 }

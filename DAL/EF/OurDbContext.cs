@@ -21,5 +21,7 @@ namespace kdgparking.DAL.EF
         public DbSet<Badge> Badges { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<BadgeHistory> BadgeHistories { get; set; }
+        public DbSet<ContractHistory> ContractHistories { get; set; }
     }
 }

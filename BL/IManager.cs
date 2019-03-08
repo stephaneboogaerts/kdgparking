@@ -17,7 +17,7 @@ namespace kdgparking.BL
         Holder GetHolder(int id);
         Holder GetHolder(string pNumber);
         Holder AddHolder(string name);
-        Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post, Company company);
+        Holder AddHolder(string name, string firstName, string holderNr, string email, string phone, string gsm, string city, string street, string post, string company);
         Holder AddHolder(string name, string firstName, string phone, string email);
         Holder AddNewHolder(InputHolder holder);
         IEnumerable<Holder> GetHolders();
@@ -27,12 +27,14 @@ namespace kdgparking.BL
         List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList);
         void RemoveHolder(int id);
         //Contract
-        Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
-        Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicle, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge);
-        Contract GetContract(string ContractId);
+        Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end);
+        Contract AddContract(Holder holder, List<Vehicle> vehicle, DateTime begin, DateTime end);
+        //Contract GetContract(string ContractId);
         Contract GetContract(int Id);
         Contract GetHolderContract(int HolderId);
-        void ChangeContract(Contract contract);
+        Contract ChangeContract(Contract contract);
+        //ContractHistory
+        ContractHistory AddContractHistory(string contractId, Holder holder, DateTime begin, DateTime end, decimal warranty, decimal warrantyBadge);
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);

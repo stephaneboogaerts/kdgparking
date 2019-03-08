@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace kdgparking.BL.Domain
 {
-    public class Company
+    public class BadgeHistory
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int CompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public int BadgeHistoryId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public Holder Holder;
+        public Holder Holder { get; set; }
+        public Badge Badge { get; set; }
     }
 }

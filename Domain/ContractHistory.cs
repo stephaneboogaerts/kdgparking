@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 
 namespace kdgparking.BL.Domain
 {
-    public class Contract
+    public class ContractHistory
     {
-        [Key,ForeignKey("Holder")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        //public string ContractId { get; set; }
+        [Key]
+        public string ContractId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public decimal Warranty { get; set; }
+        public decimal WarrantyBadge { get; set; }
+        //public decimal Tarif { get; set; } // <--  wordt niet meer naar db geschreven
 
-        //[ForeignKey("Holder")]
-        //public int HolderId { get; set; }
         public Holder Holder { get; set; }
-        public List<Vehicle> Vehicles { get; set; }
     }
 }

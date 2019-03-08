@@ -46,8 +46,8 @@ namespace kdgparking.BL
             ChangedHolder.Name = updatedHolder.Name;
             ChangedHolder.FirstName = updatedHolder.FirstName;
             ChangedHolder.Email = updatedHolder.Email;
-            ChangedHolder.Contracts[0].StartDate = updatedHolder.StartDate;
-            ChangedHolder.Contracts[0].EndDate = updatedHolder.EndDate;
+            ChangedHolder.Contract.StartDate = updatedHolder.StartDate;
+            ChangedHolder.Contract.EndDate = updatedHolder.EndDate;
             //Add new Company indien nodig
             if (!updatedHolder.Company.Equals(ChangedHolder.Company.CompanyName))
             {
@@ -59,7 +59,7 @@ namespace kdgparking.BL
                 ChangedHolder.Company = HolderCompany;
             }
             repo.UpdateHolder(ChangedHolder);
-            repo.UpdateContract(ChangedHolder.Contracts[0]);
+            repo.UpdateContract(ChangedHolder.Contract);
             return ChangedHolder;
         }
 
@@ -96,9 +96,8 @@ namespace kdgparking.BL
                 Name = inputHolder.Name,
                 FirstName = inputHolder.FirstName,
                 Email = inputHolder.Email,
-                Contracts = new List<Contract>(),
                 Company = HolderCompany,
-                CompanyId = HolderCompany.CompanyId
+                //CompanyId = HolderCompany.CompanyId
             };
 
             Contract NewContract = new Contract()
@@ -109,8 +108,8 @@ namespace kdgparking.BL
             };
 
             CreatedHolder = this.AddHolder(CreatedHolder);
-            CreatedHolder.Contracts.Add(NewContract);
-            NewContract.HolderId = CreatedHolder.Id;
+            CreatedHolder.Contract = NewContract;
+            //NewContract.HolderId = CreatedHolder.Id;
             this.AddContract(NewContract);
             repo.UpdateHolder(CreatedHolder);
             return CreatedHolder;
@@ -153,8 +152,16 @@ namespace kdgparking.BL
         }
 
         public Holder AddHolder(string name, string firstName, string holderNr, string email,
-            string phone, string gsm, string city, string street, string post, Company company)
+            string phone, string gsm, string city, string street, string post, string companyName)
         {
+            // Kijken of een Company alreeds bestaat in de DB
+            // Wanneer de Company niet gevonden word, wordt er een nieuwe Company aangemaakt
+            Company company = GetCompany(companyName);
+            if (company == null)
+            {
+                company = AddCompany(companyName);
+            }
+
             Holder holder = new Holder()
             {
                 Name = name,
@@ -179,7 +186,7 @@ namespace kdgparking.BL
             return;
         }
 
-        public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end, decimal tarif, decimal warranty, decimal warrantyBadge)
+        public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end)
         {
             Holder holder = this.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
@@ -191,30 +198,43 @@ namespace kdgparking.BL
                 Holder = holder,
                 StartDate = begin,
                 EndDate = end,
-                Tarif = tarif,
-                Warranty = warranty,
-                WarrantyBadge = warranty,
                 Vehicles = vehicles
             };
 
-            return contract;
+            return this.AddContract(contract);
         }
 
-        public Contract AddContract(string contractId, Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end, decimal tarif,
+        public Contract AddContract(Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end)
+        {
+            Contract contract = new Contract
+            {
+                Holder = holder,
+                StartDate = begin,
+                EndDate = end,
+                Vehicles = vehicles
+            };
+
+            return this.AddContract(contract);
+        }
+
+        public ContractHistory AddContractHistory(string contractId, Holder holder, DateTime begin, DateTime end,
             decimal warranty, decimal warrantyBadge)
         {
-            Contract contract = new Contract()
+            ContractHistory contractH = new ContractHistory()
             {
                 ContractId = contractId,
                 Holder = holder,
-                Vehicles = vehicles,
                 StartDate = begin,
                 EndDate = end,
-                Tarif = tarif,
                 Warranty = warranty,
                 WarrantyBadge = warrantyBadge
             };
-            return this.AddContract(contract);
+            return this.AddContractHistory(contractH);
+        }
+
+        private ContractHistory AddContractHistory(ContractHistory contractHistory)
+        {
+            return repo.CreateContractHistory(contractHistory);
         }
 
         private Contract AddContract(Contract contract)
@@ -228,20 +248,20 @@ namespace kdgparking.BL
             return repo.ReadContract(Id);
         }
 
-        public Contract GetContract(string ContractId)
-        {
-            return repo.ReadContract(ContractId);
-        }
+        //public Contract GetContract(string ContractId)
+        //{
+        //    return repo.ReadContract(ContractId);
+        //}
 
         public Contract GetHolderContract(int HolderId)
         {
             return repo.ReadHolderContract(HolderId);
         }
 
-        public void ChangeContract(Contract contract)
+        public Contract ChangeContract(Contract contract)
         {
             // Validatie gebeurt in InputHolder
-            repo.UpdateContract(contract);
+            return repo.UpdateContract(contract);
         }
 
         public Vehicle AddVehicle(string vehicleName, string numberPlate)
@@ -319,7 +339,7 @@ namespace kdgparking.BL
                 iHolder = new InputHolder();
 
                 // TODO : Badge extractie
-                // --> Badge uniek per holder?
+
 
                 // Holder extractie
                 // Kijken of een Holder alreeds bestaat in de DB
@@ -327,17 +347,26 @@ namespace kdgparking.BL
                 Holder holder = GetHolder(inputHolder.PNumber);
                 if (holder == null)
                 {
-                    // Holder extractie
-                    // Kijken of een Holder alreeds bestaat in de DB
-                    // Wanneer de Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
-                    company = GetCompany(inputHolder.Company);
-                    if (company == null)
-                    {
-                        company = AddCompany(inputHolder.Company);
-                    }
-
                     holder = AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
-                        inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post, company);
+                        inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post, inputHolder.Company);
+
+                    //Contract extractie voor nieuwe Holder
+                    contract = new Contract()
+                    {
+                        StartDate = inputHolder.StartDate,
+                        EndDate = inputHolder.EndDate,
+                        Holder = holder,
+                        Vehicles = new List<Vehicle>()
+                    };
+                    contract = this.AddContract(contract);
+                }
+                else
+                {
+                    // Holder bestaat : Update termijn
+                    contract = holder.Contract;
+                    contract.StartDate = inputHolder.StartDate;
+                    contract.EndDate = inputHolder.EndDate;
+                    contract = ChangeContract(contract);
                 }
 
                 // Vehicle extractie
@@ -348,41 +377,23 @@ namespace kdgparking.BL
                     vehicle = this.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
                 }
 
-                // Contract extractie
-                contract = this.GetContract(inputHolder.ContractId);
-
-                // Als contract alreeds bestaat wordt vehicle aan Vehicles list toegevoegd
-                if (contract != null)
+                vehicles = contract.Vehicles;
+                // Kijken of het contract al eenzelfde Vehicle bevat
+                //  : indien wel geen verdere actie nodig
+                if (!vehicles.Contains(vehicle))
                 {
-                    vehicles = contract.Vehicles;
-                    // Kijken of het contract al eenzelfde Vehicle bevat
-                    //  : indien wel is er geen verdere actie nodig
-                    if (!vehicles.Contains(vehicle))
-                    {
-                        vehicles.Add(vehicle);
-                        contract.Vehicles = vehicles;
-                        this.ChangeContract(contract);
-                    }
-                }
-                // Als Contract nog niet bestaat wordt er een nieuwe aangemaakt
-                else
-                {
-                    vehicles = new List<Vehicle>();
                     vehicles.Add(vehicle);
-                    contract = AddContract(inputHolder.ContractId, holder, vehicles, inputHolder.StartDate, inputHolder.EndDate,
-                        inputHolder.Tarief, inputHolder.Waarborg, inputHolder.WaarborgBadge);
+                    contract.Vehicles = vehicles;
+                    this.ChangeContract(contract);
                 }
-
-
+                
                 // Deze values worden teruggegeven aan de Controller voor laatste overzicht van commit
-                iHolder.ContractId = contract.ContractId;
                 iHolder.Name = holder.Name;
                 iHolder.FirstName = holder.FirstName;
                 iHolder.NumberPlate = vehicle.Numberplate;
                 iHolder.StartDate = contract.StartDate;
                 iHolder.EndDate = contract.EndDate;
-                iHolder.Tarief = contract.Tarif;
-                // TODO : iHolder.Department =
+                iHolder.Company = holder.Company.CompanyName;
 
                 iHolderList.Add(iHolder);
             }
@@ -492,7 +503,7 @@ namespace kdgparking.BL
                                     NumberPlate = para[7],
                                     Tarief = decimal.Parse(para[8]),
                                     StartDate = DateTime.FromOADate(Int32.Parse(para[9])), // <-- Serialdate(Excel) wordt omgezet naar DateTime.
-                                    EndDate = DateTime.FromOADate(Int32.Parse(para[10])), // <-- veld kan leeg zijn?
+                                    EndDate = DateTime.FromOADate(Int32.Parse(para[10])),
                                     Waarborg = decimal.Parse(para[11]),
                                     WaarborgBadge = decimal.Parse(para[12]),
                                     Straat = para[13],
@@ -501,7 +512,7 @@ namespace kdgparking.BL
                                     Telefoon = para[16],
                                     GSM = para[17],
                                     Email = para[18],
-                                    Company = "BuurtParking"
+                                    Company = "BuurtParking" // <-- Company juist zetten
                                 };
                                 // Validatie excel input voor toe te voegen aan list
                                 this.Validate(inputHolder);

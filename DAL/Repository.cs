@@ -33,14 +33,14 @@ namespace kdgparking.DAL
 
         public Holder ReadHolder(int holderId)
         {
-            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
+            Holder holder = ctx.Holders.Include("Company").Include("Contract").FirstOrDefault(x => x.Id == holderId);
             return holder;
         }
 
         // Zoekt in db op PNumber (enkel Holders toegevoegd adhv excel hebben deze value)
         public Holder ReadHolder(string pNumber)
         {
-            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.HolderNumber == pNumber);
+            Holder holder = ctx.Holders.Include("Company").Include("Contract").FirstOrDefault(x => x.HolderNumber == pNumber);
             return holder;
         }
 
@@ -72,13 +72,13 @@ namespace kdgparking.DAL
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles()
         {
-            IEnumerable<Holder> holders = ctx.Holders.Include("Contracts").Include("Contracts.Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Contract").Include("Contract.Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company)
         {
-            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contracts").Include("Contracts.Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contract").Include("Contract.Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
 
@@ -90,11 +90,11 @@ namespace kdgparking.DAL
             return contract;
         }
 
-        public Contract ReadContract(string contractId)
-        {
-            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.ContractId == contractId);
-            return contract;
-        }
+        //public Contract ReadContract(string contractId)
+        //{
+        //    Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.ContractId == contractId);
+        //    return contract;
+        //}
 
         public Contract ReadContract(int Id)
         {
@@ -104,7 +104,8 @@ namespace kdgparking.DAL
 
         public Contract ReadHolderContract(int holderId)
         {
-            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.HolderId == holderId);
+            //Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.HolderId == holderId);
+            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.Holder.Id == holderId);
             return contract;
         }
 
@@ -114,10 +115,20 @@ namespace kdgparking.DAL
             ctx.SaveChanges();
         }
 
-        public void UpdateContract(Contract contract)
+        public Contract UpdateContract(Contract contract)
         {
             ctx.Entry(contract).State = System.Data.Entity.EntityState.Modified;
             ctx.SaveChanges();
+
+            return contract;
+        }
+
+        public ContractHistory CreateContractHistory(ContractHistory contractHist)
+        {
+            ctx.ContractHistories.Add(contractHist);
+            ctx.SaveChanges();
+
+            return contractHist;
         }
 
         public Vehicle CreateVehicle(Vehicle vehicle)
