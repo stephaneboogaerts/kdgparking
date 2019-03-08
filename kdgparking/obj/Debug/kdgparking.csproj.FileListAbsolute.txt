@@ -254,3 +254,5 @@ C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CoreCo
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.csproj.CopyComplete
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.dll
 C:\Users\Nathan\Desktop\kdgparking\kdgparking\obj\Debug\kdgparking.pdb
+C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\Syroot.KnownFolders.dll
+C:\Users\Nathan\Desktop\kdgparking\kdgparking\bin\Syroot.KnownFolders.xml

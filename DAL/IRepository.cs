@@ -29,6 +29,7 @@ namespace kdgparking.DAL
 
         Vehicle CreateVehicle(Vehicle vehicle);
         Vehicle ReadVehicle(string numberplate);
+        IEnumerable<Vehicle> ReadVehicles();
         IEnumerable<Vehicle> ReadVehicles(string numberplate);
 
         Company CreateCompany(Company company);

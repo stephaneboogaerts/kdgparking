@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Address.cs" />
     <Compile Include="Badge.cs" />
+    <Compile Include="BadgeStatus.cs" />
     <Compile Include="Contract.cs" />
     <Compile Include="Holder.cs" />
     <Compile Include="InputHolder.cs" />

@@ -11,6 +11,7 @@ using System.Net.Mail;
 using System.Web;
 using OfficeOpenXml;
 using System.IO;
+using Syroot.Windows.IO;
 
 namespace kdgparking.BL
 {
@@ -259,6 +260,11 @@ namespace kdgparking.BL
             return repo.ReadVehicle(numberplate);
         }
 
+        public IEnumerable<Vehicle> GetVehicles()
+        {
+            return repo.ReadVehicles();
+        }
+
         public IEnumerable<Vehicle> GetVehicles(string numberplate)
         {
             return repo.ReadVehicles(numberplate);
@@ -335,7 +341,12 @@ namespace kdgparking.BL
                 }
 
                 // Vehicle extractie
-                vehicle = this.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
+                // Kijken of Vehicle (adhv nummerplaat) al bestaat in DB
+                vehicle = GetVehicle(inputHolder.NumberPlate);
+                if(vehicle == null)
+                {
+                    vehicle = this.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
+                }
 
                 // Contract extractie
                 contract = this.GetContract(inputHolder.ContractId);
@@ -344,11 +355,16 @@ namespace kdgparking.BL
                 if (contract != null)
                 {
                     vehicles = contract.Vehicles;
-                    vehicles.Add(vehicle);
-                    contract.Vehicles = vehicles;
-                    this.ChangeContract(contract);
+                    // Kijken of het contract al eenzelfde Vehicle bevat
+                    //  : indien wel is er geen verdere actie nodig
+                    if (!vehicles.Contains(vehicle))
+                    {
+                        vehicles.Add(vehicle);
+                        contract.Vehicles = vehicles;
+                        this.ChangeContract(contract);
+                    }
                 }
-                // Als contract nog niet bestaat wordt er een nieuwe aangemaakt
+                // Als Contract nog niet bestaat wordt er een nieuwe aangemaakt
                 else
                 {
                     vehicles = new List<Vehicle>();
@@ -405,13 +421,10 @@ namespace kdgparking.BL
                             }
                             // Note : Exact 1 Tarif decimal moet meegegeven worden 
                             //  >>> Opvangen of vermelden in documentatie
-                            //else if (col == 8 || col == 9 || col == 10) // Tarieven (col 8, 9 &10)
-                            //{
-                            //    sb.Append("0" + "\t");
-                            //}
-                            else if (col == 16) // Einddatum (col 16) = 0 wanneer null
+                            //else if (col == 8 || col == 9 || col == 10) { } // Tarieven (col 8, 9 &10)
+                            else if (col == 16) // Einddatum (col 16) = 2099 wanneer null
                             {
-                                sb.Append("0\t");
+                                sb.Append("73000\t");
                             }
                             else if (col == 22 || col == 23) // Tel/ GSM (col 22 &23) = "null" wanneer null
                             {
@@ -509,6 +522,30 @@ namespace kdgparking.BL
             {
                 throw new ArgumentException("Some error occured while converting excel data to object. " + ex.Message);
             }
+        }
+
+        public string CsvExport(IEnumerable<Vehicle> vehicles)
+        {
+            // Syntax : 1GXXXX2,Naam,Voornaam
+            string downloadsPath = new KnownFolder(KnownFolderType.Downloads).Path;
+            string fileIdentifier = "CsvExport_" + DateTime.Now.ToString("yyyyddMM-HHmmss") + ".csv";
+            downloadsPath = Path.Combine(downloadsPath, fileIdentifier);
+            using (var w = new StreamWriter(downloadsPath))
+            {
+                foreach( Vehicle v in vehicles)
+                {
+                    if(!String.IsNullOrEmpty(v.Contract.Holder.Name) && !String.IsNullOrEmpty(v.Contract.Holder.FirstName))
+                    {
+                        var nrPlate = v.Numberplate.ToUpper();
+                        var name = v.Contract.Holder.Name;
+                        var firstname = v.Contract.Holder.FirstName;
+                        var line = string.Format("{0},{1},{2}", nrPlate, name, firstname);
+                        w.WriteLine(line);
+                        w.Flush();
+                    }
+                }
+            }
+            return downloadsPath.ToString();
         }
     }
 }

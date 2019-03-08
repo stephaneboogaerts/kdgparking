@@ -36,13 +36,15 @@ namespace kdgparking.BL
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);
         Vehicle GetVehicle(string numberplate);
+        IEnumerable<Vehicle> GetVehicles();
         IEnumerable<Vehicle> GetVehicles(string numberplate);
         //Company
         Company AddCompany(string companyName);
         Company GetCompany(string companyName);
         List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box
 
-        //File
+        //File Upload
         List<InputHolder> ProcessFile(HttpPostedFileBase file);
+        string CsvExport(IEnumerable<Vehicle> vehicles);
     }
 }

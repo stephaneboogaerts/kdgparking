@@ -134,6 +134,12 @@ namespace kdgparking.DAL
             return vehicle;
         }
 
+        public IEnumerable<Vehicle> ReadVehicles()
+        {
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Contract.Holder").ToList<Vehicle>();
+            return vehicles;
+        }
+
         public IEnumerable<Vehicle> ReadVehicles(string numberplate)
         {
             IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Contract.Holder").

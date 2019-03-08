@@ -59,6 +59,7 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstVoertuigen(string searchString)
         {
+            // TODO : Testen of Holder &Vehicle Distinct zijn
             List<HolderVehicle> modelList = new List<HolderVehicle>();
             HolderVehicle model = new HolderVehicle();
             if (!String.IsNullOrEmpty(searchString))
