@@ -13,6 +13,10 @@ using OfficeOpenXml;
 using System.IO;
 using Syroot.Windows.IO;
 
+namespace kdgparking.BL { 
+    public class CSVManager : ICSVManager
+    {
+        IHolderRepository repo;
         public CSVManager()
         {
             repo = new kdgparking.DAL.HolderRepository();
