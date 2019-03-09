@@ -563,5 +563,18 @@ namespace kdgparking.BL
             }
             return downloadsPath.ToString();
         }
+
+        private string CleanString(string input)
+        {
+            string DirtyCharacters = "ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ";
+            string CleanCharacters = "SZszYAAAAAACEEEEIIIIDNOOOOOUUUUYaaaaaaceeeeiiiidnooooouuuuyy";
+            for (int i = 0; i < DirtyCharacters.Length; i++)
+            {
+                char DirtyChar = DirtyCharacters[i];
+                char CleanChar = CleanCharacters[i];
+                input = input.Replace(DirtyChar, CleanChar);
+            }
+            return input;
+        }
     }
 }

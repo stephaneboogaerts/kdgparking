@@ -27,6 +27,7 @@ namespace testParkingWeb.Controllers
             IEnumerable<Holder> holders;
             if (!String.IsNullOrEmpty(searchString))
             {
+                searchString = this.CleanString(searchString);
                 holders = mng.GetHolders(searchString);
             }
             else
@@ -220,5 +221,6 @@ namespace testParkingWeb.Controllers
             }
             return true;
         }
+
     }
 }

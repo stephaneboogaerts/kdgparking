@@ -8,11 +8,13 @@ using kdgparking.BL.Domain;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using kdgparking.Models;
+using System.Diagnostics;
 
 namespace kdgparking.Controllers
 {
     public class CompanyController : Controller
     {
+        public CompanyController() { }
 
         private IManager mng = new Manager();
 
@@ -39,6 +41,18 @@ namespace kdgparking.Controllers
         public ActionResult Toevoegen()
         {
             return View();
+        }
+
+        public ActionResult CompanyToevoegen(Company company)
+        {
+            if (ModelState.IsValid)
+            {
+                mng.AddCompany(company.CompanyName);
+                return new HttpStatusCodeResult(200);
+            } else
+            {
+                return new HttpStatusCodeResult(500);
+            }
         }
     }
 }
