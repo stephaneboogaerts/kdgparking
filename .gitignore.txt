@@ -20,8 +20,14 @@
 x64/
 x86/
 bld/
-*/[Bb]in/
-*/[Oo]bj/
+kdgparking/[Bb]in/
+kdgparking/[Oo]bj/
+DAL/[Bb]in/
+DAL/[Oo]bj/
+Domain/[Bb]in/
+Domain/[Oo]bj/
+BL/[Bb]in/
+BL/[Oo]bj/
 [Ll]og/
 
 # Visual Studio 2015 cache/options directory
