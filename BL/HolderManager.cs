@@ -12,19 +12,22 @@ using System.Web;
 using OfficeOpenXml;
 using System.IO;
 using Syroot.Windows.IO;
+using kdgparking.DAL.EF;
 
 namespace kdgparking.BL
 {
     public class HolderManager : IHolderManager
     {
         private readonly IHolderRepository HolderRepo;
-        private readonly IContractRepository ContractRepo;
 
         public HolderManager()
         {
-            HolderRepo = new kdgparking.DAL.HolderRepository();
-            ContractRepo = new kdgparking.DAL.ContractRepository();
-            //this.SeedTestData(); // <-- telkens wanneer Manager wordt geïnitialisseerd
+            HolderRepo = new HolderRepository();
+        }
+
+        public HolderManager(OurDbContext context)
+        {
+            HolderRepo = new HolderRepository(context);
         }
 
         private void SeedTestData()
@@ -44,7 +47,8 @@ namespace kdgparking.BL
         //REFACTORING & DOCUMENTATIE NODIG
         public Holder ChangeHolder(int id, InputHolder updatedHolder)
         {
-            CompanyManager CompMng = new CompanyManager();
+            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
+            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
             Holder ChangedHolder = this.GetHolder(id);
             ChangedHolder.Name = updatedHolder.Name;
             ChangedHolder.FirstName = updatedHolder.FirstName;
@@ -62,7 +66,7 @@ namespace kdgparking.BL
                 ChangedHolder.Company = HolderCompany;
             }
             HolderRepo.UpdateHolder(ChangedHolder);
-            ContractRepo.UpdateContract(ChangedHolder.Contract);
+            ContMng.ChangeContract(ChangedHolder.Contract);
             return ChangedHolder;
         }
 
@@ -89,8 +93,8 @@ namespace kdgparking.BL
 
         public Holder AddNewHolder(InputHolder inputHolder)
         {
-            CompanyManager CompMng = new CompanyManager();
-            ContractManager ContMng = new ContractManager();
+            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
+            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
             Company HolderCompany = CompMng.GetCompany(inputHolder.Company);
             if (HolderCompany == null)
             {
@@ -154,7 +158,7 @@ namespace kdgparking.BL
         public Holder AddHolder(string name, string firstName, string holderNr, string email,
             string phone, string gsm, string city, string street, string post, string companyName)
         {
-            CompanyManager CompMng = new CompanyManager();
+            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
             // Kijken of een Company alreeds bestaat in de DB
             // Wanneer de Company niet gevonden word, wordt er een nieuwe Company aangemaakt
             Company company = CompMng.GetCompany(companyName);
@@ -181,10 +185,10 @@ namespace kdgparking.BL
 
         public void RemoveHolder(int id)
         {
-            ContractManager ContMng = new ContractManager();
+            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
             int ContractId = ContMng.GetHolderContract(id).Id;
             HolderRepo.DeleteHolder(this.GetHolder(id));
-            ContractRepo.DeleteContract(ContMng.GetContract(ContractId));
+            ContMng.DeleteContract(ContMng.GetContract(ContractId));
             return;
         }
 

@@ -17,6 +17,7 @@ namespace kdgparking.BL
         Contract GetContract(int Id);
         Contract GetHolderContract(int HolderId);
         Contract ChangeContract(Contract contract);
+        void DeleteContract(Contract contract);
         //ContractHistory
         ContractHistory AddContractHistory(string contractId, Holder holder, DateTime begin, DateTime end, decimal warranty, decimal warrantyBadge);
         //Vehicle

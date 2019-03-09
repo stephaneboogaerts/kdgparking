@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using kdgparking.BL.Domain;
+using kdgparking.DAL.EF;
 
 namespace kdgparking.DAL
 {
     public interface IHolderRepository : IDisposable
     {
+        OurDbContext ctx { get; }
+
         Holder CreateHolder(Holder persoon);
         Holder ReadHolder(int holderId);
         Holder ReadHolder(string pNumber);

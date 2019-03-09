@@ -12,6 +12,7 @@ using System.Web;
 using OfficeOpenXml;
 using System.IO;
 using Syroot.Windows.IO;
+using kdgparking.DAL.EF;
 
 namespace kdgparking.BL
 {
@@ -21,12 +22,17 @@ namespace kdgparking.BL
 
         public ContractManager()
         {
-            repo = new kdgparking.DAL.ContractRepository();
+            repo = new ContractRepository();
+        }
+
+        public ContractManager(OurDbContext context)
+        {
+            repo = new ContractRepository(context);
         }
 
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end)
         {
-            HolderManager HolderMng = new HolderManager();
+            HolderManager HolderMng = new HolderManager(repo.ctx);
             Holder holder = HolderMng.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
             List<Vehicle> vehicles = new List<Vehicle>();
@@ -126,6 +132,11 @@ namespace kdgparking.BL
         public IEnumerable<Vehicle> GetVehicles(string numberplate)
         {
             return repo.ReadVehicles(numberplate);
+        }
+
+        public void DeleteContract(Contract contract)
+        {
+            repo.DeleteContract(contract);
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Web;
 using OfficeOpenXml;
 using System.IO;
 using Syroot.Windows.IO;
-
+using kdgparking.DAL.EF;
 
 namespace kdgparking.BL
 {
@@ -23,6 +23,11 @@ namespace kdgparking.BL
         public CompanyManager()
         {
             repo = new kdgparking.DAL.CompanyRepository();
+        }
+
+        public CompanyManager(OurDbContext context)
+        {
+            repo = new CompanyRepository(context);
         }
 
         public Company AddCompany(string companyName)

@@ -10,12 +10,17 @@ namespace kdgparking.DAL
 {
     public class CompanyRepository : ICompanyRepository
     {
-        private OurDbContext ctx;
+        public OurDbContext ctx { get; }
 
         public CompanyRepository()
         {
             ctx = new OurDbContext();
             ctx.Database.Initialize(false);
+        }
+
+        public CompanyRepository(OurDbContext context)
+        {
+            ctx = context;
         }
 
         public Company CreateCompany(Company company)
