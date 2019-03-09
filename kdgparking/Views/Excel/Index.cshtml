@@ -23,73 +23,71 @@
         <input type="file" name="file" id="file" /><br><br>
         <input type="submit" value="Upload File" />
         <br><br>
-        @ViewBag.Message
+            <p style="color:forestgreen">@ViewBag.Message</p>
     }
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Badge)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Name)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().StartDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().EndDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Tarief)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().NumberPlate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Company)
-                </th>
-                <th></th>
-            </tr>
 
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Badge)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Tarief)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NumberPlate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Company)
-                    </td>
-                </tr>
-            }
+    <input type="button" value="Export to CSV" onclick="location.href='@Url.Action("CsvExport", "Excel")'" />
+    <br><br>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Badge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().NumberPlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Company)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
             <tr>
                 <td>
-                    @* Passes model to be processed and commited to DB *@
-                    @Html.ActionLink("Commit", "Commit")
-                    @Html.ActionLink("Cancel", "Index", "Home")
+                    @Html.DisplayFor(modelItem => item.Badge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberPlate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
                 </td>
             </tr>
-        </table>
-    </body>
+        }
+        <tr>
+            <td>
+                @* Passes model to be processed and commited to DB *@
+                @Html.ActionLink("Commit", "Commit")
+                @Html.ActionLink("Cancel", "Index", "Home")
+            </td>
+        </tr>
+    </table>
+</body>
 </html>

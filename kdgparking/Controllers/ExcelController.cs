@@ -22,6 +22,10 @@ namespace kdgparking.Controllers
         public ActionResult Index()
         {
             List<InputHolder> inputHolderList = new List<InputHolder>();
+            if (TempData["report"] != null)
+            {
+                ViewBag.Message = TempData["report"].ToString();
+            }
             return View(inputHolderList);
         }
 
@@ -58,6 +62,24 @@ namespace kdgparking.Controllers
             List<InputHolder> holderList = mgr.ProcessInputholderList(model);
             
             return View(holderList);
+        }
+
+        public ActionResult CsvExport()
+        {
+            // TODO : Testen of Holder &Vehicle Distinct zijn
+            try
+            {
+
+                IEnumerable<Vehicle> vehicles = mgr.GetVehicles();
+                string csvToFilepath = mgr.CsvExport(vehicles);
+                TempData["report"] = "Succesfully exported CSV to " + csvToFilepath;
+            }
+            catch (Exception ex)
+            {
+                TempData["report"] = "Export failed : " + ex;
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

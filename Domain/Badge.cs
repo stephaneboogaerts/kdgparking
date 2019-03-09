@@ -12,8 +12,11 @@ namespace kdgparking.BL.Domain
 {
     public class Badge
     {
-        //Overbodige klasse? Niet nodig voor eindproduct + geen attributen
         [Key]
-        public int BadgeId { get; set; }
+        public int Id { get; set; }
+        public string BadgeId { get; set; }
+        public BadgeStatus BadgeStatus { get; set; }
+        
+        List<BadgeHistory> BadgeHistory { get; set; }
     }
 }

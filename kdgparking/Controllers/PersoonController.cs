@@ -59,6 +59,7 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstVoertuigen(string searchString)
         {
+            // TODO : Testen of Holder &Vehicle Distinct zijn
             List<HolderVehicle> modelList = new List<HolderVehicle>();
             HolderVehicle model = new HolderVehicle();
             if (!String.IsNullOrEmpty(searchString))
@@ -114,19 +115,18 @@ namespace testParkingWeb.Controllers
             foreach (Holder h in holderContracts)
             {
                 // TODO : Check order to see if latest contract
-                h.Contracts.OrderBy(c => c.ContractId);
+                //h.Contract.OrderBy(c => c.ContractId);
                 // Check if latest contract is active
-                int active = (h.Contracts[0].StartDate < DateTime.Now && DateTime.Now < h.Contracts[0].EndDate) ? 1 : 0;
+                int active = (h.Contract.StartDate < DateTime.Now && DateTime.Now < h.Contract.EndDate) ? 1 : 0;
 
                 contractModel = new ContractModel()
                 {
-                    ContractId = h.Contracts[0].ContractId,
                     FirstName = h.FirstName,
                     Name = h.Name,
                     Email = h.Email,
                     Active = active,
-                    StartDate = h.Contracts[0].StartDate,
-                    EndDate = h.Contracts[0].EndDate,
+                    StartDate = h.Contract.StartDate,
+                    EndDate = h.Contract.EndDate,
                     Company = h.Company.CompanyName
                 };
                 contractViewModel.contractmodels.Add(contractModel);

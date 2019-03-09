@@ -14,8 +14,8 @@ namespace kdgparking.BL.Domain
     public class Holder
     {
         //Validatie verplaatst naar InputHolder
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, ForeignKey("Contract")]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [DisplayName("Persoon Nummer")]
         public string HolderNumber { get; set; }
@@ -41,10 +41,10 @@ namespace kdgparking.BL.Domain
         public string MifareSerial { get; set; } // <-- wordt toegewezen in repo bij het aanmaken
 
         // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
-        public Badge Badge { get; set; }
-        [ForeignKey("Company")]
-        public int CompanyId { get; set; }
+        public List<BadgeHistory> BadgeHistory { get; set; }
+        //[ForeignKey("Company")]
+        //public int CompanyId { get; set; }
         public Company Company { get; set; }
-        public List<Contract> Contracts { get; set; }
+        public Contract Contract { get; set; }
     }
 }
