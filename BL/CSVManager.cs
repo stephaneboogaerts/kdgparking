@@ -255,7 +255,7 @@ using Syroot.Windows.IO;
             return downloadsPath.ToString();
         }
 
-        public void Validate(InputHolder inputHolder)
+                public void Validate(InputHolder inputHolder)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             bool valid = Validator.TryValidateObject(inputHolder, new ValidationContext(inputHolder), errors, validateAllProperties: true);
@@ -263,6 +263,18 @@ using Syroot.Windows.IO;
             if (!valid)
                 throw new ValidationException("InputHolder " + inputHolder.Name + " not valid!");
         }
-
+        
+        private string CleanString(string input)
+        {
+            string DirtyCharacters = "ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ";
+            string CleanCharacters = "SZszYAAAAAACEEEEIIIIDNOOOOOUUUUYaaaaaaceeeeiiiidnooooouuuuyy";
+            for (int i = 0; i < DirtyCharacters.Length; i++)
+            {
+                char DirtyChar = DirtyCharacters[i];
+                char CleanChar = CleanCharacters[i];
+                input = input.Replace(DirtyChar, CleanChar);
+            }
+            return input;
+        }
     }
 }

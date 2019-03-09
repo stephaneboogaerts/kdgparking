@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kdgparking", "kdgparking\kdgparking.csproj", "{97645721-680C-41BC-B684-E6EAF2C09400}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kdgParkingTests", "kdgParkingTests\kdgParkingTests.csproj", "{430327A5-D269-4598-90CF-4EA04FE2627D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{97645721-680C-41BC-B684-E6EAF2C09400}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97645721-680C-41BC-B684-E6EAF2C09400}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97645721-680C-41BC-B684-E6EAF2C09400}.Release|Any CPU.Build.0 = Release|Any CPU
+		{430327A5-D269-4598-90CF-4EA04FE2627D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{430327A5-D269-4598-90CF-4EA04FE2627D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{430327A5-D269-4598-90CF-4EA04FE2627D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{430327A5-D269-4598-90CF-4EA04FE2627D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
