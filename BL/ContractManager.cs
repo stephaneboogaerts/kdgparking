@@ -3,19 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using kdgparking.DAL;
 using kdgparking.BL.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+using System.Web;
+using OfficeOpenXml;
+using System.IO;
+using Syroot.Windows.IO;
 
 namespace kdgparking.BL
 {
-    class ContractManager
+    public class ContractManager : IContractManager
     {
+        private readonly IContractRepository repo;
+
+        public ContractManager()
+        {
+            repo = new kdgparking.DAL.ContractRepository();
+        }
+
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end)
         {
-            Holder holder = this.GetHolder(holderId);
+            HolderManager HolderMng = new HolderManager();
+            Holder holder = HolderMng.GetHolder(holderId);
             Vehicle vehicle = this.GetVehicle(numberplate);
             List<Vehicle> vehicles = new List<Vehicle>();
             vehicles.Add(vehicle);
-
             Contract contract = new Contract
             {
                 Holder = holder,
@@ -60,7 +75,7 @@ namespace kdgparking.BL
             return repo.CreateContractHistory(contractHistory);
         }
 
-        private Contract AddContract(Contract contract)
+        public Contract AddContract(Contract contract)
         {
             // Validatie gebeurt in InputHolder
             return repo.CreateContract(contract);
@@ -112,6 +127,5 @@ namespace kdgparking.BL
         {
             return repo.ReadVehicles(numberplate);
         }
-
     }
 }

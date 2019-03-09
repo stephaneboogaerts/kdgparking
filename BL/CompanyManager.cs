@@ -4,10 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using kdgparking.DAL;
+using kdgparking.BL.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.Net.Mail;
+using System.Web;
+using OfficeOpenXml;
+using System.IO;
+using Syroot.Windows.IO;
+
+
 namespace kdgparking.BL
 {
-    class CompanyManager
+    public class CompanyManager : ICompanyManager
     {
+        private readonly ICompanyRepository repo;
+
+        public CompanyManager()
+        {
+            repo = new kdgparking.DAL.CompanyRepository();
+        }
+
         public Company AddCompany(string companyName)
         {
             Company company = new Company()

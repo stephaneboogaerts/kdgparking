@@ -16,7 +16,7 @@ namespace kdgparking.Controllers
 {
     public class ExcelController : Controller
     {
-        private IManager mgr = new Manager();
+        private ICSVManager mgr = new CSVManager();
 
         // GET: Excel
         public ActionResult Index()
@@ -66,11 +66,12 @@ namespace kdgparking.Controllers
 
         public ActionResult CsvExport()
         {
+            ContractManager ContMng = new ContractManager();
             // TODO : Testen of Holder &Vehicle Distinct zijn
             try
             {
 
-                IEnumerable<Vehicle> vehicles = mgr.GetVehicles();
+                IEnumerable<Vehicle> vehicles = ContMng.GetVehicles();
                 string csvToFilepath = mgr.CsvExport(vehicles);
                 TempData["report"] = "Succesfully exported CSV to " + csvToFilepath;
             }

@@ -14,7 +14,7 @@ namespace kdgparking.Controllers
     public class CompanyController : Controller
     {
 
-        private IManager mng = new Manager();
+        private ICompanyManager mng = new CompanyManager();
 
         public ActionResult Index()
         {

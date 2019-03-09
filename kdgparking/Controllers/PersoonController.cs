@@ -13,7 +13,7 @@ namespace testParkingWeb.Controllers
 {
     public class PersoonController : Controller
     {
-        private IManager mng = new Manager();
+        private IHolderManager mng = new HolderManager();
 
         //Meer feedback
 
@@ -59,12 +59,13 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstVoertuigen(string searchString)
         {
+            IContractManager ContMng = new ContractManager();
             // TODO : Testen of Holder &Vehicle Distinct zijn
             List<HolderVehicle> modelList = new List<HolderVehicle>();
             HolderVehicle model = new HolderVehicle();
             if (!String.IsNullOrEmpty(searchString))
             {
-                IEnumerable<Vehicle> vehicles = mng.GetVehicles(searchString);
+                IEnumerable<Vehicle> vehicles = ContMng.GetVehicles(searchString);
                 foreach(Vehicle v in vehicles)
                 {
                     model = new HolderVehicle()
@@ -85,6 +86,7 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstActive(string searchString)
         {
+            ICompanyManager CompMng = new CompanyManager();
             // Initialisatie ContractViewModel : Bevat List van ContracModels 
             //  &List van SelectListItems voor bestaande Companies in DB om op te filteren adhv dropdown
             ContractViewModel contractViewModel = new ContractViewModel();
@@ -94,7 +96,7 @@ namespace testParkingWeb.Controllers
             ContractModel contractModel;
 
             // Ophalen bestaande companies in DB om op te filteren adhv dropdown
-            List<Company> companies = mng.GetCompanies();
+            List<Company> companies = CompMng.GetCompanies();
             foreach(Company c in companies)
             {
                 contractViewModel.Companies.Add(new SelectListItem() { Text = c.CompanyName, Value = c.CompanyName });
@@ -192,7 +194,8 @@ namespace testParkingWeb.Controllers
 
         private InputHolder ComposeInputHolder(Holder holder)
         {
-            Contract holderContract = mng.GetHolderContract(holder.Id);
+            IContractManager ContMng = new ContractManager();
+            Contract holderContract = ContMng.GetHolderContract(holder.Id);
             return new InputHolder()
             {
                 HolderId = holder.Id,

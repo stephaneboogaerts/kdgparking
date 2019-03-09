@@ -53,12 +53,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompanyRepository.cs" />
+    <Compile Include="ContractRepository.cs" />
     <Compile Include="EF\OurDbConfiguration.cs" />
     <Compile Include="EF\OurDbContext.cs" />
     <Compile Include="EF\OurDbInitializer.cs" />
-    <Compile Include="IRepository.cs" />
+    <Compile Include="ICompanyRepository.cs" />
+    <Compile Include="IContractRepository.cs" />
+    <Compile Include="IHolderRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository.cs" />
+    <Compile Include="HolderRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
