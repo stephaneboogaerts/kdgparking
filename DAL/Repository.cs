@@ -160,5 +160,11 @@ namespace kdgparking.DAL
             List<Company> companies = ctx.Companies.ToList<Company>();
             return companies;
         }
+
+        public List<Company> ReadCompanies(string searchString)
+        {
+            List<Company> companies = ctx.Companies.Where(c => (c.CompanyName.ToLower()).Contains(searchString.ToLower())).ToList<Company>();
+            return companies;
+        }
     }
 }

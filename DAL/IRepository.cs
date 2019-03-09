@@ -33,6 +33,7 @@ namespace kdgparking.DAL
 
         Company CreateCompany(Company company);
         Company ReadCompany(string companyName);
+        List<Company> ReadCompanies(string searchString);
         List<Company> ReadCompanies();
     }
 }

@@ -40,6 +40,7 @@ namespace kdgparking.BL
         //Company
         Company AddCompany(string companyName);
         Company GetCompany(string companyName);
+        List<Company> GetCompanies(string searchString);
         List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box
 
         //File

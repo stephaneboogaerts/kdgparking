@@ -237,6 +237,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersoonController.cs" />
@@ -303,11 +304,13 @@
     <Content Include="Views\Excel\Commit.cshtml" />
     <Content Include="Views\Persoon\LijstVoertuigen.cshtml" />
     <Content Include="Views\Persoon\LijstActive.cshtml" />
+    <Content Include="Views\Company\Lijst.cshtml" />
+    <Content Include="Views\Company\Toevoegen.cshtml" />
+    <Content Include="Views\Company\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ExcellFiles\" />
-    <Folder Include="Models\" />
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>

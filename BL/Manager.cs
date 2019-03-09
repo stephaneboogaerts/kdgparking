@@ -283,6 +283,11 @@ namespace kdgparking.BL
             return repo.ReadCompanies();
         }
 
+        public List<Company> GetCompanies(string searchString)
+        {
+            return repo.ReadCompanies(searchString);
+        }
+
         private Company AddCompany(Company company)
         {
             // Validatie gebeurt in InputHolder
