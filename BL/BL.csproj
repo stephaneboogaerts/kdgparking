@@ -63,8 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IManager.cs" />
-    <Compile Include="Manager.cs" />
+    <Compile Include="CompanyManager.cs" />
+    <Compile Include="ContractManager.cs" />
+    <Compile Include="CSVManager.cs" />
+    <Compile Include="ICompanyManager.cs" />
+    <Compile Include="IContractManager.cs" />
+    <Compile Include="ICSVManager.cs" />
+    <Compile Include="IHolderManager.cs" />
+    <Compile Include="HolderManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

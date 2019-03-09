@@ -11,7 +11,7 @@ namespace kdgparking.Controllers
 {
     public class HomeController : Controller
     {
-        private IManager mgr = new Manager();
+        private IHolderManager mgr = new HolderManager();
 
         public ActionResult Index()
         {
