@@ -11,19 +11,23 @@ namespace kdgparking.BL
     {
         //Contract
         Contract AddContract(Contract contract);
-        Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end);
-        Contract AddContract(Holder holder, List<Vehicle> vehicle, DateTime begin, DateTime end);
+        //Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end);
+        Contract AddContract(Holder holder, Badge badge, DateTime begin, DateTime end, string contractId = null);
         //Contract GetContract(string ContractId);
         Contract GetContract(int Id);
         Contract GetHolderContract(int HolderId);
         Contract ChangeContract(Contract contract);
         void DeleteContract(Contract contract);
-        //ContractHistory
-        ContractHistory AddContractHistory(string contractId, Holder holder, DateTime begin, DateTime end, decimal warranty, decimal warrantyBadge);
-        //Vehicle
-        Vehicle AddVehicle(string vehicleName, string numberPlate);
-        Vehicle GetVehicle(string numberplate);
-        IEnumerable<Vehicle> GetVehicles();
-        IEnumerable<Vehicle> GetVehicles(string numberplate);
+
+        // Contract 
+        void ArchiveContract(Contract contract);
+        // Badge
+        Badge AddBadge(int badgeId);
+        Badge GetBadge(int badgeId);
+        void ChangeBadgeStatusToActive(Badge badge);
+        void ChangeBadgeStatusToLost(Badge badge);
+        void ChangeBadgeStatusToDisabled(Badge badge);
+        Holder HandleBadgeAssignment(int holderId, int badgeId, DateTime start, DateTime end, string contractId = null);
+        Holder HandleBadgeAssignment(Holder holder, int badgeId, DateTime start, DateTime end, string contractId = null);
     }
 }

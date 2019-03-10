@@ -10,14 +10,14 @@ namespace kdgparking.BL.Domain
 {
     public class ContractHistory
     {
-        [Key]
-        public string ContractId { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public decimal Warranty { get; set; }
-        public decimal WarrantyBadge { get; set; }
-        //public decimal Tarif { get; set; } // <--  wordt niet meer naar db geschreven
+        //[Key]
+        //public string ContractId { get; set; }
+        //public DateTime StartDate { get; set; }
+        //public DateTime EndDate { get; set; }
+        //public decimal Warranty { get; set; }
+        //public decimal WarrantyBadge { get; set; }
+        ////public decimal Tarif { get; set; } // <--  wordt niet meer naar db geschreven
 
-        public Holder Holder { get; set; }
+        //public Holder Holder { get; set; }
     }
 }

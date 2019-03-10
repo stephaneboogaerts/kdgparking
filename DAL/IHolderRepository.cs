@@ -21,9 +21,11 @@ namespace kdgparking.DAL
         void UpdateHolder(Holder holder);
         void DeleteHolder(Holder holder);
         IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company);
+        Holder ReadHolderWithBadges(int holderId);
 
-
-
-
+        Vehicle CreateVehicle(Vehicle vehicle);
+        Vehicle ReadVehicle(string numberplate);
+        IEnumerable<Vehicle> ReadVehicles();
+        IEnumerable<Vehicle> ReadVehicles(string numberplate);
     }
 }

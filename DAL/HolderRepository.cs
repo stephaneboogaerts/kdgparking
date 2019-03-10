@@ -38,14 +38,14 @@ namespace kdgparking.DAL
 
         public Holder ReadHolder(int holderId)
         {
-            Holder holder = ctx.Holders.Include("Company").Include("Contract").FirstOrDefault(x => x.Id == holderId);
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
             return holder;
         }
 
         // Zoekt in db op PNumber (enkel Holders toegevoegd adhv excel hebben deze value)
         public Holder ReadHolder(string pNumber)
         {
-            Holder holder = ctx.Holders.Include("Company").Include("Contract").FirstOrDefault(x => x.HolderNumber == pNumber);
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts").Include("Contracts.Badge").Include("Vehicles").FirstOrDefault(x => x.HolderNumber == pNumber);
             return holder;
         }
 
@@ -77,14 +77,46 @@ namespace kdgparking.DAL
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles()
         {
-            IEnumerable<Holder> holders = ctx.Holders.Include("Contract").Include("Contract.Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Contracts").Include("Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company)
         {
-            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contract").Include("Contract.Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contracts").Include("Vehicles").Include("Company").ToList<Holder>();
             return holders;
+        }
+        
+        public Holder ReadHolderWithBadges(int holderId)
+        {
+            return ctx.Holders.Include("Contracts").Include("Contracts.Badge").FirstOrDefault(h => h.Id == holderId);
+        }
+
+        public Vehicle CreateVehicle(Vehicle vehicle)
+        {
+            ctx.Vehicles.Add(vehicle);
+            ctx.SaveChanges();
+
+            return vehicle;
+        }
+
+        public Vehicle ReadVehicle(string numberplate)
+        {
+            Vehicle vehicle = ctx.Vehicles.FirstOrDefault(v => v.Numberplate == numberplate);
+            return vehicle;
+        }
+
+        public IEnumerable<Vehicle> ReadVehicles()
+        {
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holder").ToList<Vehicle>();
+            return vehicles;
+        }
+
+        public IEnumerable<Vehicle> ReadVehicles(string numberplate)
+        {
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holder").
+                Where(v => (v.Numberplate.ToLower()).Contains(numberplate.ToLower())).ToList<Vehicle>();
+            return vehicles;
         }
 
         public void Dispose()

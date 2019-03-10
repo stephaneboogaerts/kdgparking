@@ -13,9 +13,7 @@ namespace kdgparking.BL.Domain
 {
     public class Holder
     {
-        //Validatie verplaatst naar InputHolder
-        [Key, ForeignKey("Contract")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int Id { get; set; }
         [DisplayName("Persoon Nummer")]
         public string HolderNumber { get; set; }
@@ -39,12 +37,9 @@ namespace kdgparking.BL.Domain
         public string SamAccountName { get; set; } // <-- wordt toegewezen in repo bij het aanmaken
         [StringLength(20, ErrorMessage = "The MifareSerial value cannot exceed 20 characters. ")]
         public string MifareSerial { get; set; } // <-- wordt toegewezen in repo bij het aanmaken
-
-        // Badge geschiedenis, of is badge uniek per holder? -> Hoogstwaarschijnlijk irrelevant
-        public List<BadgeHistory> BadgeHistory { get; set; }
-        //[ForeignKey("Company")]
-        //public int CompanyId { get; set; }
+        
         public Company Company { get; set; }
-        public Contract Contract { get; set; }
+        public List<Contract> Contracts { get; set; }
+        public List<Vehicle> Vehicles { get; set; }
     }
 }

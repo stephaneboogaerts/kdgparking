@@ -18,16 +18,16 @@ namespace kdgparking.BL
 {
     public class HolderManager : IHolderManager
     {
-        private readonly IHolderRepository HolderRepo;
+        private readonly IHolderRepository repo;
 
         public HolderManager()
         {
-            HolderRepo = new HolderRepository();
+            repo = new HolderRepository();
         }
 
         public HolderManager(OurDbContext context)
         {
-            HolderRepo = new HolderRepository(context);
+            repo = new HolderRepository(context);
         }
 
         private void SeedTestData()
@@ -47,27 +47,39 @@ namespace kdgparking.BL
         //REFACTORING & DOCUMENTATIE NODIG
         public Holder ChangeHolder(int id, InputHolder updatedHolder)
         {
-            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
-            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
-            Holder ChangedHolder = this.GetHolder(id);
-            ChangedHolder.Name = updatedHolder.Name;
-            ChangedHolder.FirstName = updatedHolder.FirstName;
-            ChangedHolder.Email = updatedHolder.Email;
-            ChangedHolder.Contract.StartDate = updatedHolder.StartDate;
-            ChangedHolder.Contract.EndDate = updatedHolder.EndDate;
+            CompanyManager compMng = new CompanyManager(repo.ctx);
+            ContractManager contMng = new ContractManager(repo.ctx);
+
+            /////////////////////////////////////////////////////////
+            //Holder changedHolder = this.GetHolder(id);
+            Holder changedHolder = contMng.HandleBadgeAssignment(id, updatedHolder.Badge, updatedHolder.StartDate, updatedHolder.EndDate);
+
+            changedHolder.Name = updatedHolder.Name;
+            changedHolder.FirstName = updatedHolder.FirstName;
+            changedHolder.Email = updatedHolder.Email;
+
+            //ChangedHolder.Contract.StartDate = updatedHolder.StartDate;
+            //ChangedHolder.Contract.EndDate = updatedHolder.EndDate;
+            /////////////////////////////////////////////////////////
+
             //Add new Company indien nodig
-            if (!updatedHolder.Company.Equals(ChangedHolder.Company.CompanyName))
+            if (!updatedHolder.Company.Equals(changedHolder.Company.CompanyName))
             {
-                Company HolderCompany = CompMng.GetCompany(updatedHolder.Company);
+                Company HolderCompany = compMng.GetCompany(updatedHolder.Company);
                 if (HolderCompany == null)
                 {
-                    HolderCompany = CompMng.AddCompany(updatedHolder.Company);
+                    HolderCompany = compMng.AddCompany(updatedHolder.Company);
                 }
-                ChangedHolder.Company = HolderCompany;
+                changedHolder.Company = HolderCompany;
             }
-            HolderRepo.UpdateHolder(ChangedHolder);
-            ContMng.ChangeContract(ChangedHolder.Contract);
-            return ChangedHolder;
+            repo.UpdateHolder(changedHolder);
+            //contMng.ChangeContract(changedHolder.Contract);
+            return changedHolder;
+        }
+
+        public void ChangeHolder(Holder holder)
+        {
+            repo.UpdateHolder(holder);
         }
 
         public Holder AddHolder(string name)
@@ -93,72 +105,72 @@ namespace kdgparking.BL
 
         public Holder AddNewHolder(InputHolder inputHolder)
         {
-            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
-            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
+            // Bij het toevoegen van een nieuwe holder heb je een badge nodig om een termijn toe te voegen
+            CompanyManager CompMng = new CompanyManager(repo.ctx);
+            ContractManager ContMng = new ContractManager(repo.ctx);
             Company HolderCompany = CompMng.GetCompany(inputHolder.Company);
             if (HolderCompany == null)
             {
                 HolderCompany = CompMng.AddCompany(inputHolder.Company);
             }
-            Contract NewContract = new Contract()
-            {
-                StartDate = inputHolder.StartDate,
-                EndDate = inputHolder.EndDate
-            };
+            //Contract NewContract = new Contract()
+            //{
+            //    StartDate = inputHolder.StartDate,
+            //    EndDate = inputHolder.EndDate
+            //};
             Holder CreatedHolder = new Holder()
             {
                 Name = inputHolder.Name,
                 FirstName = inputHolder.FirstName,
                 Email = inputHolder.Email,
                 Company = HolderCompany,
-                Contract = NewContract
-                //CompanyId = HolderCompany.CompanyId
+                Contracts = new List<Contract>()
             };
+
             CreatedHolder = this.AddHolder(CreatedHolder);
-            //NewContract.HolderId = CreatedHolder.Id;
             return CreatedHolder;
         }
 
         public Holder GetHolder(int id)
         {
-            return HolderRepo.ReadHolder(id);
+            return repo.ReadHolder(id);
         }
 
         public Holder GetHolder(string pNumber)
         {
-            return HolderRepo.ReadHolder(pNumber);
+            return repo.ReadHolder(pNumber);
         }
 
         public IEnumerable<Holder> GetHolders()
         {
-            return HolderRepo.ReadHolders();
+            return repo.ReadHolders();
         }
 
         public IEnumerable<Holder> GetHolders(string searchString)
         {
-            return HolderRepo.ReadHolders(searchString);
+            return repo.ReadHolders(searchString);
         }
 
         public IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles()
         {
-            return HolderRepo.ReadHoldersWithContractsAndVehicles();
+            return repo.ReadHoldersWithContractsAndVehicles();
         }
 
         public IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles(string company)
         {
-            return HolderRepo.ReadHoldersWithContractsAndVehicles(company);
+            return repo.ReadHoldersWithContractsAndVehicles(company);
         }
 
         private Holder AddHolder(Holder holder)
         {
             // Validatie gebeurt in InputHolder
-            return HolderRepo.CreateHolder(holder);
+            return repo.CreateHolder(holder);
         }
 
         public Holder AddHolder(string name, string firstName, string holderNr, string email,
             string phone, string gsm, string city, string street, string post, string companyName)
         {
-            CompanyManager CompMng = new CompanyManager(HolderRepo.ctx);
+            CompanyManager CompMng = new CompanyManager(repo.ctx);
             // Kijken of een Company alreeds bestaat in de DB
             // Wanneer de Company niet gevonden word, wordt er een nieuwe Company aangemaakt
             Company company = CompMng.GetCompany(companyName);
@@ -178,18 +190,50 @@ namespace kdgparking.BL
                 City = city,
                 Street = street,
                 PostalCode = post,
-                Company = company
+                Company = company,
+                Vehicles = new List<Vehicle>()
             };
             return this.AddHolder(holder);
         }
 
         public void RemoveHolder(int id)
         {
-            ContractManager ContMng = new ContractManager(HolderRepo.ctx);
+            ContractManager ContMng = new ContractManager(repo.ctx);
             int ContractId = ContMng.GetHolderContract(id).Id;
-            HolderRepo.DeleteHolder(this.GetHolder(id));
+            repo.DeleteHolder(this.GetHolder(id));
             ContMng.DeleteContract(ContMng.GetContract(ContractId));
             return;
+        }
+
+        public Holder GetHolderWithBadges(int holderId)
+        {
+            return repo.ReadHolderWithBadges(holderId);
+        }
+
+        public Vehicle AddVehicle(string vehicleName, string numberPlate)
+        {
+            Vehicle vehicle = new Vehicle()
+            {
+                VehicleName = vehicleName,
+                Numberplate = numberPlate
+            };
+
+            return repo.CreateVehicle(vehicle);
+        }
+
+        public Vehicle GetVehicle(string numberplate)
+        {
+            return repo.ReadVehicle(numberplate);
+        }
+
+        public IEnumerable<Vehicle> GetVehicles()
+        {
+            return repo.ReadVehicles();
+        }
+
+        public IEnumerable<Vehicle> GetVehicles(string numberplate)
+        {
+            return repo.ReadVehicles(numberplate);
         }
 
         public void Validate(InputHolder inputHolder)
@@ -200,6 +244,5 @@ namespace kdgparking.BL
             if (!valid)
                 throw new ValidationException("InputHolder " + inputHolder.Name + " not valid!");
         }
-
     }
 }

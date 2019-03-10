@@ -32,22 +32,22 @@ namespace kdgparking.DAL
             return contract;
         }
 
-        //public Contract ReadContract(string contractId)
-        //{
-        //    Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.ContractId == contractId);
-        //    return contract;
-        //}
+        public Contract ReadContract(string contractId)
+        {
+            Contract contract = ctx.Contracts.FirstOrDefault(c => c.ContractId == contractId);
+            return contract;
+        }
 
         public Contract ReadContract(int Id)
         {
-            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.Id == Id);
+            Contract contract = ctx.Contracts.FirstOrDefault(c => c.Id == Id);
             return contract;
         }
 
         public Contract ReadHolderContract(int holderId)
         {
             //Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.HolderId == holderId);
-            Contract contract = ctx.Contracts.Include("Vehicles").FirstOrDefault(c => c.Holder.Id == holderId);
+            Contract contract = ctx.Contracts.FirstOrDefault(c => c.Holder.Id == holderId);
             return contract;
         }
 
@@ -65,41 +65,25 @@ namespace kdgparking.DAL
             return contract;
         }
 
-        public ContractHistory CreateContractHistory(ContractHistory contractHist)
+        public Badge CreateBadge(Badge badge)
         {
-            ctx.ContractHistories.Add(contractHist);
+            ctx.Badges.Add(badge);
             ctx.SaveChanges();
-
-            return contractHist;
+            return badge;
         }
 
-        public Vehicle CreateVehicle(Vehicle vehicle)
+        public void UpdateBadge(Badge badge)
         {
-            ctx.Vehicles.Add(vehicle);
+            ctx.Entry(badge).State = System.Data.Entity.EntityState.Modified;
             ctx.SaveChanges();
-
-            return vehicle;
         }
 
-        public Vehicle ReadVehicle(string numberplate)
+        public Badge ReadBadge(int badgeId)
         {
-            Vehicle vehicle = ctx.Vehicles.FirstOrDefault(v => v.Numberplate == numberplate);
-            return vehicle;
+            Badge badge = ctx.Badges.FirstOrDefault(b => b.BadgeId == badgeId);
+            return badge;
         }
 
-        public IEnumerable<Vehicle> ReadVehicles()
-        {
-            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Contract.Holder").ToList<Vehicle>();
-            return vehicles;
-        }
-
-        public IEnumerable<Vehicle> ReadVehicles(string numberplate)
-        {
-            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Contract.Holder").
-                Where(v => (v.Numberplate.ToLower()).Contains(numberplate.ToLower())).ToList<Vehicle>();
-            return vehicles;
-        }
-        
         public void Dispose()
         {
             ctx.Dispose();

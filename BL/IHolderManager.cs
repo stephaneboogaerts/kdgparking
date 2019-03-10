@@ -25,9 +25,13 @@ namespace kdgparking.BL
         IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles();
         IEnumerable<Holder> GetHoldersWithCompanyContractsAndVehicles(string company);
         void RemoveHolder(int id);
-        
+        void ChangeHolder(Holder holder);
+        Holder GetHolderWithBadges(int holderId);
 
-
-
+        //Vehicle
+        Vehicle AddVehicle(string vehicleName, string numberPlate);
+        Vehicle GetVehicle(string numberplate);
+        IEnumerable<Vehicle> GetVehicles();
+        IEnumerable<Vehicle> GetVehicles(string numberplate);
     }
 }

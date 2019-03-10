@@ -32,55 +32,30 @@ namespace kdgparking.BL
 
         public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end)
         {
-            HolderManager HolderMng = new HolderManager(repo.ctx);
-            Holder holder = HolderMng.GetHolder(holderId);
-            Vehicle vehicle = this.GetVehicle(numberplate);
-            List<Vehicle> vehicles = new List<Vehicle>();
-            vehicles.Add(vehicle);
+            HolderManager holderMng = new HolderManager(repo.ctx);
+            Holder holder = holderMng.GetHolder(holderId);
             Contract contract = new Contract
             {
                 Holder = holder,
                 StartDate = begin,
-                EndDate = end,
-                Vehicles = vehicles
+                EndDate = end
             };
 
             return this.AddContract(contract);
         }
 
-        public Contract AddContract(Holder holder, List<Vehicle> vehicles, DateTime begin, DateTime end)
+        public Contract AddContract(Holder holder, DateTime begin, DateTime end)
         {
             Contract contract = new Contract
             {
                 Holder = holder,
                 StartDate = begin,
-                EndDate = end,
-                Vehicles = vehicles
+                EndDate = end
             };
 
             return this.AddContract(contract);
         }
-
-        public ContractHistory AddContractHistory(string contractId, Holder holder, DateTime begin, DateTime end,
-            decimal warranty, decimal warrantyBadge)
-        {
-            ContractHistory contractH = new ContractHistory()
-            {
-                ContractId = contractId,
-                Holder = holder,
-                StartDate = begin,
-                EndDate = end,
-                Warranty = warranty,
-                WarrantyBadge = warrantyBadge
-            };
-            return this.AddContractHistory(contractH);
-        }
-
-        private ContractHistory AddContractHistory(ContractHistory contractHistory)
-        {
-            return repo.CreateContractHistory(contractHistory);
-        }
-
+        
         public Contract AddContract(Contract contract)
         {
             // Validatie gebeurt in InputHolder
@@ -108,35 +83,109 @@ namespace kdgparking.BL
             return repo.UpdateContract(contract);
         }
 
-        public Vehicle AddVehicle(string vehicleName, string numberPlate)
-        {
-            Vehicle vehicle = new Vehicle()
-            {
-                VehicleName = vehicleName,
-                Numberplate = numberPlate
-            };
-
-            return repo.CreateVehicle(vehicle);
-        }
-
-        public Vehicle GetVehicle(string numberplate)
-        {
-            return repo.ReadVehicle(numberplate);
-        }
-
-        public IEnumerable<Vehicle> GetVehicles()
-        {
-            return repo.ReadVehicles();
-        }
-
-        public IEnumerable<Vehicle> GetVehicles(string numberplate)
-        {
-            return repo.ReadVehicles(numberplate);
-        }
-
         public void DeleteContract(Contract contract)
         {
             repo.DeleteContract(contract);
+        }
+        
+        public void ArchiveContract(Contract contract)
+        {
+            contract.EndDate = DateTime.Now;
+            contract.Archived = true;
+            repo.UpdateContract(contract);
+        }
+
+        public Badge AddBadge(int badgeId)
+        {
+            Badge badge = new Badge()
+            {
+                BadgeId = badgeId,
+                BadgeStatus = BadgeStatus.Active
+            };
+            return this.AddBadge(badge);
+        }
+
+        private Badge AddBadge(Badge badge)
+        {
+            return repo.CreateBadge(badge);
+        }
+
+        public Badge GetBadge(int badgeId)
+        {
+            return repo.ReadBadge(badgeId);
+        }
+
+        public void ChangeBadgeStatusToActive(Badge badge)
+        {
+            badge.BadgeStatus = BadgeStatus.Active;
+            this.ChangeBadge(badge);
+        }
+
+        public void ChangeBadgeStatusToLost(Badge badge)
+        {
+            badge.BadgeStatus = BadgeStatus.Lost;
+            this.ChangeBadge(badge);
+        }
+
+        public void ChangeBadgeStatusToDisabled(Badge badge)
+        {
+            badge.BadgeStatus = BadgeStatus.Disabled;
+            this.ChangeBadge(badge);
+        }
+
+        private void ChangeBadge(Badge badge)
+        {
+            repo.UpdateBadge(badge);
+        }
+
+        public Contract AddContract(Holder holder, Badge badge, DateTime begin, DateTime end, string contractId = null)
+        {
+            Contract contract = new Contract()
+            {
+                Holder = holder,
+                Badge = badge,
+                StartDate = begin,
+                EndDate = end,
+                ContractId = contractId,
+                Archived = false
+            };
+            return contract;
+        }
+
+        public Holder HandleBadgeAssignment(int holderId, int badgeId, DateTime start, DateTime end, string contractId = null)
+        {
+            HolderManager holdMgr = new HolderManager(repo.ctx);
+            Holder holder = holdMgr.GetHolderWithBadges(holderId);
+            return HandleBadgeAssignment(holder, badgeId, start, end, contractId);
+        }
+
+        public Holder HandleBadgeAssignment(Holder holder, int badgeId, DateTime start, DateTime end, string contractId = null)
+        {
+            Badge badge = repo.ReadBadge(badgeId);
+            if (badge == null)
+            {
+                badge = this.AddBadge(badgeId);
+            }
+
+            if (holder.Contracts == null || holder.Contracts.Count == 0)
+            {
+                holder.Contracts = new List<Contract>();
+                Contract contract = AddContract(holder, badge, start, end, contractId);
+                holder.Contracts.Add(contract);
+            }
+            else if (holder.Contracts.FirstOrDefault(h => h.Archived == false).Badge.BadgeId != badge.BadgeId)
+            {
+                // Wanneer een nieuwe badge zou worden toegewezen wordt de vorige gearchiveerd
+                this.ArchiveContract(holder.Contracts.FirstOrDefault(h => h.Archived == false));
+                Contract contract = AddContract(holder, badge, start, end, contractId);
+                holder.Contracts.Add(contract);
+            }
+            return holder;
+        }
+
+        private Contract AddBadgeHistory(Holder holder, Badge badge, DateTime start, DateTime end)
+        {
+            throw new NotImplementedException();
         }
     }
 }
