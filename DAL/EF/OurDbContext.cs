@@ -12,16 +12,17 @@ namespace kdgparking.DAL.EF
     {
         public OurDbContext() : base("kdgparking")
         {
-            Database.SetInitializer<OurDbContext>(new CreateDatabaseIfNotExists<OurDbContext>());
+            Database.SetInitializer<OurDbContext>(new /*CreateDatabaseIfNotExists*/DropCreateDatabaseAlways<OurDbContext>());
         }
 
         public DbSet<Holder> Holders { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Badge> Badges { get; set; }
-        public DbSet<Address> Addresses { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<BadgeHistory> BadgeHistories { get; set; }
-        public DbSet<ContractHistory> ContractHistories { get; set; }
+
+        //public DbSet<Address> Addresses { get; set; }
+        //public DbSet<BadgeHistory> BadgeHistories { get; set; }
+        //public DbSet<ContractHistory> ContractHistories { get; set; }
     }
 }

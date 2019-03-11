@@ -44,7 +44,7 @@ namespace kdgparking.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ViewBag.Message = "ERROR: " + ex.Message.ToString() + " Upoad wordt onderbroken.";
+                    ViewBag.Message = "ERROR: " + ex.Message.ToString() + " Upload wordt onderbroken.";
                 }
             else
             {
@@ -66,12 +66,12 @@ namespace kdgparking.Controllers
 
         public ActionResult CsvExport()
         {
-            ContractManager ContMng = new ContractManager();
+            HolderManager holdMgr = new HolderManager();
             // TODO : Testen of Holder &Vehicle Distinct zijn
             try
             {
 
-                IEnumerable<Vehicle> vehicles = ContMng.GetVehicles();
+                IEnumerable<Vehicle> vehicles = holdMgr.GetVehicles();
                 string csvToFilepath = mgr.CsvExport(vehicles);
                 TempData["report"] = "Succesfully exported CSV to " + csvToFilepath;
             }

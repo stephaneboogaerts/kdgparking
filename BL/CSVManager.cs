@@ -32,77 +32,62 @@ namespace kdgparking.BL {
         //  Methode geeft een Lijst terug van InputHolders voor overzicht gecommitte records
         public List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList)
         {
-            HolderManager HoldMng = new HolderManager(repo.ctx);
-            ContractManager ContMng = new ContractManager(repo.ctx);
+            HolderManager holdMng = new HolderManager(repo.ctx);
+            ContractManager contMng = new ContractManager(repo.ctx);
+            List<Holder> holderList = new List<Holder>();
             List<InputHolder> iHolderList = new List<InputHolder>();
             Vehicle vehicle;
-            Contract contract;
-            Company company;
             List<Vehicle> vehicles;
             InputHolder iHolder;
             foreach (InputHolder inputHolder in inputHolderList)
             {
                 iHolder = new InputHolder();
 
-                // TODO : Badge extractie
-
-
                 // Holder extractie
                 // Kijken of een Holder alreeds bestaat in de DB
                 // Wanneer de Holder niet gevonden word, wordt er een nieuwe Holder aangemaakt
-                Holder holder = HoldMng.GetHolder(inputHolder.PNumber);
+
+                Holder holder = holdMng.GetHolder(inputHolder.PNumber);
                 if (holder == null)
                 {
-                    holder = HoldMng.AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
+                    holder = holdMng.AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
                         inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post, inputHolder.Company);
+                }
 
-                    //Contract extractie voor nieuwe Holder
-                    contract = new Contract()
-                    {
-                        StartDate = inputHolder.StartDate,
-                        EndDate = inputHolder.EndDate,
-                        Holder = holder,
-                        Vehicles = new List<Vehicle>()
-                    };
-                    contract = ContMng.AddContract(contract);
-                }
-                else
-                {
-                    // Holder bestaat : Update termijn
-                    contract = holder.Contract;
-                    contract.StartDate = inputHolder.StartDate;
-                    contract.EndDate = inputHolder.EndDate;
-                    contract = ContMng.ChangeContract(contract);
-                }
+                // Badge extractie
+                //badge = HoldMng.GetBadge(inputHolder.Badge);
+                holder = contMng.HandleBadgeAssignment(holder, inputHolder.Badge, inputHolder.StartDate, inputHolder.EndDate, inputHolder.ContractId);
 
                 // Vehicle extractie
                 // Kijken of Vehicle (adhv nummerplaat) al bestaat in DB
-                vehicle = ContMng.GetVehicle(inputHolder.NumberPlate);
+                vehicle = holdMng.GetVehicle(inputHolder.NumberPlate);
                 if (vehicle == null)
                 {
-                    vehicle = ContMng.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
+                    vehicle = holdMng.AddVehicle(inputHolder.VoertuigNaam, inputHolder.NumberPlate);
                 }
 
-                vehicles = contract.Vehicles;
-                // Kijken of het contract al eenzelfde Vehicle bevat
+                vehicles = holder.Vehicles;
+                // Kijken of de holder al eenzelfde Vehicle bevat
                 //  : indien wel geen verdere actie nodig
                 if (!vehicles.Contains(vehicle))
                 {
                     vehicles.Add(vehicle);
-                    contract.Vehicles = vehicles;
-                    ContMng.ChangeContract(contract);
+                    holder.Vehicles = vehicles;
+                    holdMng.ChangeHolder(holder);
                 }
 
                 // Deze values worden teruggegeven aan de Controller voor laatste overzicht van commit
                 iHolder.Name = holder.Name;
                 iHolder.FirstName = holder.FirstName;
                 iHolder.NumberPlate = vehicle.Numberplate;
-                iHolder.StartDate = contract.StartDate;
-                iHolder.EndDate = contract.EndDate;
+                iHolder.StartDate = holder.Contracts.FirstOrDefault(c => c.Archived == false).StartDate;
+                iHolder.EndDate = holder.Contracts.FirstOrDefault(c => c.Archived == false).EndDate;
                 iHolder.Company = holder.Company.CompanyName;
 
+                holderList.Add(holder);
                 iHolderList.Add(iHolder);
             }
+            // TODO : purge holderList
             return iHolderList;
         }
 

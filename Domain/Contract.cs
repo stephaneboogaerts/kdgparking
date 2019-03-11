@@ -10,16 +10,16 @@ namespace kdgparking.BL.Domain
 {
     public class Contract
     {
-        [Key,ForeignKey("Holder")]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int Id { get; set; }
-        //public string ContractId { get; set; }
+        public string ContractId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        //[ForeignKey("Holder")]
-        //public int HolderId { get; set; }
+        // Wanneer een termijn afloopt of wordt opgezegd
+        public bool Archived { get; set; }
+        
         public Holder Holder { get; set; }
-        public List<Vehicle> Vehicles { get; set; }
+        public Badge Badge { get; set; }
     }
 }

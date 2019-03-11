@@ -18,11 +18,13 @@ namespace kdgparking.DAL
         Contract UpdateContract(Contract contract);
         void DeleteContract(Contract contract);
 
-        ContractHistory CreateContractHistory(ContractHistory contractHist);
-
-        Vehicle CreateVehicle(Vehicle vehicle);
-        Vehicle ReadVehicle(string numberplate);
-        IEnumerable<Vehicle> ReadVehicles();
-        IEnumerable<Vehicle> ReadVehicles(string numberplate);
+        //ContractHistory CreateContractHistory(ContractHistory contractHist);
+        
+        // Badge
+        //BadgeHistory CreateBadgeHistory(BadgeHistory badgeHistory);
+        //void UpdateBadgeHistory(BadgeHistory badgeHistory);
+        Badge CreateBadge(Badge badge);
+        Badge ReadBadge(int badgeId);
+        void UpdateBadge(Badge badge);
     }
 }

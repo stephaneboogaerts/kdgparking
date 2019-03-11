@@ -14,9 +14,9 @@ namespace kdgparking.BL.Domain
     {
         [Key]
         public int Id { get; set; }
-        public string BadgeId { get; set; }
+        public int BadgeId { get; set; }
         public BadgeStatus BadgeStatus { get; set; }
         
-        List<BadgeHistory> BadgeHistory { get; set; }
+        List<Contract> Contracts { get; set; }
     }
 }

@@ -60,13 +60,13 @@ namespace testParkingWeb.Controllers
 
         public ActionResult LijstVoertuigen(string searchString)
         {
-            IContractManager ContMng = new ContractManager();
+            IHolderManager holdMgt = new HolderManager();
             // TODO : Testen of Holder &Vehicle Distinct zijn
             List<HolderVehicle> modelList = new List<HolderVehicle>();
             HolderVehicle model = new HolderVehicle();
             if (!String.IsNullOrEmpty(searchString))
             {
-                IEnumerable<Vehicle> vehicles = ContMng.GetVehicles(searchString);
+                IEnumerable<Vehicle> vehicles = holdMgt.GetVehicles(searchString);
                 foreach(Vehicle v in vehicles)
                 {
                     model = new HolderVehicle()
@@ -117,22 +117,28 @@ namespace testParkingWeb.Controllers
 
             foreach (Holder h in holderContracts)
             {
-                // TODO : Check order to see if latest contract
-                //h.Contract.OrderBy(c => c.ContractId);
-                // Check if latest contract is active
-                int active = (h.Contract.StartDate < DateTime.Now && DateTime.Now < h.Contract.EndDate) ? 1 : 0;
-
-                contractModel = new ContractModel()
+                if(h.Contracts.FirstOrDefault(c => c.Archived == false) != null)
                 {
-                    FirstName = h.FirstName,
-                    Name = h.Name,
-                    Email = h.Email,
-                    Active = active,
-                    StartDate = h.Contract.StartDate,
-                    EndDate = h.Contract.EndDate,
-                    Company = h.Company.CompanyName
-                };
-                contractViewModel.contractmodels.Add(contractModel);
+                    // TODO : Check order to see if latest contract
+                    //h.Contract.OrderBy(c => c.ContractId);
+                    // Check if latest contract is active
+                    DateTime start = h.Contracts.FirstOrDefault(c => c.Archived == false).StartDate;
+                    DateTime end = h.Contracts.FirstOrDefault(c => c.Archived == false).EndDate;
+
+                    int active = (start < DateTime.Now && DateTime.Now < end) ? 1 : 0;
+
+                    contractModel = new ContractModel()
+                    {
+                        FirstName = h.FirstName,
+                        Name = h.Name,
+                        Email = h.Email,
+                        Active = active,
+                        StartDate = start,
+                        EndDate = end,
+                        Company = h.Company.CompanyName
+                    };
+                    contractViewModel.contractmodels.Add(contractModel);
+                }
             }
             return View(contractViewModel);
         }
