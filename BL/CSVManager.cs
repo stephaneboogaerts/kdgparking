@@ -12,6 +12,7 @@ using System.Web;
 using OfficeOpenXml;
 using System.IO;
 using Syroot.Windows.IO;
+using kdgparking.DAL.EF;
 
 namespace kdgparking.BL { 
     public class CSVManager : ICSVManager
@@ -19,15 +20,20 @@ namespace kdgparking.BL {
         IHolderRepository repo;
         public CSVManager()
         {
-            repo = new kdgparking.DAL.HolderRepository();
+            repo = new HolderRepository();
+        }
+
+        public CSVManager(OurDbContext context)
+        {
+            repo = new HolderRepository(context);
         }
 
         // Lijst van InputHolders omzetten naar respectievelijke klasse en wegschrijven naar DB
         //  Methode geeft een Lijst terug van InputHolders voor overzicht gecommitte records
         public List<InputHolder> ProcessInputholderList(List<InputHolder> inputHolderList)
         {
-            HolderManager HoldMng = new HolderManager();
-            ContractManager ContMng = new ContractManager();
+            HolderManager HoldMng = new HolderManager(repo.ctx);
+            ContractManager ContMng = new ContractManager(repo.ctx);
             List<InputHolder> iHolderList = new List<InputHolder>();
             Vehicle vehicle;
             Contract contract;

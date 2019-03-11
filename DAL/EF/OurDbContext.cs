@@ -8,7 +8,7 @@ using kdgparking.BL.Domain;
 namespace kdgparking.DAL.EF
 {
     [DbConfigurationType(typeof(OurDbConfiguration))]
-    internal class OurDbContext : DbContext
+    public class OurDbContext : DbContext
     {
         public OurDbContext() : base("kdgparking")
         {

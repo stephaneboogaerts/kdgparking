@@ -11,12 +11,17 @@ namespace kdgparking.DAL
 {
     public class ContractRepository : IContractRepository
     {
-        private OurDbContext ctx;
+        public OurDbContext ctx { get; }
 
         public ContractRepository()
         {
             ctx = new OurDbContext();
             ctx.Database.Initialize(false);
+        }
+
+        public ContractRepository(OurDbContext context)
+        {
+            ctx = context;
         }
 
         public Contract CreateContract(Contract contract)

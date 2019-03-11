@@ -1,0 +1,15 @@
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.DAL.dll.config
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.DAL.dll
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.DAL.pdb
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\EntityFramework.dll
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.BL.Domain.dll
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.BL.Domain.pdb
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\kdgparking.BL.Domain.dll.config
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\EntityFramework.xml
+C:\Users\Tarkus\Projects\kdgparking\DAL\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Tarkus\Projects\kdgparking\DAL\obj\Debug\DAL.csprojAssemblyReference.cache
+C:\Users\Tarkus\Projects\kdgparking\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
+C:\Users\Tarkus\Projects\kdgparking\DAL\obj\Debug\DAL.csproj.CopyComplete
+C:\Users\Tarkus\Projects\kdgparking\DAL\obj\Debug\kdgparking.DAL.dll
+C:\Users\Tarkus\Projects\kdgparking\DAL\obj\Debug\kdgparking.DAL.pdb

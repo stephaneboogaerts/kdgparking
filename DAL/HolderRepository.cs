@@ -10,12 +10,17 @@ namespace kdgparking.DAL
 {
     public class HolderRepository : IHolderRepository
     {
-        private OurDbContext ctx;
+        public OurDbContext ctx { get; }
 
         public HolderRepository()
         {
             ctx = new OurDbContext();
             ctx.Database.Initialize(false);
+        }
+
+        public HolderRepository(OurDbContext context)
+        {
+            ctx = context;
         }
         
         public Holder CreateHolder(Holder holder)
