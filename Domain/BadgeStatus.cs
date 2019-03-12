@@ -2,7 +2,7 @@
 {
     public enum BadgeStatus : byte
     {
-        Active = 1,
+        Ok = 1,
         Lost,
         Disabled
     }

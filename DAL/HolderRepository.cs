@@ -75,13 +75,13 @@ namespace kdgparking.DAL
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles()
         {
-            IEnumerable<Holder> holders = ctx.Holders.Include("Contracts").Include("Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Include("Contracts.Badge").Include("Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
 
         public IEnumerable<Holder> ReadHoldersWithContractsAndVehicles(string company)
         {
-            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contracts").Include("Vehicles").Include("Company").ToList<Holder>();
+            IEnumerable<Holder> holders = ctx.Holders.Where(h => h.Company.CompanyName.ToLower() == company.ToLower()).Include("Contracts.Badge").Include("Vehicles").Include("Company").ToList<Holder>();
             return holders;
         }
         
@@ -106,13 +106,13 @@ namespace kdgparking.DAL
 
         public IEnumerable<Vehicle> ReadVehicles()
         {
-            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holder").ToList<Vehicle>();
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holders").ToList<Vehicle>();
             return vehicles;
         }
 
         public IEnumerable<Vehicle> ReadVehicles(string numberplate)
         {
-            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holder").
+            IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holders").
                 Where(v => (v.Numberplate.ToLower()).Contains(numberplate.ToLower())).ToList<Vehicle>();
             return vehicles;
         }

@@ -85,7 +85,7 @@ namespace kdgparking.BL
             Badge badge = new Badge()
             {
                 BadgeId = badgeId,
-                BadgeStatus = BadgeStatus.Active
+                BadgeStatus = BadgeStatus.Ok
             };
             return this.AddBadge(badge);
         }
@@ -102,7 +102,7 @@ namespace kdgparking.BL
 
         public void ChangeBadgeStatusToActive(Badge badge)
         {
-            badge.BadgeStatus = BadgeStatus.Active;
+            badge.BadgeStatus = BadgeStatus.Ok;
             this.ChangeBadge(badge);
         }
 
@@ -146,24 +146,37 @@ namespace kdgparking.BL
 
         public Holder HandleBadgeAssignment(Holder holder, int badgeId, DateTime start, DateTime end, string contractId = null)
         {
+            HolderManager holdMgr = new HolderManager(repo.ctx);
+
             Badge badge = repo.ReadBadge(badgeId);
             if (badge == null)
             {
                 badge = this.AddBadge(badgeId);
             }
 
-            if (holder.Contracts == null || holder.Contracts.Count == 0)
+            // Wanneer 
+            if (holder.Contracts == null)
             {
                 holder.Contracts = new List<Contract>();
+                //Contract contract = AddContract(holder, badge, start, end, contractId);
+                //holder.Contracts.Add(contract);
+            }
+            // Er bestaan geen actieve contracten, we maken een nieuwe aan
+            if (holder.Contracts.FirstOrDefault(h => h.Archived == false) == null || holder.Contracts.Count == 0)
+            {
                 Contract contract = AddContract(holder, badge, start, end, contractId);
                 holder.Contracts.Add(contract);
+                holdMgr.ChangeHolder(holder);
             }
+            // Er bestaat wel een actief contract, we gaan aftoetsen of de badges overeenkomen
+            // Zoniet wordt het vorige "contract" gearchiveerd en wordt er een nieuwe aangemaakt met de nieuwe badge
             else if (holder.Contracts.FirstOrDefault(h => h.Archived == false).Badge.BadgeId != badge.BadgeId)
             {
                 // Wanneer een nieuwe badge zou worden toegewezen wordt de vorige gearchiveerd
                 this.ArchiveContract(holder.Contracts.FirstOrDefault(h => h.Archived == false));
                 Contract contract = AddContract(holder, badge, start, end, contractId);
                 holder.Contracts.Add(contract);
+                holdMgr.ChangeHolder(holder);
             }
             return holder;
         }

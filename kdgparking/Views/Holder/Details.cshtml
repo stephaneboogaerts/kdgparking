@@ -59,18 +59,18 @@
             @Html.DisplayFor(model => model.Email)
         </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.NumberPlate)
-        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Badge)
+        </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.MiFareSerial)
+            @Html.DisplayFor(model => model.Badge)
         </dd>
-
-
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.HolderId }) |
-    @Html.ActionLink("Terug naar lijst", "Index")
-</p>
+
+
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.HolderId }) |
+            @Html.ActionLink("Terug naar lijst", "Index")
+        </p>
