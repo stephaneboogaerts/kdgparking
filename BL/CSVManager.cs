@@ -50,7 +50,7 @@ namespace kdgparking.BL {
                 Holder holder = holdMng.GetHolder(inputHolder.PNumber);
                 if (holder == null)
                 {
-                    holder = holdMng.AddHolder(inputHolder.Name, inputHolder.FirstName, inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
+                    holder = holdMng.AddHolder(CleanString(inputHolder.Name), CleanString(inputHolder.FirstName), inputHolder.PNumber, inputHolder.Email, inputHolder.Telefoon,
                         inputHolder.GSM, inputHolder.Stad, inputHolder.Straat, inputHolder.Post, inputHolder.Company);
                 }
 
@@ -250,7 +250,7 @@ namespace kdgparking.BL {
             return downloadsPath.ToString();
         }
 
-                public void Validate(InputHolder inputHolder)
+        public void Validate(InputHolder inputHolder)
         {
             List<ValidationResult> errors = new List<ValidationResult>();
             bool valid = Validator.TryValidateObject(inputHolder, new ValidationContext(inputHolder), errors, validateAllProperties: true);
@@ -258,7 +258,7 @@ namespace kdgparking.BL {
             if (!valid)
                 throw new ValidationException("InputHolder " + inputHolder.Name + " not valid!");
         }
-        
+
         private string CleanString(string input)
         {
             string DirtyCharacters = "ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ";

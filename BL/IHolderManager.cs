@@ -33,5 +33,7 @@ namespace kdgparking.BL
         Vehicle GetVehicle(string numberplate);
         IEnumerable<Vehicle> GetVehicles();
         IEnumerable<Vehicle> GetVehicles(string numberplate);
+
+        void GetSQLView();
     }
 }

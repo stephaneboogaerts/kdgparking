@@ -32,8 +32,11 @@ namespace kdgparking.BL.Domain
         [Required(ErrorMessage = "Company is vereist")]
         public string Company { get; set; }
 
+        [DisplayName("Nummerplaat")]
         public string NumberPlate { get; set; }
         public string VoertuigNaam { get; set; }
+
+        public int MiFareSerial { get; set; }
 
         public string Email { get; set; }
         public string Telefoon { get; set; }

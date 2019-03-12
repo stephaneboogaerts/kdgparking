@@ -288,8 +288,6 @@
     </Content>
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\CRUD.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
@@ -300,13 +298,13 @@
     <Content Include="Views\Persoon\Delete.cshtml" />
     <Content Include="Views\Persoon\Edit.cshtml" />
     <Content Include="Views\Persoon\Toevoegen.cshtml" />
-    <Content Include="Views\Persoon\ContractEdit.cshtml" />
     <Content Include="Views\Excel\Commit.cshtml" />
     <Content Include="Views\Persoon\LijstVoertuigen.cshtml" />
     <Content Include="Views\Persoon\LijstActive.cshtml" />
     <Content Include="Views\Company\Lijst.cshtml" />
     <Content Include="Views\Company\Toevoegen.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
+    <Content Include="Views\Home\SQL.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

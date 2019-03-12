@@ -236,6 +236,14 @@ namespace kdgparking.BL
             return repo.ReadVehicles(numberplate);
         }
 
+        //SQL view van de website voor debugging
+        public void GetSQLView()
+        {
+            repo.ExecuteViewQuery();
+            return;
+
+        }
+
         public void Validate(InputHolder inputHolder)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

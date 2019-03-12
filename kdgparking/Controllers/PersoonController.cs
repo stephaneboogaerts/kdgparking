@@ -27,7 +27,7 @@ namespace testParkingWeb.Controllers
             IEnumerable<Holder> holders;
             if (!String.IsNullOrEmpty(searchString))
             {
-                //searchString = this.CleanString(searchString);
+                searchString = this.CleanString(searchString);
                 holders = mng.GetHolders(searchString);
             }
             else
@@ -53,6 +53,8 @@ namespace testParkingWeb.Controllers
         {
             if (ModelState.IsValid)
             {
+                nieuweHolder.Name = CleanString(nieuweHolder.Name);
+                nieuweHolder.FirstName = CleanString(nieuweHolder.FirstName);
                 mng.AddNewHolder(nieuweHolder);
             }
             return View();
@@ -167,6 +169,8 @@ namespace testParkingWeb.Controllers
                 return new HttpStatusCodeResult(500);
             }
             int newId = (int)id;
+            updateHolder.Name = CleanString(updateHolder.Name);
+            updateHolder.FirstName = CleanString(updateHolder.FirstName);
             mng.ChangeHolder(newId, updateHolder);
             return RedirectToAction("Lijst");
         }
@@ -231,5 +235,17 @@ namespace testParkingWeb.Controllers
             return true;
         }
 
+        private string CleanString(string input)
+        {
+            string DirtyCharacters = "ŠšŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖÙÚÛÜİàáâãäåçèéêëìíîïğñòóôõöùúûüıÿ";
+            string CleanCharacters = "SZszYAAAAAACEEEEIIIIDNOOOOOUUUUYaaaaaaceeeeiiiidnooooouuuuyy";
+            for (int i = 0; i < DirtyCharacters.Length; i++)
+            {
+                char DirtyChar = DirtyCharacters[i];
+                char CleanChar = CleanCharacters[i];
+                input = input.Replace(DirtyChar, CleanChar);
+            }
+            return input;
+        }
     }
 }

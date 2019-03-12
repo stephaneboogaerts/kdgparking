@@ -11,31 +11,16 @@ namespace kdgparking.Controllers
 {
     public class HomeController : Controller
     {
-        private IHolderManager mgr = new HolderManager();
+        private IHolderManager mng = new HolderManager();
 
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Excel");
         }
 
-        public ActionResult About()
+        public ActionResult SQL()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        public ActionResult CRUD()
-        {
-            ViewBag.Message = "CRUD page";
-
+            mng.GetSQLView();
             return View();
         }
     }

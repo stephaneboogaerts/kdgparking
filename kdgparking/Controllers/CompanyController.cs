@@ -14,7 +14,6 @@ namespace kdgparking.Controllers
 {
     public class CompanyController : Controller
     {
-        public CompanyController() { }
 
         private ICompanyManager mng = new CompanyManager();
 
@@ -47,12 +46,74 @@ namespace kdgparking.Controllers
         {
             if (ModelState.IsValid)
             {
-                mng.AddCompany(company.CompanyName);
+                mng.AddCompany(CleanString(company.CompanyName));
                 return new HttpStatusCodeResult(200);
             } else
             {
                 return new HttpStatusCodeResult(500);
             }
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            if (this.VerifyId(id))
+            {
+                int newId = (int)id;
+                ViewData.Model = mng.GetCompany(newId);
+                return View();
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404);
+            }
+        }
+
+        public ActionResult EditCompany(int? id, Company company)
+        {
+            if (this.VerifyId(id))
+            {
+                int newId = (int)id;
+                if (ModelState.IsValid)
+                {
+                    company.CompanyName = CleanString(company.CompanyName);
+                }
+                mng.UpdateCompany(company);
+                return RedirectToAction("Lijst");
+            }
+            else
+            {
+                return new HttpStatusCodeResult(404);
+            }
+        }
+
+        private bool VerifyId(int? id)
+        {
+            if (id == null)
+            {
+                return false;
+            }
+            else
+            {
+                int newId = (int)id;
+                if (mng.GetCompany(newId) == null)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private string CleanString(string input)
+        {
+            string DirtyCharacters = "ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ";
+            string CleanCharacters = "SZszYAAAAAACEEEEIIIIDNOOOOOUUUUYaaaaaaceeeeiiiidnooooouuuuyy";
+            for (int i = 0; i < DirtyCharacters.Length; i++)
+            {
+                char DirtyChar = DirtyCharacters[i];
+                char CleanChar = CleanCharacters[i];
+                input = input.Replace(DirtyChar, CleanChar);
+            }
+            return input;
         }
     }
 }

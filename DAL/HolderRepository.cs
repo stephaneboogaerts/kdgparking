@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using kdgparking.BL.Domain;
 using kdgparking.DAL.EF;
+using System.Diagnostics;
 
 namespace kdgparking.DAL
 {
@@ -117,6 +118,19 @@ namespace kdgparking.DAL
             IEnumerable<Vehicle> vehicles = ctx.Vehicles.Include("Holder").
                 Where(v => (v.Numberplate.ToLower()).Contains(numberplate.ToLower())).ToList<Vehicle>();
             return vehicles;
+        }
+
+        //SQL View moet via een repo opgehaald worden
+        public void ExecuteViewQuery()
+        {
+            var whatIsThis = ctx.Database.ExecuteSqlCommand(@"select h.Name Naam, h.FirstName Voornaam, h.SamAccountName,(select cast(case when (
+                                           CAST(GETDATE() AS DATE) between CAST(StartDate AS DATE)
+                                           and CAST(EndDate AS DATE))
+                                           THEN CAST(1 AS BIT)
+                                           ELSE CAST(0 AS BIT) END AS BIT)) Actief, h.Email Mail, h.MifareSerial, cmp.CompanyName
+                                           from dbo.Holders h
+                                           join dbo.Contracts c on h.Id = c.Holder_Id
+                                           join dbo.Companies cmp on cmp.CompanyId = h.Company_CompanyId; ");
         }
 
         public void Dispose()

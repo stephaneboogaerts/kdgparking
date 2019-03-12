@@ -44,6 +44,11 @@ namespace kdgparking.BL
             return repo.ReadCompany(companyName);
         }
 
+        public Company GetCompany(int id)
+        {
+            return repo.ReadCompany(id);
+        }
+
         public List<Company> GetCompanies()
         {
             return repo.ReadCompanies();
@@ -52,6 +57,11 @@ namespace kdgparking.BL
         public List<Company> GetCompanies(string searchString)
         {
             return repo.ReadCompanies(searchString);
+        }
+
+        public Company UpdateCompany(Company company)
+        {
+            return repo.UpdateCompany(company);
         }
 
         private Company AddCompany(Company company)

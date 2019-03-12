@@ -27,5 +27,7 @@ namespace kdgparking.DAL
         Vehicle ReadVehicle(string numberplate);
         IEnumerable<Vehicle> ReadVehicles();
         IEnumerable<Vehicle> ReadVehicles(string numberplate);
+
+        void ExecuteViewQuery();
     }
 }

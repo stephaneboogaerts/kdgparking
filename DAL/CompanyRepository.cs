@@ -37,6 +37,12 @@ namespace kdgparking.DAL
             return company;
         }
 
+        public Company ReadCompany(int id)
+        {
+            Company company = ctx.Companies.FirstOrDefault(c => c.CompanyId == id);
+            return company;
+        }
+
         public List<Company> ReadCompanies()
         {
             List<Company> companies = ctx.Companies.ToList<Company>();
@@ -47,6 +53,13 @@ namespace kdgparking.DAL
         {
             List<Company> companies = ctx.Companies.Where(c => (c.CompanyName.ToLower()).Contains(searchString.ToLower())).ToList<Company>();
             return companies;
+        }
+
+        public Company UpdateCompany(Company company)
+        {
+            ctx.Entry(company).State = System.Data.Entity.EntityState.Modified;
+            ctx.SaveChanges();
+            return company;
         }
 
         public void Dispose()
