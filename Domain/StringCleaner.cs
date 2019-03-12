@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace kdgparking.BL.Domain
 {
-   public  class StringCleaner
+    public  class StringCleaner
     {
         //Per "Dirty" character wordt er een find en replace gedaan met de "Cleane" character
         //Deze functie werkt enkel als DirtyCharacter[x] == CleanCharacter[x]
         public string CleanString(string input)
         {
+            if (String.IsNullOrEmpty(input))
+            {
+                return input;
+            }
             string DirtyCharacters = "ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ";
             string CleanCharacters = "SZszYAAAAAACEEEEIIIIDNOOOOOUUUUYaaaaaaceeeeiiiidnooooouuuuyy";
             for (int i = 0; i < DirtyCharacters.Length; i++)

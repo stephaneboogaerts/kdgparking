@@ -25,17 +25,11 @@ namespace kdgparking.BL
             CompanyManager compMng = new CompanyManager(repo.ctx);
             ContractManager contMng = new ContractManager(repo.ctx);
 
-            /////////////////////////////////////////////////////////
-            //Holder changedHolder = this.GetHolder(id);
             Holder changedHolder = contMng.HandleBadgeAssignment(id, updatedHolder.Badge, updatedHolder.StartDate, updatedHolder.EndDate);
 
             changedHolder.Name = updatedHolder.Name;
             changedHolder.FirstName = updatedHolder.FirstName;
             changedHolder.Email = updatedHolder.Email;
-
-            //ChangedHolder.Contract.StartDate = updatedHolder.StartDate;
-            //ChangedHolder.Contract.EndDate = updatedHolder.EndDate;
-            /////////////////////////////////////////////////////////
 
             //Add new Company indien nodig
             if (!updatedHolder.Company.Equals(changedHolder.Company.CompanyName))
@@ -44,7 +38,6 @@ namespace kdgparking.BL
                 changedHolder.Company = HolderCompany;
             }
             repo.UpdateHolder(changedHolder);
-            //contMng.ChangeContract(changedHolder.Contract);
             return changedHolder;
         }
 
@@ -59,12 +52,8 @@ namespace kdgparking.BL
             CompanyManager CompMng = new CompanyManager(repo.ctx);
             ContractManager ContMng = new ContractManager(repo.ctx);
             Company HolderCompany = CompMng.CheckAndCreateCompany(inputHolder.Company);
-            //Contract NewContract = new Contract()
-            //{
-            //    StartDate = inputHolder.StartDate,
-            //    EndDate = inputHolder.EndDate
-            //};
             Holder CreatedHolder = new Holder(inputHolder);
+
             CreatedHolder.Company = HolderCompany;
             CreatedHolder.Contracts = new List<Contract>();
             CreatedHolder = this.AddHolder(CreatedHolder);
@@ -133,6 +122,7 @@ namespace kdgparking.BL
         {
             ContractManager ContMng = new ContractManager(repo.ctx);
             int ContractId = ContMng.GetHolderContract(id).Id;
+
             repo.DeleteHolder(this.GetHolder(id));
             ContMng.DeleteContract(ContMng.GetContract(ContractId));
             return;
@@ -178,6 +168,7 @@ namespace kdgparking.BL
         {
             IContractManager ContMng = new ContractManager();
             Contract holderContract = ContMng.GetHolderContract(holder.Id);
+
             return new InputHolder()
             {
                 HolderId = holder.Id,
