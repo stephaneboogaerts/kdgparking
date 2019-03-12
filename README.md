@@ -1,3 +1,0 @@
-# kdgparking
-
-# mssql : localhost : kdgparking
