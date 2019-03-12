@@ -37,8 +37,16 @@
                             <li>@Html.ActionLink("Toevoegen", "Toevoegen", "company")</li>
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">Extra<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("SQL View", "SQL", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("Excel", "Index", "Excel")</li>
-                    <li>@Html.ActionLink("SQL View", "SQL", "Home")</li>
+                    
                 </ul>
 </div>
         </div>

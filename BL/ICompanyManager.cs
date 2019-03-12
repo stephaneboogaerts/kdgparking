@@ -11,7 +11,7 @@ namespace kdgparking.BL
         Company GetCompany(int id);
         Company UpdateCompany(Company company);
         List<Company> GetCompanies(string searchString);
-        Company CheckAndCreateCompany(string companyName)
+        Company CheckAndCreateCompany(string companyName);
         List<Company> GetCompanies(); // <-- Misschien handig voor een dropdown box
     }
 }

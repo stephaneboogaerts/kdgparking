@@ -28,7 +28,7 @@ namespace kdgparking.DAL
 
             // SamAccountName en MifareSerial unieke id toewijzen adhv Id, toegewezen door DB, en prefix.
             holder.SamAccountName = "_PW_" + holder.Company.CompanyName + "_" + holder.Id;
-            holder.MifareSerial = holder.Id;
+            holder.MifareSerial = holder.Id.ToString();
             ctx.SaveChanges();            
 
             return holder;

@@ -18,7 +18,7 @@ namespace kdgparking.BL
         void RemoveHolder(int id);
         void ChangeHolder(Holder holder);
         Holder GetHolderWithBadges(int holderId);
-        InputHolder ComposeInputHolder(Holder holder)
+        InputHolder ComposeInputHolder(Holder holder);
 
         //Vehicle
         Vehicle AddVehicle(string vehicleName, string numberPlate);

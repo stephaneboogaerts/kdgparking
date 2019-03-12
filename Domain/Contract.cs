@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace kdgparking.BL.Domain
@@ -8,7 +9,9 @@ namespace kdgparking.BL.Domain
         [Key]
         public int Id { get; set; }
         public string ContractId { get; set; }
+        [DisplayName("Start Datum")]
         public DateTime StartDate { get; set; }
+        [DisplayName("Eind Datum")]
         public DateTime EndDate { get; set; }
 
         // Wanneer een termijn afloopt of wordt opgezegd

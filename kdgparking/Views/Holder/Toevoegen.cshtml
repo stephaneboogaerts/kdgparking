@@ -1,7 +1,7 @@
 ﻿@model kdgparking.BL.Domain.InputHolder
 
 @{
-    ViewBag.Title = "Toevoegen";
+    ViewBag.Title = "Holder Toevoegen";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>InputHolder</h4>
+        <h4>Holder</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <form method="post">
@@ -82,7 +82,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" value="Toevoegen" class="btn btn-default" />
                 </div>
             </div>
         </form>
@@ -90,5 +90,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Terug naar lijst", "Index")
 </div>
