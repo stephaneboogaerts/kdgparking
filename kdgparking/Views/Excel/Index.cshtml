@@ -1,0 +1,93 @@
+﻿@model IList<kdgparking.BL.Domain.InputHolder>
+
+@{
+    ViewBag.Title = "File Uploaden";
+    TempData.Keep("myModel");
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h2>Basic File Upload</h2>
+    @using (Html.BeginForm("Index",
+                            "Excel",
+                            FormMethod.Post,
+                            new { enctype = "multipart/form-data" }))
+    {
+        <label for="file">Upload File:</label>
+        <input type="file" name="file" id="file" /><br><br>
+        <input type="submit" value="Upload File" />
+        <br><br>
+            <p style="color:forestgreen">@ViewBag.Message</p>
+    }
+
+    <input type="button" value="Export to CSV" onclick="location.href='@Url.Action("CsvExport", "Excel")'" />
+    <br><br>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Badge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().NumberPlate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Company)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Badge)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumberPlate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+            </tr>
+        }
+        <tr>
+            <td>
+                @* Passes model to be processed and commited to DB *@
+                @Html.ActionLink("Commit", "Commit")
+                @Html.ActionLink("Cancel", "Index", "Home")
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
