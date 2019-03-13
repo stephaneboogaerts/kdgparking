@@ -23,6 +23,13 @@
                     <option value="@item.Value">@item.Text</option>
                 }
             </select>
+            <select name="Status">
+                <option value="">Badge status</option>
+                @foreach (var item in Model.Status)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
+            </select>
             <input type="submit" value="Filter" />
         </p>
         
@@ -81,10 +88,10 @@
                 @Html.DisplayFor(modelItem => item.BadgeStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
+                @Html.DisplayFor(modelItem => item.StartDate.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
+                @Html.DisplayFor(modelItem => item.EndDate.Date)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Company)

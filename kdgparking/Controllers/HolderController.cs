@@ -90,7 +90,7 @@ namespace testParkingWeb.Controllers
             return View(modelList);
         }
 
-        public ActionResult LijstActive(string searchString)
+        public ActionResult LijstActive(string searchString, string status)
         {
             ICompanyManager CompMng = new CompanyManager();
             // Initialisatie ContractViewModel : Bevat List van ContracModels 
@@ -98,14 +98,20 @@ namespace testParkingWeb.Controllers
             ContractViewModel contractViewModel = new ContractViewModel();
             contractViewModel.contractmodels = new List<ContractModel>();
             contractViewModel.Companies = new List<SelectListItem>();
+            contractViewModel.Status = new List<SelectListItem>();
             // ContractModel: Holder, Contract, Company & 'Active' veld
             ContractModel contractModel;
 
-            // Ophalen bestaande companies in DB om op te filteren adhv dropdown
+            // Ophalen bestaande companies & BadgeStatus in DB om op te filteren adhv dropdown
             List<Company> companies = CompMng.GetCompanies();
             foreach (Company c in companies)
             {
                 contractViewModel.Companies.Add(new SelectListItem() { Text = c.CompanyName, Value = c.CompanyName });
+            }
+
+            foreach (BadgeStatus s in (BadgeStatus[])Enum.GetValues(typeof(BadgeStatus)))
+            {
+                contractViewModel.Status.Add(new SelectListItem() { Text = s.ToString(), Value = s.ToString() });
             }
 
             IEnumerable<Holder> holderContracts;
@@ -120,11 +126,16 @@ namespace testParkingWeb.Controllers
                 holderContracts = mng.GetHoldersWithCompanyContractsAndVehicles();
             }
 
+            if (!String.IsNullOrEmpty(status))
+            {
+                // filteren op status
+                holderContracts = holderContracts.Where(h => h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.BadgeStatus.ToString() == status);
+            }
+
             foreach (Holder h in holderContracts)
             {
                 if (h.Contracts.FirstOrDefault(c => c.Archived == false) != null)
                 {
-                    // TODO : Check order to see if latest contract
                     DateTime start = h.Contracts.FirstOrDefault(c => c.Archived == false).StartDate;
                     DateTime end = h.Contracts.FirstOrDefault(c => c.Archived == false).EndDate;
 

@@ -245,6 +245,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BadgeAssignModel.cs" />
     <Compile Include="Models\ContractModel.cs" />
     <Compile Include="Models\ContractViewModel.cs" />
     <Compile Include="Models\HolderVehicle.cs" />
@@ -307,7 +308,7 @@
     <Content Include="Views\Company\Toevoegen.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Home\SQL.cshtml" />
-    <Content Include="Views\Contract\Activate.cshtml" />
+    <Content Include="Views\Contract\Assign.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

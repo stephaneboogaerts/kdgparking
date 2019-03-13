@@ -30,7 +30,7 @@ namespace kdgparking.BL.Domain
         public string NumberPlate { get; set; }
         public string VoertuigNaam { get; set; }
 
-        public int MiFareSerial { get; set; }
+        public string MiFareSerial { get; set; }
 
         public string Email { get; set; }
         public string Telefoon { get; set; }

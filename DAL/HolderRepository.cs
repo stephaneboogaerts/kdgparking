@@ -35,7 +35,7 @@ namespace kdgparking.DAL
 
         public Holder ReadHolder(int holderId)
         {
-            Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts.Badge").FirstOrDefault(x => x.Id == holderId);
             return holder;
         }
 
