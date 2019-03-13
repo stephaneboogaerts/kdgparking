@@ -1,6 +1,7 @@
 ﻿using kdgparking.BL.Domain;
 using kdgparking.DAL;
 using kdgparking.DAL.EF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -53,6 +54,9 @@ namespace kdgparking.BL
             ContractManager ContMng = new ContractManager(repo.ctx);
             Company HolderCompany = CompMng.CheckAndCreateCompany(inputHolder.Company);
             Holder CreatedHolder = new Holder(inputHolder);
+            if (GetHolderByMifareSerial(CreatedHolder.MifareSerial) != null) {
+                throw new ArgumentException("Mifare serial already exists"); 
+            }
 
             CreatedHolder.Company = HolderCompany;
             CreatedHolder.Contracts = new List<Contract>();
@@ -68,6 +72,11 @@ namespace kdgparking.BL
         public Holder GetHolder(string pNumber)
         {
             return repo.ReadHolder(pNumber);
+        }
+
+        public Holder GetHolderByMifareSerial(string MifareSerial)
+        {
+            return repo.ReadHolderByMifareSerial(MifareSerial);
         }
 
         public IEnumerable<Holder> GetHolders()

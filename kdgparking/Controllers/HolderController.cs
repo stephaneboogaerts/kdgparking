@@ -55,7 +55,14 @@ namespace testParkingWeb.Controllers
             if (ModelState.IsValid)
             {
                 nieuweHolder = cleaner.CleanInputHolder(nieuweHolder);
-                mng.AddNewHolder(nieuweHolder);
+                try
+                {
+                    mng.AddNewHolder(nieuweHolder);
+                } catch
+                {
+                    ViewBag.Message = "Mifare already exists or another error occured";
+                    return View();
+                }
             }
             return View();
         }

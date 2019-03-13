@@ -1,5 +1,6 @@
 ﻿using kdgparking.BL.Domain;
 using kdgparking.DAL.EF;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -28,15 +29,20 @@ namespace kdgparking.DAL
 
             // SamAccountName en MifareSerial unieke id toewijzen adhv Id, toegewezen door DB, en prefix.
             holder.SamAccountName = "_PW_" + holder.Company.CompanyName + "_" + holder.Id;
-            holder.MifareSerial = holder.Id.ToString();
+            if (String.IsNullOrEmpty(holder.MifareSerial)) { holder.MifareSerial = holder.Id.ToString(); }
             ctx.SaveChanges();            
-
             return holder;
         }
 
         public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
+            return holder;
+        }
+
+        public Holder ReadHolderByMifareSerial(string MifareSerial)
+        {
+            Holder holder = ctx.Holders.Include("Company").Include("Contracts").First(x => x.MifareSerial == MifareSerial);
             return holder;
         }
 

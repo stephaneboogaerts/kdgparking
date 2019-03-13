@@ -47,6 +47,7 @@ namespace kdgparking.BL.Domain
             Street = inputHolder.Straat;
             PostalCode = inputHolder.Post;
             City = inputHolder.Stad;
+            MifareSerial = inputHolder.MiFareSerial.ToString();
         }
     }
 }
