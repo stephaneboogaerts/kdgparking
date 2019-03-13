@@ -25,6 +25,7 @@ namespace testParkingWeb.Controllers
         {
             IEnumerable<Holder> holders;
             //Wordt er gezocht of is het enkel een oplijsting?
+            // --> Als er geen searchString is gewoon een oplijsting
             if (!String.IsNullOrEmpty(searchString))
             {
                 searchString = cleaner.CleanString(searchString);
@@ -71,7 +72,6 @@ namespace testParkingWeb.Controllers
         public ActionResult LijstVoertuigen(string searchString)
         {
             IHolderManager holdMgt = new HolderManager();
-            // TODO : Testen of Holder &Vehicle Distinct zijn
             List<HolderVehicle> modelList = new List<HolderVehicle>();
             HolderVehicle model = new HolderVehicle();
             if (!String.IsNullOrEmpty(searchString))
@@ -79,17 +79,20 @@ namespace testParkingWeb.Controllers
                 IEnumerable<Vehicle> vehicles = holdMgt.GetVehicles(searchString);
                 foreach (Vehicle v in vehicles)
                 {
-                    model = new HolderVehicle()
+                    foreach (Holder h in v.Holders)
                     {
-                        FirstName = v.Contract.Holder.FirstName,
-                        Name = v.Contract.Holder.Name,
-                        GSM = v.Contract.Holder.GSM,
-                        Phone = v.Contract.Holder.Phone,
-                        Email = v.Contract.Holder.Email,
-                        VehicleName = v.VehicleName,
-                        Numberplate = v.Numberplate
-                    };
-                    modelList.Add(model);
+                        model = new HolderVehicle()
+                        {
+                            FirstName = h.FirstName,
+                            Name =h.Name,
+                            GSM = h.GSM,
+                            Phone = h.Phone,
+                            Email = h.Email,
+                            VehicleName = v.VehicleName,
+                            Numberplate = v.Numberplate
+                        };
+                        modelList.Add(model);
+                    }
                 }
             }
             return View(modelList);
@@ -130,19 +133,22 @@ namespace testParkingWeb.Controllers
                 if (h.Contracts.FirstOrDefault(c => c.Archived == false) != null)
                 {
                     // TODO : Check order to see if latest contract
-                    //h.Contract.OrderBy(c => c.ContractId);
-                    // Check if latest contract is active
                     DateTime start = h.Contracts.FirstOrDefault(c => c.Archived == false).StartDate;
                     DateTime end = h.Contracts.FirstOrDefault(c => c.Archived == false).EndDate;
 
-                    int active = (start < DateTime.Now && DateTime.Now < end) ? 1 : 0;
+                    // Check if latest contract is active
+                    int active = (start < DateTime.Now && DateTime.Now < end &&
+                        h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.BadgeStatus == BadgeStatus.Ok) ? 1 : 0;
 
                     contractModel = new ContractModel()
                     {
+                        HolderId = h.Id,
+                        BadgeId = h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.MifareSerial,
                         FirstName = h.FirstName,
                         Name = h.Name,
                         Email = h.Email,
                         Active = active,
+                        BadgeStatus = h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.BadgeStatus,
                         StartDate = start,
                         EndDate = end,
                         Company = h.Company.CompanyName
@@ -185,12 +191,12 @@ namespace testParkingWeb.Controllers
 
         }
 
-        public ActionResult Details(int? inputId)
+        public ActionResult Details(int inputId)
         {
             int id = VerifyId(inputId);
             if (id != -1)
             {
-                ViewData.Model = mng.ComposeInputHolder(mng.GetHolder(id));
+                ViewData.Model = mng.ComposeInputHolder(mng.GetHolder(inputId/*id*/));
                 return View();
             }
             else

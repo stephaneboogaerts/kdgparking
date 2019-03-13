@@ -21,7 +21,7 @@ namespace kdgparking.BL
             repo = new ContractRepository(context);
         }
 
-        public Contract AddContract(int holderId, string numberplate, DateTime begin, DateTime end)
+        public Contract AddContract(string holderId, string numberplate, DateTime begin, DateTime end)
         {
             //Elk contract heeft een holder nodig
             HolderManager holderMng = new HolderManager(repo.ctx);
@@ -53,7 +53,7 @@ namespace kdgparking.BL
             return repo.CreateContract(contract);
         }
 
-        public Contract GetContract(int Id)
+        public Contract GetContract(string Id)
         {
             return repo.ReadContract(Id);
         }
@@ -80,12 +80,12 @@ namespace kdgparking.BL
             repo.UpdateContract(contract);
         }
 
-        public Badge AddBadge(int badgeId)
+        public Badge AddBadge(string badgeId)
         {
             Badge badge = new Badge()
             {
-                BadgeId = badgeId,
-                BadgeStatus = BadgeStatus.Active
+                MifareSerial = badgeId,
+                BadgeStatus = BadgeStatus.Ok
             };
             return this.AddBadge(badge);
         }
@@ -95,14 +95,14 @@ namespace kdgparking.BL
             return repo.CreateBadge(badge);
         }
 
-        public Badge GetBadge(int badgeId)
+        public Badge GetBadge(string badgeId)
         {
             return repo.ReadBadge(badgeId);
         }
 
         public void ChangeBadgeStatusToActive(Badge badge)
         {
-            badge.BadgeStatus = BadgeStatus.Active;
+            badge.BadgeStatus = BadgeStatus.Ok;
             this.ChangeBadge(badge);
         }
 
@@ -137,33 +137,44 @@ namespace kdgparking.BL
             return contract;
         }
 
-        public Holder HandleBadgeAssignment(int holderId, int badgeId, DateTime start, DateTime end, string contractId = null)
+        public Holder HandleBadgeAssignment(int holderId, string badgeId, DateTime start, DateTime end, string contractId = null)
         {
             HolderManager holdMgr = new HolderManager(repo.ctx);
             Holder holder = holdMgr.GetHolderWithBadges(holderId);
             return HandleBadgeAssignment(holder, badgeId, start, end, contractId);
         }
 
-        public Holder HandleBadgeAssignment(Holder holder, int badgeId, DateTime start, DateTime end, string contractId = null)
+        public Holder HandleBadgeAssignment(Holder holder, string badgeId, DateTime start, DateTime end, string contractId = null)
         {
+            HolderManager holdMgr = new HolderManager(repo.ctx);
+
             Badge badge = repo.ReadBadge(badgeId);
             if (badge == null)
             {
                 badge = this.AddBadge(badgeId);
             }
 
-            if (holder.Contracts == null || holder.Contracts.Count == 0)
+            // Wanneer holder contract list null zou zijn
+            if (holder.Contracts == null)
             {
                 holder.Contracts = new List<Contract>();
+            }
+            // Er bestaan geen actieve contracten, we maken een nieuwe aan
+            if (holder.Contracts.FirstOrDefault(h => h.Archived == false) == null || holder.Contracts.Count == 0)
+            {
                 Contract contract = AddContract(holder, badge, start, end, contractId);
                 holder.Contracts.Add(contract);
+                holdMgr.ChangeHolder(holder);
             }
-            else if (holder.Contracts.FirstOrDefault(h => h.Archived == false).Badge.BadgeId != badge.BadgeId)
+            // Er bestaat wel een actief contract, we gaan aftoetsen of de badges overeenkomen
+            // Zoniet wordt het vorige "contract" gearchiveerd en wordt er een nieuwe aangemaakt met de nieuwe badge
+            else if (holder.Contracts.FirstOrDefault(h => h.Archived == false).Badge.MifareSerial != badge.MifareSerial)
             {
                 // Wanneer een nieuwe badge zou worden toegewezen wordt de vorige gearchiveerd
                 this.ArchiveContract(holder.Contracts.FirstOrDefault(h => h.Archived == false));
                 Contract contract = AddContract(holder, badge, start, end, contractId);
                 holder.Contracts.Add(contract);
+                holdMgr.ChangeHolder(holder);
             }
             return holder;
         }

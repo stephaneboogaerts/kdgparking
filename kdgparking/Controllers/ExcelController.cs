@@ -63,8 +63,9 @@ namespace kdgparking.Controllers
             // TODO : Testen of Holder &Vehicle Distinct zijn
             try
             {
-
+                // Haalt alle Vehicles uit de DB inclusief de eigenaar
                 IEnumerable<Vehicle> vehicles = holdMgr.GetVehicles();
+                // Schrijft data naar CSV en geeft download locatie mee, dit enkel om te tonen in de view
                 string csvToFilepath = mgr.CsvExport(vehicles);
                 TempData["report"] = "Succesfully exported CSV to " + csvToFilepath;
             }

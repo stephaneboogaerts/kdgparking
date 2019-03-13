@@ -187,7 +187,7 @@ namespace kdgparking.BL
                                 // Hier komt logica : data naar object
                                 inputHolder = new InputHolder()
                                 {
-                                    Badge = Int32.Parse(para[2]),
+                                    Badge = para[2],
                                     PNumber = para[3],
                                     ContractId = para[4],
                                     FirstName = fName,
@@ -239,17 +239,23 @@ namespace kdgparking.BL
             {
                 foreach (Vehicle v in vehicles)
                 {
-                    if (!String.IsNullOrEmpty(v.Contract.Holder.Name) && !String.IsNullOrEmpty(v.Contract.Holder.FirstName))
+                    foreach(Holder h in v.Holders)
                     {
-                        var nrPlate = v.Numberplate.ToUpper();
-                        var name = v.Contract.Holder.Name;
-                        var firstname = v.Contract.Holder.FirstName;
-                        var line = string.Format("{0},{1},{2}", nrPlate, name, firstname);
-                        w.WriteLine(line);
-                        w.Flush();
+                        // Enkel entries met zowel nummerplaat, voor- en achternaam worden weggeschreven naar CSV
+                        if (!String.IsNullOrEmpty(h.Name) && !String.IsNullOrEmpty(h.FirstName))
+                        {
+                            var nrPlate = v.Numberplate.ToUpper();
+                            var name = h.Name;
+                            var firstname = h.FirstName;
+                            var line = string.Format("{0},{1},{2}", nrPlate, name, firstname);
+                            w.WriteLine(line);
+                            w.Flush();
+                        }
+
                     }
                 }
             }
+            // Geeft download path mee om te tonen in de view
             return downloadsPath.ToString();
         }
 

@@ -237,6 +237,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ContractController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ExcelController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -306,10 +307,12 @@
     <Content Include="Views\Company\Toevoegen.cshtml" />
     <Content Include="Views\Company\Edit.cshtml" />
     <Content Include="Views\Home\SQL.cshtml" />
+    <Content Include="Views\Contract\Activate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ExcellFiles\" />
+    <Folder Include="Views\Badge\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

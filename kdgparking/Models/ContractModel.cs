@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using kdgparking.BL.Domain;
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Web;
 
 namespace kdgparking.Models
 {
     public class ContractModel
     {
+        public int HolderId { get; set; }
         public string BadgeId { get; set; }
         [DisplayName("Naam")]
         public string Name { get; set; }
@@ -21,5 +20,6 @@ namespace kdgparking.Models
         [DisplayName("Eind Datum")]
         public DateTime EndDate { get; set; }
         public string Company { get; set; }
+        public BadgeStatus BadgeStatus { get; set; }
     }
 }

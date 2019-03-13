@@ -8,7 +8,7 @@ namespace kdgparking.DAL.EF
 {
     internal class OurDbInitializer
         : DropCreateDatabaseAlways<OurDbContext>
-        //: CreateDatabaseIfNotExists<OurDbContext>  // <-- Uit commentaar bij deployment
+    //: CreateDatabaseIfNotExists<OurDbContext>  // <-- Uit commentaar bij deployment
     {
         protected override void Seed(OurDbContext context)
         {

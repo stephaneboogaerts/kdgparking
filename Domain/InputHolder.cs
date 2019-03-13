@@ -36,7 +36,7 @@ namespace kdgparking.BL.Domain
         public string Telefoon { get; set; }
         public string GSM { get; set; }
         
-        public int Badge { get; set; }
+        public string Badge { get; set; } // <-- MifareSerial id
         public string PNumber { get; set; } // <-- string voor excel
         public string ContractId { get; set; }
         public decimal Tarief { get; set; }

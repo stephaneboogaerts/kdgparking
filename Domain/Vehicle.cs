@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,8 +13,8 @@ namespace kdgparking.BL.Domain
         public string VehicleName { get; set; }
         [DisplayName("Nummerplaat")]
         public string Numberplate { get; set; }
-
-        public Contract Contract { get; set; }
+        
+        public List<Holder> Holders { get; set; }
 
         public Vehicle() { }
         public Vehicle(string vehicleName, string numberplate)

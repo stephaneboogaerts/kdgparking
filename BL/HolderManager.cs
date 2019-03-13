@@ -131,7 +131,7 @@ namespace kdgparking.BL
         public void RemoveHolder(int id)
         {
             ContractManager ContMng = new ContractManager(repo.ctx);
-            int ContractId = ContMng.GetHolderContract(id).Id;
+            string ContractId = ContMng.GetHolderContract(id).ContractId;
 
             repo.DeleteHolder(this.GetHolder(id));
             ContMng.DeleteContract(ContMng.GetContract(ContractId));

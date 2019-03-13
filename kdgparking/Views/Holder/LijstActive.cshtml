@@ -31,6 +31,9 @@
     <table class="table">
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].BadgeId)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.contractmodels[0].Name)
             </th>
             <th>
@@ -41,6 +44,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.contractmodels[0].Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.contractmodels[0].BadgeStatus)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.contractmodels[0].StartDate)
@@ -55,29 +61,41 @@
 
         @foreach (var item in Model.contractmodels)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Active)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Company)
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BadgeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BadgeStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+            <td>
+                @Html.ActionLink("Activate", "Activate", "Contract", new { badgeId = item.BadgeId }, null) |
+                @Html.ActionLink("Disable", "Disable", "Contract", new { badgeId = item.BadgeId }, null) |
+                @Html.ActionLink("Lost", "Lost", "Contract", new { badgeId = item.BadgeId }, null) |
+                @Html.ActionLink("Assign", "Assign", "Contract", new { holderId = item.HolderId, badgeId = item.BadgeId }, null)
+            </td>
+        </tr>
         }
 
     </table>
