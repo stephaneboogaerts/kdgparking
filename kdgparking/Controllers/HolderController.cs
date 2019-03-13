@@ -55,6 +55,7 @@ namespace testParkingWeb.Controllers
             if (ModelState.IsValid)
             {
                 nieuweHolder = cleaner.CleanInputHolder(nieuweHolder);
+                //AddNewHolder gooit een exception wanneer Mifare al bestaat
                 try
                 {
                     mng.AddNewHolder(nieuweHolder);
@@ -154,6 +155,7 @@ namespace testParkingWeb.Controllers
 
         public ActionResult Edit(int? inputId)
         {
+            //Check de id en transformeer deze naar non nullable
             int id = VerifyId(inputId);
             if (id != -1)
             {
@@ -176,9 +178,8 @@ namespace testParkingWeb.Controllers
             {
                 return new HttpStatusCodeResult(404);
             }
-            int newId = (int)id;
             updateHolder = cleaner.CleanInputHolder(updateHolder);
-            mng.ChangeHolder(newId, updateHolder);
+            mng.ChangeHolder(id, updateHolder);
             return RedirectToAction("Lijst");
 
 

@@ -104,6 +104,7 @@ namespace kdgparking.BL
             return repo.CreateHolder(holder);
         }
 
+        //Addholder gebruikt door Excel
         public Holder AddHolder(string name, string firstName, string holderNr, string email,
             string phone, string gsm, string city, string street, string post, string companyName)
         {

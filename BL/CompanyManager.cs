@@ -14,6 +14,7 @@ namespace kdgparking.BL
             repo = new CompanyRepository();
         }
 
+        //Als we deze in een andere klasse maken hebben we dezelfde context nodig
         public CompanyManager(OurDbContext context)
         {
             repo = new CompanyRepository(context);

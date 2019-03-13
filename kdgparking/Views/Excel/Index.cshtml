@@ -5,6 +5,10 @@
     TempData.Keep("myModel");
 }
 
+@section Styles{
+    <link href="@Url.Content("~/Styles/ExcelStyle.css")" rel="stylesheet" type="text/css" />
+    }
+
 <!DOCTYPE html>
 
 <html>
@@ -13,7 +17,8 @@
     <title>Index</title>
 </head>
 <body>
-    <h2>Basic File Upload</h2>
+    <h2>Excel Upload/Download</h2>
+    <input type="button" value="Exporteer Nummerplaten" class="btn btn-default" id="exportButton" onclick="location.href='@Url.Action("CsvExport", "Excel")'" />
     @using (Html.BeginForm("Index",
                             "Excel",
                             FormMethod.Post,
@@ -21,12 +26,12 @@
     {
         <label for="file">Upload File:</label>
         <input type="file" name="file" id="file" /><br><br>
-        <input type="submit" value="Upload File" />
+        <input type="submit" value="Upload File" class="btn btn-default" />
         <br><br>
-            <p style="color:forestgreen">@ViewBag.Message</p>
+        <p style="color:forestgreen">@ViewBag.Message</p>
     }
 
-    <input type="button" value="Export to CSV" onclick="location.href='@Url.Action("CsvExport", "Excel")'" />
+
     <br><br>
 
     <table class="table">

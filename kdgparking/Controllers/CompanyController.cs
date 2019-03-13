@@ -19,6 +19,7 @@ namespace kdgparking.Controllers
 
         public ActionResult Lijst(string searchString)
         {
+            //Search of enkel oplijsten
                 IEnumerable<Company> companies;
                 if (!String.IsNullOrEmpty(searchString))
                 {
@@ -81,6 +82,7 @@ namespace kdgparking.Controllers
             }
         }
 
+        //Checkt id voor null en bestaan in het systeem, bij null of nog niet bestaan returnt het -1
         private int VerifyId(int? id)
         {
             if (id == null)
