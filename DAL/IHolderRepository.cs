@@ -11,7 +11,6 @@ namespace kdgparking.DAL
 
         Holder CreateHolder(Holder persoon);
         Holder ReadHolder(int holderId);
-        Holder ReadHolderByMifareSerial(string MyfareSerial);
         Holder ReadHolder(string pNumber);
         IEnumerable<Holder> ReadHolders();
         IEnumerable<Holder> ReadHolders(string searchString);

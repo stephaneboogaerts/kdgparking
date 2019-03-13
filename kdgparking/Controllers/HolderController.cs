@@ -24,8 +24,7 @@ namespace testParkingWeb.Controllers
         public ActionResult Lijst(string searchString)
         {
             IEnumerable<Holder> holders;
-            //Wordt er gezocht of is het enkel een oplijsting?
-            // --> Als er geen searchString is gewoon een oplijsting
+            //Als er geen searchString is gewoon een oplijsting
             if (!String.IsNullOrEmpty(searchString))
             {
                 searchString = cleaner.CleanString(searchString);
@@ -38,8 +37,14 @@ namespace testParkingWeb.Controllers
             List<InputHolder> iHolders = new List<InputHolder>();
             foreach (Holder h in holders)
             {
-                //Formateer de holders naar InputHolders
-                iHolders.Add(mng.ComposeInputHolder(h));
+                //Formateer de holders naar InputHolders, kans dat dit crasht wanneer er geen contract is
+                try
+                {
+                    iHolders.Add(mng.ComposeInputHolder(h));
+                } catch
+                {
+                    return new HttpStatusCodeResult(500);
+                }
             }
             ViewData.Model = iHolders;
             return View();
@@ -56,15 +61,7 @@ namespace testParkingWeb.Controllers
             if (ModelState.IsValid)
             {
                 nieuweHolder = cleaner.CleanInputHolder(nieuweHolder);
-                //AddNewHolder gooit een exception wanneer Mifare al bestaat
-                try
-                {
                     mng.AddNewHolder(nieuweHolder);
-                } catch
-                {
-                    ViewBag.Message = "Mifare already exists or another error occured";
-                    return View();
-                }
             }
             return View();
         }

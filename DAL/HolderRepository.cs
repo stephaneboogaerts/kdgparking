@@ -29,7 +29,6 @@ namespace kdgparking.DAL
 
             // SamAccountName unieke id toewijzen adhv Id, toegewezen door DB, en prefix.
             holder.SamAccountName = "_PW_" + holder.Company.CompanyName + "_" + holder.Id;
-            if (String.IsNullOrEmpty(holder.MifareSerial)) { holder.MifareSerial = holder.Id.ToString(); }
             ctx.SaveChanges();            
             return holder;
         }
@@ -37,12 +36,6 @@ namespace kdgparking.DAL
         public Holder ReadHolder(int holderId)
         {
             Holder holder = ctx.Holders.Include("Company").Include("Contracts").FirstOrDefault(x => x.Id == holderId);
-            return holder;
-        }
-
-        public Holder ReadHolderByMifareSerial(string MifareSerial)
-        {
-            Holder holder = ctx.Holders.Include("Company").Include("Contracts").First(x => x.MifareSerial == MifareSerial);
             return holder;
         }
 
