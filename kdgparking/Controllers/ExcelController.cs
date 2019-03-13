@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace kdgparking.Controllers
 {
+    [HandleError]
     public class ExcelController : Controller
     {
         private ICSVManager mgr = new CSVManager();

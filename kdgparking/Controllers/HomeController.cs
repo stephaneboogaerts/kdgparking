@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace kdgparking.Controllers
 {
+    [HandleError]
     public class HomeController : Controller
     {
         private IHolderManager mng = new HolderManager();

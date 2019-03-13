@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace testParkingWeb.Controllers
 {
+    [HandleError]
     public class HolderController : Controller
     {
         private StringCleaner cleaner = new StringCleaner();
@@ -38,13 +39,7 @@ namespace testParkingWeb.Controllers
             foreach (Holder h in holders)
             {
                 //Formateer de holders naar InputHolders, kans dat dit crasht wanneer er geen contract is
-                try
-                {
                     iHolders.Add(mng.ComposeInputHolder(h));
-                } catch
-                {
-                    return new HttpStatusCodeResult(500);
-                }
             }
             ViewData.Model = iHolders;
             return View();

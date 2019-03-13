@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace kdgparking.Controllers
 {
+    [HandleError]
     public class CompanyController : Controller
     {
 

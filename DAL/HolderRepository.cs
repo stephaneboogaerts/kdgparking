@@ -119,14 +119,7 @@ namespace kdgparking.DAL
         //SQL View moet via een repo opgehaald worden
         public void ExecuteViewQuery()
         {
-            var whatIsThis = ctx.Database.ExecuteSqlCommand(@"select h.Name Naam, h.FirstName Voornaam, h.SamAccountName,(select cast(case when (
-                                           CAST(GETDATE() AS DATE) between CAST(StartDate AS DATE)
-                                           and CAST(EndDate AS DATE))
-                                           THEN CAST(1 AS BIT)
-                                           ELSE CAST(0 AS BIT) END AS BIT)) Actief, h.Email Mail, h.MifareSerial, cmp.CompanyName
-                                           from dbo.Holders h
-                                           join dbo.Contracts c on h.Id = c.Holder_Id
-                                           join dbo.Companies cmp on cmp.CompanyId = h.Company_CompanyId; ");
+            return;
         }
 
         public void Dispose()

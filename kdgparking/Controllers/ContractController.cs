@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace kdgparking.Controllers
 {
+    [HandleError]
     public class ContractController : Controller
     {
         IContractManager cMgr = new ContractManager();
