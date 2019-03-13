@@ -18,27 +18,27 @@ namespace kdgparking.Controllers
             return View();
         }
 
-        public ActionResult Assign(int holderId, int badgeId)
+        public ActionResult Assign(int holderId, string badgeId)
         {
             // TODO :
             return View();
         }
 
-        public ActionResult Activate(int badgeId)
+        public ActionResult Activate(string badgeId)
         {
             Badge badge = cMgr.GetBadge(badgeId);
             cMgr.ChangeBadgeStatusToActive(badge);
             return RedirectToAction("LijstActive", "Holder");
         }
 
-        public ActionResult Lost(int badgeId)
+        public ActionResult Lost(string badgeId)
         {
             Badge badge = cMgr.GetBadge(badgeId);
             cMgr.ChangeBadgeStatusToLost(badge);
             return RedirectToAction("LijstActive", "Holder");
         }
 
-        public ActionResult Disable(int badgeId)
+        public ActionResult Disable(string badgeId)
         {
             Badge badge = cMgr.GetBadge(badgeId);
             cMgr.ChangeBadgeStatusToDisabled(badge);

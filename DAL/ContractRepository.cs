@@ -73,9 +73,9 @@ namespace kdgparking.DAL
             ctx.SaveChanges();
         }
 
-        public Badge ReadBadge(int badgeId)
+        public Badge ReadBadge(string badgeId)
         {
-            Badge badge = ctx.Badges.FirstOrDefault(b => b.BadgeId == badgeId);
+            Badge badge = ctx.Badges.FirstOrDefault(b => b.MifareSerial == badgeId);
             return badge;
         }
 

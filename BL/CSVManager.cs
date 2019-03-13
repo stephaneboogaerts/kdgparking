@@ -187,7 +187,7 @@ namespace kdgparking.BL
                                 // Hier komt logica : data naar object
                                 inputHolder = new InputHolder()
                                 {
-                                    Badge = Int32.Parse(para[2]),
+                                    Badge = para[2],
                                     PNumber = para[3],
                                     ContractId = para[4],
                                     FirstName = fName,

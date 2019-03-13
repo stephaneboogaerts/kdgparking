@@ -7,8 +7,8 @@ namespace kdgparking.BL.Domain
     public class Badge
     {
         [Key]
-        public int Id { get; set; }
-        public int BadgeId { get; set; }
+        [StringLength(20, ErrorMessage = "The MifareSerial value cannot exceed 20 characters. ")]
+        public string MifareSerial { get; set; }
         public BadgeStatus BadgeStatus { get; set; }
         
         List<Contract> Contracts { get; set; }

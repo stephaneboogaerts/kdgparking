@@ -7,7 +7,7 @@ namespace kdgparking.Models
     public class ContractModel
     {
         public int HolderId { get; set; }
-        public int BadgeId { get; set; }
+        public string BadgeId { get; set; }
         [DisplayName("Naam")]
         public string Name { get; set; }
         [DisplayName("Voornaam")]

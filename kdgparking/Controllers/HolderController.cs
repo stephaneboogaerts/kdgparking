@@ -135,7 +135,7 @@ namespace testParkingWeb.Controllers
                     contractModel = new ContractModel()
                     {
                         HolderId = h.Id,
-                        BadgeId = h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.BadgeId,
+                        BadgeId = h.Contracts.FirstOrDefault(c => c.Archived == false).Badge.MifareSerial,
                         FirstName = h.FirstName,
                         Name = h.Name,
                         Email = h.Email,

@@ -9,7 +9,7 @@ namespace kdgparking.DAL
         OurDbContext ctx { get; }
         Contract CreateContract(Contract contract);
         //Contract ReadContract(string contractId);
-        Contract ReadContract(int Id);
+        Contract ReadContract(string Id);
         Contract ReadHolderContract(int holderId);
         Contract UpdateContract(Contract contract);
         void DeleteContract(Contract contract);
@@ -20,7 +20,7 @@ namespace kdgparking.DAL
         //BadgeHistory CreateBadgeHistory(BadgeHistory badgeHistory);
         //void UpdateBadgeHistory(BadgeHistory badgeHistory);
         Badge CreateBadge(Badge badge);
-        Badge ReadBadge(int badgeId);
+        Badge ReadBadge(string badgeId);
         void UpdateBadge(Badge badge);
     }
 }
