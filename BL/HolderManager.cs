@@ -49,7 +49,9 @@ namespace kdgparking.BL
 
         public Holder AddNewHolder(InputHolder inputHolder)
         {
-            // Bij het toevoegen van een nieuwe holder heb je een badge nodig om een termijn toe te voegen
+            // Nieuwe holders adhv view 'Toevoegen' worden niet afgetoetst op uniekheid
+            //  Eventuele uitbreiding : check op email
+            IContractManager cMgr = new ContractManager();
             CompanyManager CompMng = new CompanyManager(repo.ctx);
             ContractManager ContMng = new ContractManager(repo.ctx);
             Company HolderCompany = CompMng.CheckAndCreateCompany(inputHolder.Company);
@@ -58,6 +60,8 @@ namespace kdgparking.BL
             CreatedHolder.Company = HolderCompany;
             CreatedHolder.Contracts = new List<Contract>();
             CreatedHolder = this.AddHolder(CreatedHolder);
+
+            CreatedHolder = cMgr.HandleBadgeAssignment(CreatedHolder.Id, inputHolder.MiFareSerial, inputHolder.StartDate, inputHolder.EndDate);
             return CreatedHolder;
         }
 

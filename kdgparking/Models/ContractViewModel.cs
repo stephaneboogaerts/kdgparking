@@ -10,6 +10,7 @@ namespace kdgparking.Models
     {
         public List<ContractModel> contractmodels { get; set; }
         public List<SelectListItem> Companies { get; set; }
+        public List<SelectListItem> Status { get; set; }
         public string CompanySearch { get; set; }
     }
 }
